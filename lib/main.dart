@@ -15,9 +15,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         backgroundColor: const Color(0xFF1C1C21),
         body: Center(
-          child: Container(
-            child: Image.asset('./images/logoSemFundo.png'),
-          ),
+          child: Image.asset('./images/logo_sem_fundo.png'),
         ),
       ),
     );
