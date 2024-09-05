@@ -6,7 +6,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,8 +13,12 @@ class MyApp extends StatelessWidget {
       title: 'GymLog',
       home: Scaffold(
         backgroundColor: const Color(0xFF1C1C21),
-        body: Center(
-          child: Image.asset('./images/logo_sem_fundo.png'),
+        body: Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Image.asset('./images/logo_sem_fundo.png'),
+          ),
         ),
       ),
     );
