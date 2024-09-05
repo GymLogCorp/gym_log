@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: const Color(0xFF1C1C21),
         body: Center(
           child: Container(
-            child: Image.asset('./assets/images/logo_branca_sem_fundo.png'),
+            child: Image.asset('./images/logoSemFundo.png'),
           ),
         ),
       ),
