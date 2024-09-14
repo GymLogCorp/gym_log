@@ -1,0 +1,23 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "gymlog-eef4e",
+          "appId": "1:327074780511:android:7adfad1a03e2c3c57992ea",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "gymlog-eef4e",
+          "configurations": {
+            "android": "1:327074780511:android:7adfad1a03e2c3c57992ea",
+            "ios": "1:327074780511:ios:e09866862207bb207992ea",
+            "web": "1:327074780511:web:b3c2a4ad6fcd5e4f7992ea"
+          }
+        }
+      }
+    }
+  }
+}

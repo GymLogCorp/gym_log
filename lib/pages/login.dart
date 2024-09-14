@@ -5,9 +5,9 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF1C1C21),
-      body: const Center(
+    return const Scaffold(
+      backgroundColor: Color(0xFF1C1C21),
+      body: Center(
         child: Text(
           'Página de login',
           style: TextStyle(color: Colors.white),
