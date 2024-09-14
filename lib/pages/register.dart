@@ -5,11 +5,8 @@ class Register extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cadastro'),
-      ),
-      body: const Text('Tela de cadastro'),
+    return const Scaffold(
+      body: Text('Tela de cadastro'),
     );
   }
 }
