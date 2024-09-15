@@ -72,4 +72,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'gymlog-eef4e.appspot.com',
     iosBundleId: 'com.example.gymLog',
   );
+
 }
