@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class InputField extends StatelessWidget {
+class CustomTextFormField extends StatelessWidget {
   final String labelText;
   final bool obscureText;
   final TextEditingController? controller;
@@ -8,8 +8,10 @@ class InputField extends StatelessWidget {
   final Color titleColor;
   final Color borderColor;
   final Color fillColor;
+  final String? Function(String?)? validator; // funcao de validacao
+  final String? errorMessage; // mensagem de erro
 
-  const InputField({
+  const CustomTextFormField({
     super.key,
     required this.labelText,
     this.obscureText = false,
@@ -18,6 +20,8 @@ class InputField extends StatelessWidget {
     this.titleColor = Colors.white,
     this.borderColor = Colors.grey,
     this.fillColor = Colors.white,
+    this.validator,
+    this.errorMessage,
   });
 
   @override
@@ -29,7 +33,7 @@ class InputField extends StatelessWidget {
         children: [
           if (title != null)
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Text(
                 title!,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -38,7 +42,7 @@ class InputField extends StatelessWidget {
                     ),
               ),
             ),
-          TextField(
+          TextFormField(
             obscureText: obscureText,
             controller: controller,
             decoration: InputDecoration(
@@ -58,7 +62,9 @@ class InputField extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8.0),
                 borderSide: BorderSide(color: borderColor),
               ),
+              errorText: errorMessage, // mostra mensagem de erro se houver
             ),
+            validator: validator, // funcao de validacao personalizada
           ),
         ],
       ),
