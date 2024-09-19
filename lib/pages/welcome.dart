@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
+import 'package:gym_log/pages/layout.dart';
 import 'package:gym_log/pages/login.dart';
 import 'package:gym_log/pages/register.dart';
 
@@ -11,7 +12,7 @@ class Welcome extends StatelessWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const Login(),
+          builder: (context) => const Layout(),
         ));
   }
 
