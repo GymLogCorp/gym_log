@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_log/components/input.dart';
 import 'package:gym_log/components/button.dart';
 import 'package:gym_log/pages/login.dart';
+import 'package:gym_log/pages/welcome.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -30,6 +32,14 @@ class _RegisterState extends State<Register> {
         builder: (context) => const Login(),
       ),
     );
+  }
+
+  void navigateToWelcome(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Welcome(),
+        ));
   }
 
   // funcao que valida email
@@ -79,6 +89,14 @@ class _RegisterState extends State<Register> {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: const Color(0xFF1C1C21),
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF1C1C21),
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => navigateToWelcome(context),
+          ),
+        ),
         body: Align(
           alignment: Alignment.center,
           child: Padding(
@@ -98,7 +116,7 @@ class _RegisterState extends State<Register> {
                       child: Column(
                         children: [
                           CustomTextFormField(
-                            labelText: 'Insira seu nome completo',
+                            hintText: 'Insira seu nome completo',
                             title: 'Nome Completo',
                             controller: _nameController,
                             validator: (value) {
@@ -109,20 +127,20 @@ class _RegisterState extends State<Register> {
                             },
                           ),
                           CustomTextFormField(
-                            labelText: 'Insira seu email',
+                            hintText: 'Insira seu email',
                             title: 'Email',
                             controller: _emailController,
                             validator: _validateEmail, // validacao email
                           ),
                           CustomTextFormField(
-                            labelText: 'Insira sua senha',
+                            hintText: 'Insira sua senha',
                             title: 'Senha',
                             obscureText: true,
                             controller: _passwordController,
                             validator: _validatePassword, // validacao de senha
                           ),
                           CustomTextFormField(
-                            labelText: 'Confirme sua senha',
+                            hintText: 'Confirme sua senha',
                             title: 'Confirmar Senha',
                             obscureText: true,
                             controller: _confirmPasswordController,
@@ -141,10 +159,28 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     const Padding(padding: EdgeInsets.only(bottom: 35.0)),
-                    const Text(
-                      'Já possui conta? Faça o Login',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    RichText(
+                        text: TextSpan(children: [
+                      const TextSpan(
+                        text: 'Já possui conta? ',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17.0,
+                        ),
+                      ),
+                      TextSpan(
+                          text: 'Faça o login.',
+                          style: const TextStyle(
+                            color: Color(0xFF617AFA),
+                            decoration: TextDecoration.underline,
+                            fontSize: 18.0,
+                    
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              navigateToLogin(context);
+                            })
+                    ]))
                   ],
                 ),
               ],
