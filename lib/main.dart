@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gym_log/pages/welcome.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,11 +6,20 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Welcome(),
+      title: 'GymLog',
+      home: Scaffold(
+        backgroundColor: const Color(0xFF1C1C21),
+        body: Center(
+          child: Container(
+            child: Image.asset('./assets/images/logo_branca_sem_fundo.png'),
+          ),
+        ),
+      ),
     );
   }
 }
