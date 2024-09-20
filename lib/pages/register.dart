@@ -87,6 +87,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: const Color(0xFF1C1C21),
         appBar: AppBar(
@@ -174,7 +175,6 @@ class _RegisterState extends State<Register> {
                             color: Color(0xFF617AFA),
                             decoration: TextDecoration.underline,
                             fontSize: 18.0,
-                    
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
