@@ -6,6 +6,7 @@ class Button extends StatelessWidget {
   final int bgColor;
   final int textColor;
   final int borderColor;
+  final bool isLoading;
   final VoidCallback onPressedProps;
   const Button(
       {super.key,
@@ -13,6 +14,7 @@ class Button extends StatelessWidget {
       this.bgColor = 0,
       this.textColor = 0,
       this.borderColor = 0,
+      this.isLoading = false,
       required this.onPressedProps});
 
   @override
@@ -35,20 +37,24 @@ class Button extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0))),
         onPressed: onPressedProps,
-        child: Text(
-          label,
-          style: GoogleFonts.plusJakartaSans(
-              fontSize: 22.0,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              shadows: const [
-                Shadow(
-                  offset: Offset(0, 4),
-                  blurRadius: 4.0,
-                  color: Colors.black,
-                )
-              ]),
-        ),
+        child: (isLoading)
+            ? const CircularProgressIndicator(
+                color: Colors.white,
+              )
+            : Text(
+                label,
+                style: GoogleFonts.plusJakartaSans(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    shadows: const [
+                      Shadow(
+                        offset: Offset(0, 4),
+                        blurRadius: 4.0,
+                        color: Colors.black,
+                      )
+                    ]),
+              ),
       ),
     );
   }

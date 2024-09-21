@@ -1,9 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:gym_log/Exceptions/auth_exception.dart';
 import 'package:gym_log/components/input.dart';
 import 'package:gym_log/components/button.dart';
+import 'package:gym_log/pages/layout.dart';
 import 'package:gym_log/pages/register.dart';
 import 'package:gym_log/pages/welcome.dart';
+import 'package:gym_log/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -17,6 +21,7 @@ class _LoginState extends State<Login> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool loading = false;
 
   void navigateToRegister(BuildContext context) {
     Navigator.push(
@@ -57,10 +62,31 @@ class _LoginState extends State<Login> {
     return null;
   }
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      // se tudo estiver ok vai para onde eu mandar
-      // navigateToLogin(context);
+  login() async {
+    setState(() => loading = true);
+    try {
+      if (_formKey.currentState!.validate()) {
+        // Faça o login
+        await context
+            .read<AuthService>()
+            .login(_emailController.text, _passwordController.text);
+
+        // Se o login for bem-sucedido, navegue para o Layout
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const Layout()),
+          );
+        }
+      }
+    } on AuthException catch (e) {
+      setState(() => loading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.message)));
+      }
+    } finally {
+      setState(() => loading = false);
     }
   }
 
@@ -115,11 +141,15 @@ class _LoginState extends State<Login> {
                         ),
                         const SizedBox(height: 35.0),
                         Button(
-                            label: 'ENTRAR',
-                            bgColor: 0xFF617AFA,
-                            textColor: 0xFFFFFFFF,
-                            borderColor: 0xFF617AFA,
-                            onPressedProps: _submitForm),
+                          label: 'ENTRAR',
+                          bgColor: 0xFF617AFA,
+                          textColor: 0xFFFFFFFF,
+                          borderColor: 0xFF617AFA,
+                          onPressedProps: () {
+                            login();
+                          },
+                          isLoading: loading,
+                        ),
                       ],
                     ),
                   ),
