@@ -90,20 +90,25 @@ class _RegisterState extends State<Register> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: const Color(0xFF1C1C21),
-        appBar: AppBar(
-          backgroundColor: const Color(0xFF1C1C21),
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => navigateToWelcome(context),
-          ),
-        ),
         body: Align(
           alignment: Alignment.center,
           child: Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: ListView(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      color: Colors.white,
+                      iconSize: 36,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
                 Image.asset(
                   'assets/images/logo_branca_sem_fundo.png',
                   width: 180,
@@ -150,7 +155,7 @@ class _RegisterState extends State<Register> {
                           ),
                           const SizedBox(height: 35.0),
                           Button(
-                            label: 'Cadastrar',
+                            label: 'CADASTRAR',
                             bgColor: 0xFF617AFA,
                             textColor: 0xFFFFFFFF,
                             borderColor: 0xFF617AFA,
