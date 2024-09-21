@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/pages/historic.dart';
 import 'package:gym_log/pages/home.dart';
+import 'package:gym_log/pages/welcome.dart';
 import 'package:gym_log/pages/workout.dart';
+import 'package:gym_log/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(const Layout());
 
@@ -11,25 +14,7 @@ class Layout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          unselectedLabelStyle: GoogleFonts.plusJakartaSans(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-          ),
-          selectedLabelStyle: GoogleFonts.plusJakartaSans(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-          backgroundColor: const Color(0xFF1C1C21),
-          selectedItemColor: const Color(0xFF617AFA),
-          unselectedItemColor: Colors.white,
-        ),
-      ),
-      home: const LayoutAppNav(),
-      debugShowCheckedModeBanner: false,
-    );
+    return const LayoutAppNav(); // O Scaffold e o BottomNavigationBar estão no LayoutAppNav
   }
 }
 
@@ -41,14 +26,13 @@ class LayoutAppNav extends StatefulWidget {
 }
 
 class _LayoutAppNavState extends State<LayoutAppNav> {
-  int _currentIndex = 1;
+  int _currentIndex = 1; // Posição inicial no BottomNavigationBar
 
   final List _pages = [
     const WorkoutPage(),
     const HomePage(),
     const HistoricPage()
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,15 +60,20 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
           const SizedBox(width: 16),
         ],
       ),
-      body: _pages[_currentIndex],
+      body: _pages[_currentIndex], // Renderiza a página atual
       backgroundColor: const Color(0xFF1C1C21),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+        unselectedLabelStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+        selectedLabelStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+        backgroundColor: const Color(0xFF1C1C21),
+        selectedItemColor: const Color(0xFF617AFA),
+        unselectedItemColor: Colors.white,
         items: [
           BottomNavigationBarItem(
             icon: _currentIndex == 0
@@ -105,6 +94,12 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
             label: 'Histórico',
           ),
         ],
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
       ),
     );
   }
