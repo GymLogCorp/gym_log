@@ -26,7 +26,7 @@ class UserRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  setUser(User user) async {
+  setUser(UserModel user) async {
     db = await DB.instance.database;
     var dto = {
       'fullName': user.fullName,
