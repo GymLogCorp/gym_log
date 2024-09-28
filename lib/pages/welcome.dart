@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
 import 'package:gym_log/pages/layout.dart';
-import 'package:gym_log/pages/login.dart';
-import 'package:gym_log/pages/register.dart';
+// Comentado para n precisar usar a autenticação
+// import 'package:gym_log/pages/login.dart';
+// import 'package:gym_log/pages/register.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({super.key});
@@ -52,8 +53,7 @@ class Welcome extends StatelessWidget {
                   textColor: 0xFFFFFFFF,
                   borderColor: 0xFF617AFA,
                   onPressedProps: () {
-                    navigateToLogin(
-                        context); //não ta funcionando, verificar o que é dps
+                    navigateToLogin(context);
                   },
                 ),
                 const SizedBox(
