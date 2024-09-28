@@ -1,22 +1,371 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:gym_log/components/button.dart';
+import 'package:gym_log/pages/workout.dart';
+import 'package:gym_log/components/carousel.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class ExerciseModel {
+  final int id;
+  final String name;
+  final int countSeries; // number of sets
+  final int countRepetition; // number of repetitions
+  final double? weight; // weight used (can be null)
+  final int workoutId; // foreign key to WorkoutModel
+
+  ExerciseModel({
+    required this.id,
+    required this.name,
+    required this.countSeries,
+    required this.countRepetition,
+    this.weight,
+    required this.workoutId,
+  });
+}
+
+class WorkoutModel {
+  final int id;
+  final String name;
+  final String muscleGroup;
+  final int userId;
+  final List<ExerciseModel> exercises;
+
+  WorkoutModel({
+    required this.id,
+    required this.name,
+    required this.muscleGroup,
+    required this.userId,
+    required this.exercises,
+  });
+  String getSeriesRepsString() {
+    return exercises
+        .map(
+            (exercise) => '${exercise.countSeries}x${exercise.countRepetition}')
+        .join(', ');
+  }
+}
+
+class _HomePageState extends State<HomePage> {
+  final List<WorkoutModel> workoutList = [
+    WorkoutModel(
+        id: 1,
+        name: 'PushDay',
+        muscleGroup: 'Peito',
+        userId: 1,
+        exercises: [
+          ExerciseModel(
+              id: 1,
+              name: 'Supino Inclinado',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 1),
+          ExerciseModel(
+              id: 2,
+              name: 'Supino reto',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 1),
+          ExerciseModel(
+              id: 3,
+              name: 'Voador Peitoral',
+              countSeries: 2,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 1),
+          ExerciseModel(
+              id: 4,
+              name: 'Crossover Baixo',
+              countSeries: 2,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 1),
+          ExerciseModel(
+              id: 5,
+              name: 'Tríceps Pulley',
+              countSeries: 3,
+              countRepetition: 10,
+              weight: null,
+              workoutId: 1),
+          ExerciseModel(
+              id: 6,
+              name: 'Tríceps Francês',
+              countSeries: 3,
+              countRepetition: 10,
+              weight: null,
+              workoutId: 1),
+        ]),
+    WorkoutModel(
+        id: 2,
+        name: 'Costas e Bíceps',
+        muscleGroup: 'Costas',
+        userId: 1,
+        exercises: [
+          ExerciseModel(
+              id: 7,
+              name: 'Puxada Aberta',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 2),
+          ExerciseModel(
+              id: 8,
+              name: 'Remada na Barra',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 2),
+          ExerciseModel(
+              id: 9,
+              name: 'Remada Serrote',
+              countSeries: 2,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 2),
+          ExerciseModel(
+              id: 10,
+              name: 'Pulldown na Corda',
+              countSeries: 2,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 2),
+          ExerciseModel(
+              id: 11,
+              name: 'Rosca Direta',
+              countSeries: 3,
+              countRepetition: 10,
+              weight: null,
+              workoutId: 2),
+          ExerciseModel(
+              id: 12,
+              name: 'Rosca Martelo',
+              countSeries: 3,
+              countRepetition: 10,
+              weight: null,
+              workoutId: 2),
+        ]),
+    WorkoutModel(
+        id: 3,
+        name: 'Espanca Perna',
+        muscleGroup: 'Quadriceps',
+        userId: 1,
+        exercises: [
+          ExerciseModel(
+              id: 13,
+              name: 'Agachamento Hack',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 14,
+              name: 'LegPress 45°',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 15,
+              name: 'Extensora',
+              countSeries: 2,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 16,
+              name: 'Flexora',
+              countSeries: 2,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 17,
+              name: 'Mesa Flexora',
+              countSeries: 3,
+              countRepetition: 10,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 18,
+              name: 'Panturrilha Sentada',
+              countSeries: 3,
+              countRepetition: 10,
+              weight: null,
+              workoutId: 3),
+        ]),
+  ];
+  void navigateToWorkout(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const WorkoutPage(),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      color: const Color(0xFF1C1C21),
-      child: const Center(
-        child: Text(
-          'HomePage',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 36,
+    return Scaffold(
+        backgroundColor: const Color(0xFF1C1C21),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: workoutList.isEmpty
+                ? _buildEmptyTrainingSection()
+                : CarouselSlider(
+                    items: workoutList
+                        .map((workout) => _buildWorkoutCard(workout))
+                        .toList(),
+                    options: CarouselOptions(
+                      height: 450.0,
+                      viewportFraction: 1.0,
+                      enableInfiniteScroll: true,
+                      autoPlay: false,
+                      autoPlayInterval: const Duration(seconds: 3),
+                      autoPlayAnimationDuration:
+                          const Duration(milliseconds: 800),
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enlargeCenterPage: true,
+                      enlargeFactor: 0.3,
+                    )),
+          ),
+        ));
+  }
+
+  Widget _buildEmptyTrainingSection() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Crie novos treinos para começar a gerenciar',
+          textAlign: TextAlign.center,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 15.0,
             fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
-      ),
+        const Spacer(flex: 2),
+        Image.asset(
+          'assets/images/treinos.png',
+          alignment: Alignment.center,
+        ),
+        const Spacer(flex: 2),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 100.0),
+          child: Button(
+            label: 'Criar ',
+            bgColor: 0xFF617AFA,
+            textColor: 0xFFFFFFFF,
+            borderColor: 0xFF617AFA,
+            width: 100,
+            height: 50,
+            icon: Icons.add,
+            iconSize: 35,
+            onPressed: () => navigateToWorkout(context),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildWorkoutCard(WorkoutModel workout) {
+    return Column(
+      children: [
+        Text(
+          workout.name,
+          style: const TextStyle(
+            fontSize: 24.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 16.0),
+        Card(
+          color: Colors.black,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Exercícios:',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      'Séries',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20.0),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: workout.exercises.length,
+                  itemBuilder: (context, index) {
+                    final exercise = workout.exercises[index];
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            exercise.name,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 20,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8.0),
+                        Text(
+                          '${workout.getSeriesRepsString().split(',')[index]}',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 20,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(45.0),
+          child: Button(
+            label: 'Começar ',
+            bgColor: 0xFF617AFA,
+            textColor: 0xFFFFFFFF,
+            borderColor: 0xFF617AFA,
+            width: 250,
+            height: 50,
+            icon: Icons.play_arrow,
+            iconSize: 35,
+            onPressed: () => navigateToWorkout(context),
+          ),
+        )
+      ],
     );
   }
 }

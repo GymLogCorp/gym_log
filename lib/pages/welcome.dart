@@ -51,7 +51,9 @@ class Welcome extends StatelessWidget {
                   bgColor: 0xFF617AFA,
                   textColor: 0xFFFFFFFF,
                   borderColor: 0xFF617AFA,
-                  onPressedProps: () {
+                  width: 268,
+                  height: 68,
+                  onPressed: () {
                     navigateToLogin(
                         context); //não ta funcionando, verificar o que é dps
                   },
@@ -64,7 +66,9 @@ class Welcome extends StatelessWidget {
                   bgColor: 0xFF212429,
                   textColor: 0xFFFFFFFF,
                   borderColor: 0xFF4F5461,
-                  onPressedProps: () {
+                  width: 268,
+                  height: 68,
+                  onPressed: () {
                     navigateToRegister(context);
                   },
                 ),

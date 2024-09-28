@@ -9,7 +9,7 @@ class WorkoutPage extends StatelessWidget {
       color: const Color(0xFF1C1C21),
       child: const Center(
         child: Text(
-          'Treinos',
+          'Treino',
           style: TextStyle(
             color: Colors.white,
             fontSize: 36,

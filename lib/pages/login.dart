@@ -145,7 +145,9 @@ class _LoginState extends State<Login> {
                           bgColor: 0xFF617AFA,
                           textColor: 0xFFFFFFFF,
                           borderColor: 0xFF617AFA,
-                          onPressedProps: () {
+                          width: 100,
+                          height: 100,
+                          onPressed: () {
                             login();
                           },
                           isLoading: loading,
