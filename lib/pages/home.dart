@@ -214,30 +214,47 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF1C1C21),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: workoutList.isEmpty
-                ? _buildEmptyTrainingSection()
-                : CarouselSlider(
-                    items: workoutList
-                        .map((workout) => _buildWorkoutCard(workout))
-                        .toList(),
-                    options: CarouselOptions(
-                      height: 450.0,
-                      viewportFraction: 1.0,
-                      enableInfiniteScroll: true,
-                      autoPlay: false,
-                      autoPlayInterval: const Duration(seconds: 3),
-                      autoPlayAnimationDuration:
-                          const Duration(milliseconds: 800),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enlargeCenterPage: true,
-                      enlargeFactor: 0.3,
-                    )),
+      backgroundColor: const Color(0xFF1C1C21),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Column(
+            children: [
+              workoutList.isEmpty
+                  ? _buildEmptyTrainingSection()
+                  : CarouselSlider(
+                      items: workoutList
+                          .map((workout) => _buildWorkoutCard(workout))
+                          .toList(),
+                      options: CarouselOptions(
+                        height: 450.0,
+                        viewportFraction: 0.7,
+                        enableInfiniteScroll: true,
+                        autoPlay: false,
+                        autoPlayInterval: const Duration(seconds: 3),
+                        autoPlayAnimationDuration:
+                            const Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: true,
+                        enlargeFactor: 0.3,
+                      ),
+                    ),
+              Button(
+                label: 'COMEÇAR',
+                bgColor: 0xFF617AFA,
+                textColor: 0xFFFFFFFF,
+                borderColor: 0xFF617AFA,
+                width: 100,
+                height: 50,
+                icon: Icons.play_arrow,
+                iconSize: 35,
+                onPressed: () => navigateToWorkout(context),
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _buildEmptyTrainingSection() {
@@ -260,7 +277,7 @@ class _HomePageState extends State<HomePage> {
         ),
         const Spacer(flex: 2),
         Padding(
-          padding: const EdgeInsets.only(bottom: 100.0),
+          padding: const EdgeInsets.only(bottom: 70.0),
           child: Button(
             label: 'Criar ',
             bgColor: 0xFF617AFA,
@@ -280,20 +297,22 @@ class _HomePageState extends State<HomePage> {
   Widget _buildWorkoutCard(WorkoutModel workout) {
     return Column(
       children: [
+        const SizedBox(height: 9.0),
         Text(
           workout.name,
           style: const TextStyle(
-            fontSize: 24.0,
+            fontSize: 20.0,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.white,
           ),
           textAlign: TextAlign.center,
+          softWrap: true,
         ),
-        const SizedBox(height: 16.0),
+        const SizedBox(height: 5.0),
         Card(
-          color: Colors.black,
+          color: const Color(0x617AF),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(25.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -330,8 +349,8 @@ class _HomePageState extends State<HomePage> {
                           child: Text(
                             exercise.name,
                             style: GoogleFonts.plusJakartaSans(
-                              fontSize: 20,
-                              color: Colors.grey[600],
+                              fontSize: 18.0,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -339,8 +358,8 @@ class _HomePageState extends State<HomePage> {
                         Text(
                           '${workout.getSeriesRepsString().split(',')[index]}',
                           style: GoogleFonts.plusJakartaSans(
-                            fontSize: 20,
-                            color: Colors.grey[600],
+                            fontSize: 18.0,
+                            color: Colors.white,
                           ),
                         ),
                       ],
@@ -351,20 +370,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(45.0),
-          child: Button(
-            label: 'Começar ',
-            bgColor: 0xFF617AFA,
-            textColor: 0xFFFFFFFF,
-            borderColor: 0xFF617AFA,
-            width: 250,
-            height: 50,
-            icon: Icons.play_arrow,
-            iconSize: 35,
-            onPressed: () => navigateToWorkout(context),
-          ),
-        )
       ],
     );
   }
