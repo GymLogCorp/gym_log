@@ -15,8 +15,8 @@ class _ChipListState extends State<ChipList> {
     "Abdómen",
     "Pernas",
     "Panturrilha",
-    "Braço",
-    "Ombro"
+    "Bíceps",
+    "Tríceps"
   ];
 
   List<String> filter = [];
@@ -48,6 +48,12 @@ class _ChipListState extends State<ChipList> {
             children: groupMuscleList.map((group) {
               return FilterChip(
                   label: Text(group),
+                  backgroundColor: const Color(0xFF212429),
+                  selectedColor: const Color(0xFF617AFA),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(22.0)),
+                  checkmarkColor: Colors.white,
+                  labelStyle: const TextStyle(color: Colors.white),
                   selected: filter.contains(group),
                   onSelected: (bool selected) {
                     setState(() {
