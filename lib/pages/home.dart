@@ -4,6 +4,7 @@ import 'package:gym_log/components/button.dart';
 import 'package:gym_log/pages/workout.dart';
 import 'package:gym_log/components/carousel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:sizer/sizer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,11 +16,10 @@ class HomePage extends StatefulWidget {
 class ExerciseModel {
   final int id;
   final String name;
-  final int countSeries; // number of sets
-  final int countRepetition; // number of repetitions
-  final double? weight; // weight used (can be null)
-  final int workoutId; // foreign key to WorkoutModel
-
+  final int countSeries;
+  final int countRepetition;
+  final double? weight;
+  final int workoutId;
   ExerciseModel({
     required this.id,
     required this.name,
@@ -213,48 +213,53 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFF1C1C21),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: Column(
-            children: [
-              workoutList.isEmpty
-                  ? _buildEmptyTrainingSection()
-                  : CarouselSlider(
-                      items: workoutList
-                          .map((workout) => _buildWorkoutCard(workout))
-                          .toList(),
-                      options: CarouselOptions(
-                        height: 450.0,
-                        viewportFraction: 0.7,
-                        enableInfiniteScroll: true,
-                        autoPlay: false,
-                        autoPlayInterval: const Duration(seconds: 3),
-                        autoPlayAnimationDuration:
-                            const Duration(milliseconds: 800),
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        enlargeCenterPage: true,
-                        enlargeFactor: 0.3,
+    return Sizer(builder: (context, orientation, screenType) {
+      return Scaffold(
+        backgroundColor: const Color(0xFF1C1C21),
+        body: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 0.h),
+            child: Column(
+              children: [
+                workoutList.isEmpty
+                    ? _buildEmptyTrainingSection()
+                    : Expanded(
+                        child: CarouselSlider(
+                          items: workoutList
+                              .map((workout) => _buildWorkoutCard(workout))
+                              .toList(),
+                          options: CarouselOptions(
+                            height: 100.h,
+                            viewportFraction: 0.7,
+                            enableInfiniteScroll: true,
+                            autoPlay: false,
+                            autoPlayInterval: const Duration(seconds: 3),
+                            autoPlayAnimationDuration:
+                                const Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+                            enlargeFactor: 0.3,
+                          ),
+                        ),
                       ),
-                    ),
-              Button(
-                label: 'COMEÇAR',
-                bgColor: 0xFF617AFA,
-                textColor: 0xFFFFFFFF,
-                borderColor: 0xFF617AFA,
-                width: 100,
-                height: 50,
-                icon: Icons.play_arrow,
-                iconSize: 35,
-                onPressed: () => navigateToWorkout(context),
-              ),
-            ],
+                Button(
+                  label: 'COMEÇAR',
+                  bgColor: 0xFF617AFA,
+                  textColor: 0xFFFFFFFF,
+                  borderColor: 0xFF617AFA,
+                  width: 70.w,
+                  height: 5.h,
+                  icon: Icons.play_arrow,
+                  iconSize: 35.sp,
+                  onPressed: () => navigateToWorkout(context),
+                ),
+                SizedBox(height: 10.h),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildEmptyTrainingSection() {
@@ -265,7 +270,7 @@ class _HomePageState extends State<HomePage> {
           'Crie novos treinos para começar a gerenciar',
           textAlign: TextAlign.center,
           style: GoogleFonts.plusJakartaSans(
-            fontSize: 15.0,
+            fontSize: 15.sp,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -277,16 +282,16 @@ class _HomePageState extends State<HomePage> {
         ),
         const Spacer(flex: 2),
         Padding(
-          padding: const EdgeInsets.only(bottom: 70.0),
+          padding: EdgeInsets.only(bottom: 5.h),
           child: Button(
             label: 'Criar ',
             bgColor: 0xFF617AFA,
             textColor: 0xFFFFFFFF,
             borderColor: 0xFF617AFA,
-            width: 100,
-            height: 50,
+            width: 70.w,
+            height: 5.h,
             icon: Icons.add,
-            iconSize: 35,
+            iconSize: 35.sp,
             onPressed: () => navigateToWorkout(context),
           ),
         ),
@@ -297,7 +302,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildWorkoutCard(WorkoutModel workout) {
     return Column(
       children: [
-        const SizedBox(height: 9.0),
+        const SizedBox(height: 30.0),
         Text(
           workout.name,
           style: const TextStyle(
@@ -308,11 +313,11 @@ class _HomePageState extends State<HomePage> {
           textAlign: TextAlign.center,
           softWrap: true,
         ),
-        const SizedBox(height: 5.0),
+        const SizedBox(height: 15.0),
         Card(
           color: const Color(0x617AF),
           child: Padding(
-            padding: const EdgeInsets.all(25.0),
+            padding: const EdgeInsets.all(30.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -337,7 +342,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20.0),
+                const SizedBox(height: 30.0),
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: workout.exercises.length,
@@ -354,7 +359,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8.0),
+                        const SizedBox(width: 18.0),
                         Text(
                           '${workout.getSeriesRepsString().split(',')[index]}',
                           style: GoogleFonts.plusJakartaSans(
