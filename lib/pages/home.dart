@@ -202,6 +202,7 @@ class _HomePageState extends State<HomePage> {
               workoutId: 3),
         ]),
   ];
+
   void navigateToWorkout(BuildContext context) {
     Navigator.push(
       context,
@@ -218,42 +219,42 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: const Color(0xFF1C1C21),
         body: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 0.h),
+            padding: EdgeInsets.symmetric(horizontal: 0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 workoutList.isEmpty
                     ? _buildEmptyTrainingSection()
-                    : Expanded(
-                        child: CarouselSlider(
-                          items: workoutList
-                              .map((workout) => _buildWorkoutCard(workout))
-                              .toList(),
-                          options: CarouselOptions(
-                            height: 100.h,
-                            viewportFraction: 0.7,
-                            enableInfiniteScroll: true,
-                            autoPlay: false,
-                            autoPlayInterval: const Duration(seconds: 3),
-                            autoPlayAnimationDuration:
-                                const Duration(milliseconds: 800),
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            enlargeCenterPage: true,
-                            enlargeFactor: 0.3,
-                          ),
+                    : CarouselSlider(
+                        items: workoutList
+                            .map((workout) => _buildWorkoutCard(workout))
+                            .toList(),
+                        options: CarouselOptions(
+                          height: 70.h,
+                          viewportFraction: 0.7,
+                          enableInfiniteScroll: true,
+                          autoPlay: false,
+                          autoPlayInterval: const Duration(seconds: 3),
+                          autoPlayAnimationDuration:
+                              const Duration(milliseconds: 800),
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enlargeCenterPage: true,
+                          enlargeFactor: 0.4,
                         ),
                       ),
                 Button(
-                  label: 'COMEÇAR',
-                  bgColor: 0xFF617AFA,
+                  label: 'Começar',
+                  bgColor: 0xFF212429,
                   textColor: 0xFFFFFFFF,
-                  borderColor: 0xFF617AFA,
-                  width: 70.w,
-                  height: 5.h,
-                  icon: Icons.play_arrow,
-                  iconSize: 35.sp,
-                  onPressed: () => navigateToWorkout(context),
+                  borderColor: 0xFF4F5461,
+                  width: 268,
+                  height: 68,
+                  icon: Icons.play_arrow_rounded,
+                  iconSize: 25.0.sp,
+                  onPressed: () {
+                    navigateToWorkout(context);
+                  },
                 ),
-                SizedBox(height: 10.h),
               ],
             ),
           ),
@@ -262,62 +263,84 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Widget _buildEmptyTrainingSection() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Crie novos treinos para começar a gerenciar',
-          textAlign: TextAlign.center,
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: 15.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+  _buildEmptyTrainingSection() {
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(5.h),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Color(0xFF1E1E2F), // Cor de fundo do card
+              borderRadius: BorderRadius.circular(15), // Bordas arredondadas
+              border: Border.all(
+                color: Colors.white, // Cor da borda
+                width: 2.0, // Largura da borda
+              ),
+            ),
+            padding: EdgeInsets.all(16.0), // Espaçamento interno
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Crie novos treinos para começar a gerenciar',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 10.h), // Espaço entre o texto e a imagem
+                Image.asset(
+                  'assets/images/treinos.png',
+                  alignment: Alignment.center,
+                ),
+                SizedBox(height: 10.h), // Espaço entre a imagem e o botão
+                Padding(
+                  padding: EdgeInsets.only(bottom: 15.h),
+                  child: Button(
+                    label: 'Criar ',
+                    bgColor: 0xFF617AFA,
+                    textColor: 0xFFFFFFFF,
+                    borderColor: 0xFF617AFA,
+                    width: 70.w,
+                    height: 5.h,
+                    icon: Icons.add,
+                    iconSize: 35.sp,
+                    onPressed: () => navigateToWorkout(context),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        const Spacer(flex: 2),
-        Image.asset(
-          'assets/images/treinos.png',
-          alignment: Alignment.center,
-        ),
-        const Spacer(flex: 2),
-        Padding(
-          padding: EdgeInsets.only(bottom: 5.h),
-          child: Button(
-            label: 'Criar ',
-            bgColor: 0xFF617AFA,
-            textColor: 0xFFFFFFFF,
-            borderColor: 0xFF617AFA,
-            width: 70.w,
-            height: 5.h,
-            icon: Icons.add,
-            iconSize: 35.sp,
-            onPressed: () => navigateToWorkout(context),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _buildWorkoutCard(WorkoutModel workout) {
     return Column(
       children: [
-        const SizedBox(height: 30.0),
         Text(
           workout.name,
           style: const TextStyle(
-            fontSize: 20.0,
+            fontSize: 25.0,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
           textAlign: TextAlign.center,
           softWrap: true,
         ),
-        const SizedBox(height: 15.0),
+        const SizedBox(height: 5.0),
+        Divider(
+          color: Colors.white,
+          thickness: 1.0,
+        ),
         Card(
           color: const Color(0x617AF),
           child: Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -332,6 +355,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     const Spacer(),
+                    VerticalDivider(
+                      color: Colors.white,
+                      thickness: 1.0,
+                      width: 20,
+                    ),
                     Text(
                       'Séries',
                       style: const TextStyle(
@@ -342,7 +370,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 30.0),
+                const SizedBox(height: 20.0),
                 ListView.builder(
                   shrinkWrap: true,
                   itemCount: workout.exercises.length,
@@ -359,7 +387,6 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 18.0),
                         Text(
                           '${workout.getSeriesRepsString().split(',')[index]}',
                           style: GoogleFonts.plusJakartaSans(
