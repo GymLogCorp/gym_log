@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
 import 'package:gym_log/pages/workout.dart';
-import 'package:gym_log/components/carousel.dart';
+//import 'package:gym_log/pages/home/carousel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -166,6 +166,41 @@ class _HomePageState extends State<HomePage> {
               weight: null,
               workoutId: 3),
           ExerciseModel(
+              id: 13,
+              name: 'Agachamento Hack',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 13,
+              name: 'Agachamento Hack',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 13,
+              name: 'Agachamento Hack',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 13,
+              name: 'Agachamento Hack',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 13,
+              name: 'Agachamento Hack',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
               id: 14,
               name: 'LegPress 45°',
               countSeries: 3,
@@ -230,7 +265,7 @@ class _HomePageState extends State<HomePage> {
                             .map((workout) => _buildWorkoutCard(workout))
                             .toList(),
                         options: CarouselOptions(
-                          height: 70.h,
+                          height: 85.h,
                           viewportFraction: 0.7,
                           enableInfiniteScroll: true,
                           autoPlay: false,
@@ -333,14 +368,10 @@ class _HomePageState extends State<HomePage> {
           softWrap: true,
         ),
         const SizedBox(height: 5.0),
-        Divider(
-          color: Colors.white,
-          thickness: 1.0,
-        ),
         Card(
           color: const Color(0x617AF),
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -355,11 +386,6 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     const Spacer(),
-                    VerticalDivider(
-                      color: Colors.white,
-                      thickness: 1.0,
-                      width: 20,
-                    ),
                     Text(
                       'Séries',
                       style: const TextStyle(
@@ -370,34 +396,48 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20.0),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: workout.exercises.length,
-                  itemBuilder: (context, index) {
-                    final exercise = workout.exercises[index];
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            exercise.name,
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 18.0,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          '${workout.getSeriesRepsString().split(',')[index]}',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 18.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                const Divider(
+                  color: Colors.white,
+                  thickness: 1.0,
                 ),
+                const SizedBox(height: 5.0),
+                SizedBox(
+                  height: 290.0, // Ajuste a altura conforme necessário
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: workout.exercises.length,
+                    itemBuilder: (context, index) {
+                      final exercise = workout.exercises[index];
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  exercise.name,
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 18.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                '${workout.getSeriesRepsString().split(',')[index]}',
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10.0,
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                )
               ],
             ),
           ),
