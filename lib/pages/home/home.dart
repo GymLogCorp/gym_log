@@ -278,14 +278,14 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                 Button(
-                  label: 'Começar',
-                  bgColor: 0xFF212429,
+                  label: 'COMEÇAR',
+                  bgColor: workoutList.isEmpty ? (0xFF212429) : (0xFF617AFA),
                   textColor: 0xFFFFFFFF,
-                  borderColor: 0xFF4F5461,
+                  borderColor: workoutList.isEmpty ? 0xFF4F5461 : (0xFF617AFA),
                   width: 268,
                   height: 68,
                   icon: Icons.play_arrow_rounded,
-                  iconSize: 25.0.sp,
+                  iconSize: 30.0.sp,
                   onPressed: () {
                     navigateToWorkout(context);
                   },
@@ -369,23 +369,26 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 5.0),
         Card(
-          color: const Color(0x617AF),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40.0),
+              side: const BorderSide(color: Color(0xFF464A56), width: 3.0)),
+          color: const Color(0xFF212429),
           child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                      'Exercícios:',
+                      'Exercícios',
                       style: const TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
-                    const Spacer(),
                     Text(
                       'Séries',
                       style: const TextStyle(
@@ -398,7 +401,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const Divider(
                   color: Colors.white,
-                  thickness: 1.0,
+                  thickness: 2.0,
                 ),
                 const SizedBox(height: 5.0),
                 SizedBox(

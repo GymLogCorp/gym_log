@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gym_log/pages/home/home.dart';
+import 'package:sizer/sizer.dart';
 
 class Button extends StatelessWidget {
   final String label;
@@ -57,7 +59,7 @@ class Button extends StatelessWidget {
             Text(
               label,
               style: GoogleFonts.plusJakartaSans(
-                fontSize: 22.0,
+                fontSize: 22.0.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
                 shadows: const [
