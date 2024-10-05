@@ -265,16 +265,15 @@ class _HomePageState extends State<HomePage> {
                             .map((workout) => _buildWorkoutCard(workout))
                             .toList(),
                         options: CarouselOptions(
-                          height: 85.h,
-                          viewportFraction: 0.7,
+                          height: 80.h,
+                          viewportFraction: 0.8,
                           enableInfiniteScroll: true,
                           autoPlay: false,
                           autoPlayInterval: const Duration(seconds: 3),
                           autoPlayAnimationDuration:
                               const Duration(milliseconds: 800),
                           autoPlayCurve: Curves.fastOutSlowIn,
-                          enlargeCenterPage: true,
-                          enlargeFactor: 0.4,
+                          enlargeCenterPage: false,
                         ),
                       ),
                 Button(
@@ -405,7 +404,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 5.0),
                 SizedBox(
-                  height: 290.0, // Ajuste a altura conforme necessário
+                  height: 240.0,
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: workout.exercises.length,
@@ -434,7 +433,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                           const SizedBox(
-                            height: 10.0,
+                            height: 5.0,
                           ),
                         ],
                       );

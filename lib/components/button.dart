@@ -59,7 +59,7 @@ class Button extends StatelessWidget {
             Text(
               label,
               style: GoogleFonts.plusJakartaSans(
-                fontSize: 22.0.sp,
+                fontSize: 22.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
                 shadows: const [
