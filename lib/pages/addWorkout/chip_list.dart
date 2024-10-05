@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sizer/sizer.dart';
 
 class ChipList extends StatefulWidget {
   const ChipList({super.key});
@@ -23,49 +24,53 @@ class _ChipListState extends State<ChipList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 30.0),
-              child: Text(
-                'Grupos',
-                style: GoogleFonts.plusJakartaSans(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold),
-              ),
-            )
-          ],
-        ),
-        const SizedBox(
-          height: 10.0,
-        ),
-        Wrap(
-            spacing: 5.0,
-            children: groupMuscleList.map((group) {
-              return FilterChip(
-                  label: Text(group),
-                  backgroundColor: const Color(0xFF212429),
-                  selectedColor: const Color(0xFF617AFA),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(22.0)),
-                  checkmarkColor: Colors.white,
-                  labelStyle: const TextStyle(color: Colors.white),
-                  selected: filter.contains(group),
-                  onSelected: (bool selected) {
-                    setState(() {
-                      if (selected) {
-                        filter.add(group);
-                      } else {
-                        filter.remove(group);
-                      }
+    return SizedBox(
+      width: 90.0.w,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Text(
+                  'Grupos',
+                  style: GoogleFonts.plusJakartaSans(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          Wrap(
+              spacing: 10.0,
+              alignment: WrapAlignment.start,
+              children: groupMuscleList.map((group) {
+                return FilterChip(
+                    label: Text(group),
+                    backgroundColor: const Color(0xFF212429),
+                    selectedColor: const Color(0xFF617AFA),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22.0)),
+                    checkmarkColor: Colors.white,
+                    labelStyle: const TextStyle(color: Colors.white),
+                    selected: filter.contains(group),
+                    onSelected: (bool selected) {
+                      setState(() {
+                        if (selected) {
+                          filter.add(group);
+                        } else {
+                          filter.remove(group);
+                        }
+                      });
                     });
-                  });
-            }).toList())
-      ],
+              }).toList())
+        ],
+      ),
     );
   }
 }
