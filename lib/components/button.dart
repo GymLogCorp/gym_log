@@ -8,6 +8,8 @@ class Button extends StatelessWidget {
   final int borderColor;
   final bool isLoading;
   final VoidCallback onPressedProps;
+  final IconData? icon;
+  final double? iconSize;
   const Button(
       {super.key,
       this.label = '',
@@ -15,6 +17,8 @@ class Button extends StatelessWidget {
       this.textColor = 0,
       this.borderColor = 0,
       this.isLoading = false,
+      this.icon,
+      this.iconSize,
       required this.onPressedProps});
 
   @override

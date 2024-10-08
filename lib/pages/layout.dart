@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/pages/historic.dart';
 import 'package:gym_log/pages/home.dart';
 import 'package:gym_log/pages/welcome.dart';
-import 'package:gym_log/pages/workout.dart';
+import 'package:gym_log/pages/workout/workout.dart';
 import 'package:gym_log/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
