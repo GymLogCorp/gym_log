@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> {
               workoutId: 3),
           ExerciseModel(
               id: 13,
-              name: 'Agachamento Hack',
+              name: 'Agachamento Búlgaro',
               countSeries: 3,
               countRepetition: 12,
               weight: null,
@@ -195,7 +195,7 @@ class _HomePageState extends State<HomePage> {
               workoutId: 3),
           ExerciseModel(
               id: 13,
-              name: 'Agachamento Hack',
+              name: 'cccccccccccccccccccccccccccccc',
               countSeries: 3,
               countRepetition: 12,
               weight: null,
@@ -382,18 +382,21 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       'Exercícios',
-                      style: const TextStyle(
-                        fontSize: 16.0,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 18.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
-                    Text(
-                      'Séries',
-                      style: const TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    Padding(
+                      padding: EdgeInsets.only(left: 30.0),
+                      child: Text(
+                        'Séries',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],
@@ -404,7 +407,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 5.0),
                 SizedBox(
-                  height: 240.0,
+                  height: 50.0.h,
                   child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: workout.exercises.length,
@@ -412,25 +415,30 @@ class _HomePageState extends State<HomePage> {
                       final exercise = workout.exercises[index];
                       return Column(
                         children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  exercise.name,
+                          Padding(
+                            padding: EdgeInsets.only(right: 20.0, left: 6.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    exercise.name,
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '${workout.getSeriesRepsString().split(',')[index]}',
                                   style: GoogleFonts.plusJakartaSans(
                                     fontSize: 18.0,
+                                    fontWeight: FontWeight.w500,
                                     color: Colors.white,
                                   ),
                                 ),
-                              ),
-                              Text(
-                                '${workout.getSeriesRepsString().split(',')[index]}',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           const SizedBox(
                             height: 5.0,
