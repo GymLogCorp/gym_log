@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/input.dart';
 import 'package:gym_log/pages/addWorkout/chip_list.dart';
-import 'package:gym_log/pages/addWorkout/exercise_list.dart';
+import 'package:gym_log/pages/addWorkout/exercise_table.dart';
+import 'package:gym_log/pages/home.dart';
+import 'package:gym_log/pages/layout.dart';
 import 'package:sizer/sizer.dart';
 
 class AddWorkout extends StatefulWidget {
@@ -40,11 +42,18 @@ class _AddWorkoutState extends State<AddWorkout> {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               color: Colors.white,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Layout()),
+                  );
+                },
                 icon: const Icon(
                   Icons.check,
                   color: Color(0xFF617AFA),
@@ -88,7 +97,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                       const SizedBox(
                         height: 10.0,
                       ),
-                      const ExerciseListWidget()
+                      const ExerciseTableWidget()
                     ],
                   ),
                 )
