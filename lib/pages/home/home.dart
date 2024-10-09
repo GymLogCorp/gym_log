@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
@@ -237,9 +239,9 @@ class _HomePageState extends State<HomePage> {
               workoutId: 3),
         ]),
   ];
-
+  int _currentWorkoutId = 1;
   void navigateToWorkout(BuildContext context) {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => const WorkoutPage(),
@@ -281,7 +283,7 @@ class _HomePageState extends State<HomePage> {
                   bgColor: workoutList.isEmpty ? (0xFF212429) : (0xFF617AFA),
                   textColor: 0xFFFFFFFF,
                   borderColor: workoutList.isEmpty ? 0xFF4F5461 : (0xFF617AFA),
-                  width: 268,
+                  width: 200,
                   height: 68,
                   icon: Icons.play_arrow_rounded,
                   iconSize: 30.0.sp,
@@ -298,58 +300,61 @@ class _HomePageState extends State<HomePage> {
   }
 
   _buildEmptyTrainingSection() {
-    return SingleChildScrollView(
-      padding: EdgeInsets.all(5.h),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Color(0xFF1E1E2F), // Cor de fundo do card
-              borderRadius: BorderRadius.circular(15), // Bordas arredondadas
-              border: Border.all(
-                color: Colors.white, // Cor da borda
-                width: 2.0, // Largura da borda
+    return Column(
+      children: [
+        SizedBox(
+          height: 70.0.h,
+          child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40.0),
+                side: const BorderSide(color: Color(0xFF464A56), width: 3.0)),
+            color: const Color(0xFF212429),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10.0, left: 10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        'Crie novos treinos para começar a gerenciar',
+                        style: const TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        maxLines: 1,
+                      ),
+                      const SizedBox(height: 25.0),
+                      Image.asset('assets/images/treinos.png'),
+                      const SizedBox(height: 25.0),
+                      Button(
+                        label: 'CRIAR',
+                        bgColor: (0xFF617AFA),
+                        textColor: 0xFFFFFFFF,
+                        borderColor: (0xFF617AFA),
+                        width: 150,
+                        height: 68,
+                        icon: Icons.add,
+                        iconSize: 30.0,
+                        onPressed: () {
+                          navigateToWorkout(context);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            padding: EdgeInsets.all(16.0), // Espaçamento interno
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Crie novos treinos para começar a gerenciar',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 10.h), // Espaço entre o texto e a imagem
-                Image.asset(
-                  'assets/images/treinos.png',
-                  alignment: Alignment.center,
-                ),
-                SizedBox(height: 10.h), // Espaço entre a imagem e o botão
-                Padding(
-                  padding: EdgeInsets.only(bottom: 15.h),
-                  child: Button(
-                    label: 'Criar ',
-                    bgColor: 0xFF617AFA,
-                    textColor: 0xFFFFFFFF,
-                    borderColor: 0xFF617AFA,
-                    width: 70.w,
-                    height: 5.h,
-                    icon: Icons.add,
-                    iconSize: 35.sp,
-                    onPressed: () => navigateToWorkout(context),
-                  ),
-                ),
-              ],
-            ),
           ),
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 10.0,
+        ),
+      ],
     );
   }
 
