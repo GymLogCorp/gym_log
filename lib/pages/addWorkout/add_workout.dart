@@ -17,7 +17,6 @@ class AddWorkout extends StatefulWidget {
 class _AddWorkoutState extends State<AddWorkout> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _workoutNameController = TextEditingController();
-
   String? _validateWorkoutName(String? value) {
     if (value == null || value.isEmpty) {
       return 'A nome é obrigatório';

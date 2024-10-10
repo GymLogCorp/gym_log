@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/models/exercise.dart';
+import 'package:gym_log/pages/addWorkout/addExercise/add_exercise.dart';
 import 'package:sizer/sizer.dart';
 
 class ExerciseTableWidget extends StatefulWidget {
@@ -41,36 +42,6 @@ class _ExerciseTableWidgetState extends State<ExerciseTableWidget> {
       name: 'Tríceps Frânces na Polia',
       countSeries: 3,
       countRepetition: 12,
-    ),
-    ExerciseModel(
-      id: 5,
-      name: 'Tríceps Frânces na Polia',
-      countSeries: 3,
-      countRepetition: 12,
-    ),
-    ExerciseModel(
-      id: 5,
-      name: 'Tríceps Frânces na Polia',
-      countSeries: 3,
-      countRepetition: 12,
-    ),
-    ExerciseModel(
-      id: 5,
-      name: 'Tríceps Frânces na Polia',
-      countSeries: 3,
-      countRepetition: 12,
-    ),
-    ExerciseModel(
-      id: 5,
-      name: 'Tríceps Frânces na Polia',
-      countSeries: 3,
-      countRepetition: 12,
-    ),
-    ExerciseModel(
-      id: 5,
-      name: 'Tríceps Frânces na Polia',
-      countSeries: 3,
-      countRepetition: 12,
     )
   ];
   @override
@@ -96,7 +67,11 @@ class _ExerciseTableWidgetState extends State<ExerciseTableWidget> {
                 height: 24,
                 alignment: Alignment.center,
                 child: IconButton(
-                  onPressed: () => {},
+                  onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) => const Dialog(
+                            child: AddExerciseModal(),
+                          )),
                   icon: const Icon(
                     Icons.add_circle,
                     color: Color(0xFF617AFA),
