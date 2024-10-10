@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
@@ -239,7 +237,7 @@ class _HomePageState extends State<HomePage> {
               workoutId: 3),
         ]),
   ];
-  int _currentWorkoutId = 1;
+  // int _currentWorkoutId = 1;
   void navigateToWorkout(BuildContext context) {
     Navigator.pushReplacement(
       context,
@@ -287,7 +285,10 @@ class _HomePageState extends State<HomePage> {
                   height: 68,
                   icon: Icons.play_arrow_rounded,
                   iconSize: 30.0.sp,
+                  enable:
+                      workoutList.isNotEmpty, 
                   onPressed: () {
+                    print("abacaxi");
                     navigateToWorkout(context);
                   },
                 ),

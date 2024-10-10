@@ -9,11 +9,12 @@ class Button extends StatelessWidget {
   final int textColor;
   final int borderColor;
   final bool isLoading;
-  final VoidCallback onPressed; // Função de callback para a ação do botão
+  final VoidCallback? onPressed;
   final double? width;
   final double? height;
   final IconData? icon;
   final double? iconSize;
+  final bool? enable; // controla se o botão está habilitado
 
   const Button({
     super.key,
@@ -27,6 +28,7 @@ class Button extends StatelessWidget {
     this.height,
     this.icon,
     this.iconSize,
+    this.enable = true,
   });
 
   @override
@@ -51,7 +53,7 @@ class Button extends StatelessWidget {
           ),
           minimumSize: Size(width ?? double.infinity, height ?? 0.0),
         ),
-        onPressed: onPressed, // Executa a função quando o botão é pressionado
+        onPressed: enable! ? onPressed : null,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
