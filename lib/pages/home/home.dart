@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
-import 'package:gym_log/pages/workout.dart';
+import 'package:gym_log/pages/home/not_workout_card.dart';
+import 'package:gym_log/pages/home/workout_card.dart';
+import 'package:gym_log/pages/session.dart';
 //import 'package:gym_log/pages/home/carousel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:sizer/sizer.dart';
@@ -239,16 +241,6 @@ class _HomePageState extends State<HomePage> {
   ];
   int _currentWorkoutId = 1;
 
-  void navigateToWorkout(BuildContext context, int workoutId) {
-    print('Iniciando o treino com ID: $workoutId');
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => WorkoutPage(workoutId: workoutId),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, screenType) {
@@ -256,15 +248,15 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: const Color(0xFF1C1C21),
         body: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 0),
+            padding: const EdgeInsets.symmetric(horizontal: 0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 workoutList.isEmpty
-                    ? _buildEmptyTrainingSection()
+                    ? const NotWorkoutCard()
                     : CarouselSlider(
                         items: workoutList
-                            .map((workout) => _buildWorkoutCard(workout))
+                            .map((workout) => WorkoutCard(workout: workout))
                             .toList(),
                         options: CarouselOptions(
                           height: 80.h,
@@ -285,17 +277,21 @@ class _HomePageState extends State<HomePage> {
                       ),
                 Button(
                   label: 'COMEÇAR',
-                  bgColor: workoutList.isEmpty ? (0xFF212429) : (0xFF617AFA),
+                  bgColor: workoutList.isEmpty ? 0xFF38383D : 0xFF617AFA,
                   textColor: 0xFFFFFFFF,
-                  borderColor: workoutList.isEmpty ? 0xFF4F5461 : (0xFF617AFA),
-                  width: 200,
+                  borderColor: workoutList.isEmpty ? 0xFF38383D : 0xFF617AFA,
+                  width: 250,
                   height: 68,
                   icon: Icons.play_arrow_rounded,
                   iconSize: 30.0.sp,
-                  enable: workoutList.isNotEmpty,
                   onPressed: () {
-                    //print("abacaxi");
-                    navigateToWorkout(context, _currentWorkoutId);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SessionPage(workoutId: _currentWorkoutId),
+                      ),
+                    );
                   },
                 ),
               ],
@@ -304,167 +300,5 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     });
-  }
-
-  _buildEmptyTrainingSection() {
-    return Column(
-      children: [
-        SizedBox(
-          height: 70.0.h,
-          child: Card(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(40.0),
-                side: const BorderSide(color: Color(0xFF464A56), width: 3.0)),
-            color: const Color(0xFF212429),
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10.0, left: 10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        'Crie novos treinos para começar a gerenciar',
-                        style: const TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                        softWrap: true,
-                        maxLines: 1,
-                      ),
-                      const SizedBox(height: 25.0),
-                      Image.asset('assets/images/treinos.png'),
-                      const SizedBox(height: 25.0),
-                      Button(
-                        label: 'CRIAR',
-                        bgColor: (0xFF617AFA),
-                        textColor: 0xFFFFFFFF,
-                        borderColor: (0xFF617AFA),
-                        width: 150,
-                        height: 68,
-                        icon: Icons.add,
-                        iconSize: 30.0,
-                        onPressed: () {
-                          //navigateToWorkout(context);
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 10.0,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildWorkoutCard(WorkoutModel workout) {
-    return Column(
-      children: [
-        Text(
-          workout.name,
-          style: const TextStyle(
-            fontSize: 25.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-          textAlign: TextAlign.center,
-          softWrap: true,
-        ),
-        const SizedBox(height: 5.0),
-        Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(40.0),
-              side: const BorderSide(color: Color(0xFF464A56), width: 3.0)),
-          color: const Color(0xFF212429),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      'Exercícios',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 30.0),
-                      child: Text(
-                        'Séries',
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const Divider(
-                  color: Colors.white,
-                  thickness: 2.0,
-                ),
-                const SizedBox(height: 5.0),
-                SizedBox(
-                  height: 50.0.h,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: workout.exercises.length,
-                    itemBuilder: (context, index) {
-                      final exercise = workout.exercises[index];
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 20.0, left: 6.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    exercise.name,
-                                    style: GoogleFonts.plusJakartaSans(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  '${workout.getSeriesRepsString().split(',')[index]}',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5.0,
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
   }
 }
