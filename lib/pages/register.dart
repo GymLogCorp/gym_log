@@ -178,7 +178,9 @@ class _RegisterState extends State<Register> {
                           bgColor: 0xFF617AFA,
                           textColor: 0xFFFFFFFF,
                           borderColor: 0xFF617AFA,
-                          onPressedProps: () {
+                          width: 100,
+                          height: 100,
+                          onPressed: () {
                             register();
                           },
                           isLoading: loading, // envia essa bomba
