@@ -237,12 +237,14 @@ class _HomePageState extends State<HomePage> {
               workoutId: 3),
         ]),
   ];
-  // int _currentWorkoutId = 1;
-  void navigateToWorkout(BuildContext context) {
+  int _currentWorkoutId = 1;
+
+  void navigateToWorkout(BuildContext context, int workoutId) {
+    print('Iniciando o treino com ID: $workoutId');
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => const WorkoutPage(),
+        builder: (context) => WorkoutPage(workoutId: workoutId),
       ),
     );
   }
@@ -274,6 +276,11 @@ class _HomePageState extends State<HomePage> {
                               const Duration(milliseconds: 800),
                           autoPlayCurve: Curves.fastOutSlowIn,
                           enlargeCenterPage: false,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              _currentWorkoutId = workoutList[index].id;
+                            });
+                          },
                         ),
                       ),
                 Button(
@@ -285,11 +292,10 @@ class _HomePageState extends State<HomePage> {
                   height: 68,
                   icon: Icons.play_arrow_rounded,
                   iconSize: 30.0.sp,
-                  enable:
-                      workoutList.isNotEmpty, 
+                  enable: workoutList.isNotEmpty,
                   onPressed: () {
-                    print("abacaxi");
-                    navigateToWorkout(context);
+                    //print("abacaxi");
+                    navigateToWorkout(context, _currentWorkoutId);
                   },
                 ),
               ],
@@ -342,7 +348,7 @@ class _HomePageState extends State<HomePage> {
                         icon: Icons.add,
                         iconSize: 30.0,
                         onPressed: () {
-                          navigateToWorkout(context);
+                          //navigateToWorkout(context);
                         },
                       ),
                     ],

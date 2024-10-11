@@ -29,7 +29,7 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
   int _currentIndex = 1; // Posição inicial no BottomNavigationBar
 
   final List _pages = [
-    const WorkoutPage(),
+    const WorkoutPage(workoutId: 1),
     const HomePage(),
     const HistoricPage()
   ];
