@@ -66,7 +66,7 @@ class WorkoutCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 5.0),
                   SizedBox(
-                    height: 55.0.h,
+                    height: 52.0.h,
                     child: ListView.builder(
                       shrinkWrap: true,
                       itemCount: workout.exercises.length,
