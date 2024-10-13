@@ -126,14 +126,14 @@ class _LoginState extends State<Login> {
                     child: Column(
                       children: [
                         CustomTextFormField(
-                          hintText: 'Digite seu email',
+                          placeholder: 'Digite seu email',
                           title: 'Email',
                           obscureText: false,
                           controller: _emailController,
                           validator: _validateEmail,
                         ),
                         CustomTextFormField(
-                          hintText: 'Digite sua senha',
+                          placeholder: 'Digite sua senha',
                           title: 'Senha',
                           obscureText: true,
                           controller: _passwordController,

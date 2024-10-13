@@ -83,7 +83,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomTextFormField(
-                        hintText: 'insira um nome para o treino',
+                        placeholder: 'insira um nome para o treino',
                         title: 'Nome',
                         obscureText: false,
                         controller: _workoutNameController,

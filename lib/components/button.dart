@@ -8,6 +8,8 @@ class Button extends StatelessWidget {
   final int borderColor;
   final bool isLoading;
   final VoidCallback onPressedProps;
+  final double width;
+  final double height;
   const Button(
       {super.key,
       this.label = '',
@@ -15,6 +17,8 @@ class Button extends StatelessWidget {
       this.textColor = 0,
       this.borderColor = 0,
       this.isLoading = false,
+      this.width = 268.0,
+      this.height = 56.0,
       required this.onPressedProps});
 
   @override
@@ -32,7 +36,7 @@ class Button extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             side: BorderSide(color: Color(borderColor), width: 2),
-            minimumSize: const Size(268, 56),
+            fixedSize: Size(width, height),
             backgroundColor: Color(bgColor),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0))),
