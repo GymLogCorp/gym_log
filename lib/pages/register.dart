@@ -142,7 +142,7 @@ class _RegisterState extends State<Register> {
                     child: Column(
                       children: [
                         CustomTextFormField(
-                          hintText: 'Insira seu nome completo',
+                          placeholder: 'Insira seu nome completo',
                           title: 'Nome Completo',
                           controller: _nameController,
                           validator: (value) {
@@ -153,20 +153,20 @@ class _RegisterState extends State<Register> {
                           },
                         ),
                         CustomTextFormField(
-                          hintText: 'Insira seu email',
+                          placeholder: 'Insira seu email',
                           title: 'Email',
                           controller: _emailController,
                           validator: _validateEmail, // validacao email
                         ),
                         CustomTextFormField(
-                          hintText: 'Insira sua senha',
+                          placeholder: 'Insira sua senha',
                           title: 'Senha',
                           obscureText: true,
                           controller: _passwordController,
                           validator: _validatePassword, // validacao de senha
                         ),
                         CustomTextFormField(
-                          hintText: 'Confirme sua senha',
+                          placeholder: 'Confirme sua senha',
                           title: 'Confirmar Senha',
                           obscureText: true,
                           controller: _confirmPasswordController,

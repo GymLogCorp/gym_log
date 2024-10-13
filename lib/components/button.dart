@@ -10,8 +10,8 @@ class Button extends StatelessWidget {
   final int borderColor;
   final bool isLoading;
   final VoidCallback? onPressed;
-  final double? width;
-  final double? height;
+  final double width;
+  final double height;
   final IconData? icon;
   final double? iconSize;
   final bool? enable; // controla se o botão está habilitado
@@ -24,8 +24,8 @@ class Button extends StatelessWidget {
     this.borderColor = 0xFF000000, // Preto
     this.isLoading = false,
     required this.onPressed,
-    this.width,
-    this.height,
+    this.width = 268.0,
+    this.height = 56.0,
     this.icon,
     this.iconSize,
     this.enable = true,
@@ -46,41 +46,43 @@ class Button extends StatelessWidget {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          side: BorderSide(color: Color(borderColor), width: 2),
-          backgroundColor: Color(bgColor),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-          minimumSize: Size(width ?? double.infinity, height ?? 0.0),
-        ),
+            side: BorderSide(color: Color(borderColor), width: 2),
+            fixedSize: Size(width, height),
+            backgroundColor: Color(bgColor),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0))),
         onPressed: enable! ? onPressed : null,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              label,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 22.0,
-                fontWeight: FontWeight.bold,
+        child: (isLoading)
+            ? const CircularProgressIndicator(
                 color: Colors.white,
-                shadows: const [
-                  Shadow(
-                    offset: Offset(0, 4),
-                    blurRadius: 4.0,
-                    color: Colors.black,
+              )
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    label,
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      shadows: const [
+                        Shadow(
+                          offset: Offset(0, 4),
+                          blurRadius: 4.0,
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
                   ),
+                  if (icon != null)
+                    Icon(
+                      icon,
+                      color: Colors.white,
+                      size: iconSize,
+                    ), // Exibe o ícone se não for nulo
                 ],
               ),
-            ),
-            if (icon != null)
-              Icon(
-                icon,
-                color: Colors.white,
-                size: iconSize,
-              ), // Exibe o ícone se não for nulo
-          ],
-        ),
       ),
     );
   }
