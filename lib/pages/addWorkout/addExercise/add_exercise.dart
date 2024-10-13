@@ -56,36 +56,36 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.red,
+                      size: 30.0,
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  "Escolha um de nossos exercícios disponíveis ou crie um personalizado.",
+                  style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
               Expanded(
                   child: ListView(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          Icons.close,
-                          color: Colors.red,
-                          size: 30.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      "Escolha um de nossos exercícios disponíveis ou crie um personalizado.",
-                      style: GoogleFonts.plusJakartaSans(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
                   const SizedBox(
                     height: 5.0,
                   ),
@@ -278,7 +278,7 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                 ),
               ),
               Button(
-                onPressedProps: () => {Navigator.pop(context)},
+                onPressed: () => {Navigator.pop(context)},
                 bgColor: 0xFF617AFA,
                 textColor: 0xFFFFFFFF,
                 borderColor: 0xFF617AFA,
