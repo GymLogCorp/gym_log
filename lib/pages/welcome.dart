@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
 import 'package:gym_log/pages/layout.dart';
 // Comentado para n precisar usar a autenticação
-// import 'package:gym_log/pages/login.dart';
-// import 'package:gym_log/pages/register.dart';
+import 'package:gym_log/pages/login.dart';
+import 'package:gym_log/pages/register.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({super.key});
@@ -12,14 +12,14 @@ class Welcome extends StatelessWidget {
   void navigateToLogin(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const Layout()),
+      MaterialPageRoute(builder: (context) => const Login()),
     );
   }
 
   void navigateToRegister(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const Layout()),
+      MaterialPageRoute(builder: (context) => const Register()),
     );
   }
 
