@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
+import 'package:gym_log/pages/addWorkout/add_workout.dart';
 
 class WorkoutPage extends StatefulWidget {
   const WorkoutPage({super.key});
@@ -41,18 +42,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
       name: 'Espanca Perna',
       muscleGroup: 'Quadriceps',
       exercisesCount: 11,
-    ),
-    SimplifiedWorkoutModel(
-      id: 4,
-      name: 'aaaaaa',
-      muscleGroup: 'Posterior',
-      exercisesCount: 11,
-    ),
-    SimplifiedWorkoutModel(
-        id: 5,
-        name: 'mau mau homofobico',
-        muscleGroup: 'Antebraco',
-        exercisesCount: 4),
+    )
   ];
 
   bool editMode =
@@ -127,9 +117,14 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   },
                 ),
         ),
-        SizedBox(height: 70.0),
+        const SizedBox(height: 70.0),
         Button(
-          onPressedProps: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AddWorkout()),
+            );
+          },
           label: 'Adicionar Treino',
           bgColor: 0xFF617AFA,
           textColor: 0xFFFFFFFF,
@@ -245,11 +240,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
   void _editWorkout(SimplifiedWorkoutModel workout) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => EditWorkoutPage(
-          workout: workout,
-        ),
-      ),
+      MaterialPageRoute(builder: (context) => const AddWorkout()),
     );
   }
 }
@@ -257,7 +248,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
 class WorkoutDetailPage extends StatelessWidget {
   final SimplifiedWorkoutModel workout;
 
-  const WorkoutDetailPage({Key? key, required this.workout}) : super(key: key);
+  const WorkoutDetailPage({super.key, required this.workout});
 
   @override
   Widget build(BuildContext context) {

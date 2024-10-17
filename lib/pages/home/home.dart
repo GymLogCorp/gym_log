@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
 import 'package:gym_log/pages/home/not_workout_card.dart';
 import 'package:gym_log/pages/home/workout_card.dart';

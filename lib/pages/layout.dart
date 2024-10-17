@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/pages/addWorkout/add_workout.dart';
 import 'package:gym_log/pages/historic.dart';
 import 'package:gym_log/pages/home/home.dart';
-import 'package:gym_log/pages/workout.dart';
+import 'package:gym_log/pages/workout/workout.dart';
 
 void main() => runApp(const Layout());
 
@@ -54,9 +54,7 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
         leading: IconButton(
           icon: const Icon(Icons.menu),
           color: Colors.white,
-          onPressed: () {
-            navigateToAddWorkout(context);
-          },
+          onPressed: () {},
         ),
         leadingWidth: 36,
         actions: [
