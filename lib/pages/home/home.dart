@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
 import 'package:gym_log/pages/home/not_workout_card.dart';
 import 'package:gym_log/pages/home/workout_card.dart';
-import 'package:gym_log/pages/session.dart';
-//import 'package:gym_log/pages/home/carousel.dart';
+import 'package:gym_log/pages/session/session.dart';
+import 'package:gym_log/pages/session/session.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -259,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                             .map((workout) => WorkoutCard(workout: workout))
                             .toList(),
                         options: CarouselOptions(
-                          height: 80.h,
+                          height: 85.h,
                           viewportFraction: 0.8,
                           enableInfiniteScroll: true,
                           autoPlay: false,
@@ -285,11 +285,15 @@ class _HomePageState extends State<HomePage> {
                   icon: Icons.play_arrow_rounded,
                   iconSize: 30.0.sp,
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    final selectedWorkout = workoutList.firstWhere(
+                      (workout) => workout.id == _currentWorkoutId,
+                    );
+
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            SessionPage(workoutId: _currentWorkoutId),
+                            SessionPage(workout: selectedWorkout),
                       ),
                     );
                   },
