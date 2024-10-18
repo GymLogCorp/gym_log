@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
+import 'package:gym_log/models/exercise.dart';
+import 'package:gym_log/models/workout.dart';
 import 'package:gym_log/pages/home/not_workout_card.dart';
 import 'package:gym_log/pages/home/workout_card.dart';
 import 'package:gym_log/pages/session/session.dart';
@@ -13,45 +15,6 @@ class HomePage extends StatefulWidget {
 
   @override
   State<HomePage> createState() => _HomePageState();
-}
-
-class ExerciseModel {
-  final int id;
-  final String name;
-  final int countSeries;
-  final int countRepetition;
-  final double? weight;
-  final int workoutId;
-  ExerciseModel({
-    required this.id,
-    required this.name,
-    required this.countSeries,
-    required this.countRepetition,
-    this.weight,
-    required this.workoutId,
-  });
-}
-
-class WorkoutModel {
-  final int id;
-  final String name;
-  final String muscleGroup;
-  final int userId;
-  final List<ExerciseModel> exercises;
-
-  WorkoutModel({
-    required this.id,
-    required this.name,
-    required this.muscleGroup,
-    required this.userId,
-    required this.exercises,
-  });
-  String getSeriesRepsString() {
-    return exercises
-        .map(
-            (exercise) => '${exercise.countSeries}x${exercise.countRepetition}')
-        .join(', ');
-  }
 }
 
 class _HomePageState extends State<HomePage> {

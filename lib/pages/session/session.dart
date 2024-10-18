@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gym_log/models/workout.dart';
+import 'package:gym_log/pages/session/seriescard.dart';
 import 'package:sizer/sizer.dart';
-import 'package:gym_log/pages/home/home.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SessionPage extends StatelessWidget {
   final WorkoutModel workout;
@@ -11,23 +13,49 @@ class SessionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, screenType) {
       return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFF1C1C21),
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                workout.name,
-                style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+              padding: const EdgeInsets.only(top: 25.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    color: Colors.white,
+                    iconSize: 36,
+                    onPressed: () {},
+                  ),
+                  Text(
+                    workout.name,
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_circle_right_rounded),
+                    color: const Color(0xFF617AFA),
+                    iconSize: 36,
+                    onPressed: () {},
+                  ),
+                ],
               ),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Table(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.builder(
+                    itemCount: workout.exercises.length,
+                    itemBuilder: (context, index) {
+                      final exercise = workout.exercises[index];
+                      return CardSeries(exercise: exercise);
+                    },
+                  )
+
+                  /*Table(
                   border: TableBorder.all(),
                   columnWidths: const {
                     0: FlexColumnWidth(2),
@@ -35,28 +63,37 @@ class SessionPage extends StatelessWidget {
                     2: FlexColumnWidth(1),
                   },
                   children: [
-                    TableRow(
-                      decoration: BoxDecoration(color: Colors.grey[300]),
-                      children: const [
+                    const TableRow(
+                      decoration: BoxDecoration(color: Color(0xFF212429)),
+                      children: [
                         Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
                             'Exercício',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style:GoogleFonts.plusJakartaSans(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
                             'Séries',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style:GoogleFonts.plusJakartaSans(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                         Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
                             'Repetições',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style:GoogleFonts.plusJakartaSans(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],
@@ -66,21 +103,39 @@ class SessionPage extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text(exercise.name),
+                            child: Text(
+                              exercise.name,
+                              style: constGoogleFonts.plusJakartaSans(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text('${exercise.countSeries}'),
+                            child: Text(
+                              '${exercise.countSeries}',
+                              style: constGoogleFonts.plusJakartaSans(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text('${exercise.countRepetition}'),
+                            child: Text(
+                              '${exercise.countRepetition}',
+                              style: constGoogleFonts.plusJakartaSans(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ],
                       ),
                   ],
-                ),
-              ),
+                ),*/
+                  ),
             ),
           ],
         ),

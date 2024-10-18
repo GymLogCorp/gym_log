@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gym_log/pages/home/home.dart';
+import 'package:gym_log/models/workout.dart';
 import 'package:sizer/sizer.dart';
 
 class WorkoutCard extends StatelessWidget {
