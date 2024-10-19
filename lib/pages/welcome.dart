@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
 import 'package:gym_log/pages/layout.dart';
+// Comentado para n precisar usar a autenticação
 import 'package:gym_log/pages/login.dart';
 import 'package:gym_log/pages/register.dart';
 
@@ -18,7 +19,7 @@ class Welcome extends StatelessWidget {
   void navigateToRegister(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const Layout()),
+      MaterialPageRoute(builder: (context) => const Register()),
     );
   }
 
@@ -51,7 +52,9 @@ class Welcome extends StatelessWidget {
                   bgColor: 0xFF617AFA,
                   textColor: 0xFFFFFFFF,
                   borderColor: 0xFF617AFA,
-                  onPressedProps: () {
+                  width: 268,
+                  height: 68,
+                  onPressed: () {
                     navigateToLogin(
                         context); //não ta funcionando, verificar o que é dps
                   },
@@ -64,7 +67,9 @@ class Welcome extends StatelessWidget {
                   bgColor: 0xFF212429,
                   textColor: 0xFFFFFFFF,
                   borderColor: 0xFF4F5461,
-                  onPressedProps: () {
+                  width: 268,
+                  height: 68,
+                  onPressed: () {
                     navigateToRegister(context);
                   },
                 ),

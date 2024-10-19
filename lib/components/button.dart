@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gym_log/pages/home/home.dart';
+import 'package:sizer/sizer.dart';
 
 class Button extends StatelessWidget {
   final String label;
@@ -7,19 +9,27 @@ class Button extends StatelessWidget {
   final int textColor;
   final int borderColor;
   final bool isLoading;
-  final VoidCallback onPressedProps;
+  final VoidCallback? onPressed;
+  final double width;
+  final double height;
   final IconData? icon;
   final double? iconSize;
-  const Button(
-      {super.key,
-      this.label = '',
-      this.bgColor = 0,
-      this.textColor = 0,
-      this.borderColor = 0,
-      this.isLoading = false,
-      this.icon,
-      this.iconSize,
-      required this.onPressedProps});
+  final bool? enable; // controla se o botão está habilitado
+
+  const Button({
+    super.key,
+    this.label = '',
+    this.bgColor = 0xFF000000, // Preto
+    this.textColor = 0xFFFFFFFF, // Branco
+    this.borderColor = 0xFF000000, // Preto
+    this.isLoading = false,
+    required this.onPressed,
+    this.width = 268.0,
+    this.height = 56.0,
+    this.icon,
+    this.iconSize,
+    this.enable = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,20 +37,21 @@ class Button extends StatelessWidget {
       decoration: const BoxDecoration(
         boxShadow: [
           BoxShadow(
-              spreadRadius: 0.0,
-              blurRadius: 8.0,
-              color: Colors.black,
-              offset: Offset(0.0, 12.0)),
+            spreadRadius: 0.0,
+            blurRadius: 8.0,
+            color: Colors.black,
+            offset: Offset(0.0, 12.0),
+          ),
         ],
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             side: BorderSide(color: Color(borderColor), width: 2),
-            minimumSize: const Size(268, 56),
+            fixedSize: Size(width, height),
             backgroundColor: Color(bgColor),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16.0))),
-        onPressed: onPressedProps,
+        onPressed: enable! ? onPressed : null,
         child: (isLoading)
             ? const CircularProgressIndicator(
                 color: Colors.white,

@@ -126,14 +126,14 @@ class _LoginState extends State<Login> {
                     child: Column(
                       children: [
                         CustomTextFormField(
-                          hintText: 'Digite seu email',
+                          placeholder: 'Digite seu email',
                           title: 'Email',
                           obscureText: false,
                           controller: _emailController,
                           validator: _validateEmail,
                         ),
                         CustomTextFormField(
-                          hintText: 'Digite sua senha',
+                          placeholder: 'Digite sua senha',
                           title: 'Senha',
                           obscureText: true,
                           controller: _passwordController,
@@ -145,7 +145,9 @@ class _LoginState extends State<Login> {
                           bgColor: 0xFF617AFA,
                           textColor: 0xFFFFFFFF,
                           borderColor: 0xFF617AFA,
-                          onPressedProps: () {
+                          width: 240,
+                          height: 56,
+                          onPressed: () {
                             login();
                           },
                           isLoading: loading,

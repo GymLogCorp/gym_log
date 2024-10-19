@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  final String hintText;
+  final String placeholder;
   final bool obscureText;
   final TextEditingController? controller;
   final String? title;
@@ -10,10 +10,12 @@ class CustomTextFormField extends StatelessWidget {
   final Color fillColor;
   final String? Function(String?)? validator; // funcao de validacao
   final String? errorMessage; // mensagem de erro
+  final double? width;
+  final TextInputType type;
 
   const CustomTextFormField({
     super.key,
-    required this.hintText,
+    required this.placeholder,
     this.obscureText = false,
     this.controller,
     this.title,
@@ -22,12 +24,14 @@ class CustomTextFormField extends StatelessWidget {
     this.fillColor = const Color.fromRGBO(33, 36, 41, 100),
     this.validator,
     this.errorMessage,
+    this.width = 320.0,
+    this.type = TextInputType.text,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 320,
+      width: width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,13 +48,14 @@ class CustomTextFormField extends StatelessWidget {
               ),
             ),
           TextFormField(
+            keyboardType: type,
             obscureText: obscureText,
             controller: controller,
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               filled: true,
               fillColor: fillColor,
-              hintText: hintText,
+              hintText: placeholder,
               labelStyle: TextStyle(color: borderColor),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8.0),

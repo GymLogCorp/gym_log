@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
+import 'package:gym_log/pages/addWorkout/add_workout.dart';
 
 class WorkoutPage extends StatefulWidget {
   const WorkoutPage({super.key});
@@ -41,18 +42,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
       name: 'Espanca Perna',
       muscleGroup: 'Quadriceps',
       exercisesCount: 11,
-    ),
-    SimplifiedWorkoutModel(
-      id: 4,
-      name: 'aaaaaa',
-      muscleGroup: 'Posterior',
-      exercisesCount: 11,
-    ),
-    SimplifiedWorkoutModel(
-        id: 5,
-        name: 'mau mau homofobico',
-        muscleGroup: 'Antebraco',
-        exercisesCount: 4),
+    )
   ];
 
   bool editMode =
@@ -183,7 +173,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                                       width: 100.0,
                                       height: 50.0,
                                       child: Button(
-                                        onPressedProps: () {},
+                                        onPressed: () {},
                                         icon: Icons.play_arrow_rounded,
                                         iconSize: 40.0,
                                         bgColor: 0xFFE40928,
@@ -204,7 +194,12 @@ class _WorkoutPageState extends State<WorkoutPage> {
         ),
         const SizedBox(height: 70.0),
         Button(
-          onPressedProps: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AddWorkout()),
+            );
+          },
           label: 'Adicionar Treino',
           bgColor: 0xFF617AFA,
           textColor: 0xFFFFFFFF,
@@ -319,6 +314,56 @@ class _WorkoutPageState extends State<WorkoutPage> {
   }
 
   void _editWorkout(SimplifiedWorkoutModel workout) {
-    // Lógica para editar o treino
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditWorkoutPage(
+          workout: workout,
+        ),
+      ),
+    );
+  }
+}
+
+class WorkoutDetailPage extends StatelessWidget {
+  final SimplifiedWorkoutModel workout;
+
+  const WorkoutDetailPage({Key? key, required this.workout}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(workout.name),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Treino: ${workout.name}'),
+            Text('Grupo Muscular: ${workout.muscleGroup}'),
+            Text('Quantidade de Exercícios: ${workout.exercisesCount}'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EditWorkoutPage extends StatelessWidget {
+  final SimplifiedWorkoutModel workout;
+
+  const EditWorkoutPage({Key? key, required this.workout}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Editar ${workout.name}'),
+      ),
+      body: Center(
+        child: Text('Aqui você pode editar o treino ${workout.name}'),
+      ),
+    );
   }
 }

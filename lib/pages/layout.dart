@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gym_log/pages/addWorkout/add_workout.dart';
 import 'package:gym_log/pages/historic.dart';
-import 'package:gym_log/pages/home.dart';
-import 'package:gym_log/pages/welcome.dart';
+import 'package:gym_log/pages/home/home.dart';
 import 'package:gym_log/pages/workout/workout.dart';
-import 'package:gym_log/services/auth_service.dart';
-import 'package:provider/provider.dart';
 
 void main() => runApp(const Layout());
 
@@ -27,6 +25,13 @@ class LayoutAppNav extends StatefulWidget {
 
 class _LayoutAppNavState extends State<LayoutAppNav> {
   int _currentIndex = 1; // Posição inicial no BottomNavigationBar
+
+  navigateToAddWorkout(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AddWorkout()),
+    );
+  }
 
   final List _pages = [
     const WorkoutPage(),
