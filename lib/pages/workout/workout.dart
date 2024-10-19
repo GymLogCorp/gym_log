@@ -62,16 +62,14 @@ class _WorkoutPageState extends State<WorkoutPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 20.0,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment
-              .spaceBetween, // Distribui o conteúdo nas extremidades
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 15.0), // Ajuste para alinhar com os cards
+              padding: const EdgeInsets.only(left: 15.0),
               child: Text(
                 'Meus treinos:',
                 style: GoogleFonts.plusJakartaSans(
@@ -83,21 +81,18 @@ class _WorkoutPageState extends State<WorkoutPage> {
             ),
             IconButton(
               icon: Icon(
-                editMode
-                    ? Icons.check
-                    : Icons.edit, // Muda o ícone de acordo com o modo
+                editMode ? Icons.check : Icons.edit,
                 color: Colors.white,
               ),
               onPressed: () {
                 setState(() {
-                  editMode =
-                      !editMode; // Alterna entre modo de edição e visualização
+                  editMode = !editMode;
                 });
               },
             ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 25.0,
         ),
         SizedBox(
@@ -112,13 +107,93 @@ class _WorkoutPageState extends State<WorkoutPage> {
                     return InkWell(
                       onTap: () {
                         if (!editMode) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => WorkoutDetailPage(
-                                workout: workout,
-                              ),
-                            ),
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: Color(0xFF1E1E1E),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(35.0),
+                                ),
+                                title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            'Exercícios',
+                                            style: GoogleFonts.plusJakartaSans(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Séries',
+                                            style: GoogleFonts.plusJakartaSans(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                          height:
+                                              8), // Espaço entre o texto e a linha
+                                      const Divider(
+                                        color: Colors.white, // Cor da linha
+                                        thickness: 1.0, // Espessura da linha
+                                      ),
+                                    ]),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'Grupo Muscular: ${workout.muscleGroup}',
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      'Quantidade de Exercícios: ${workout.exercisesCount}',
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                        height:
+                                            60.0), // Espaço entre o texto e a linha
+                                    const Divider(
+                                      color:
+                                          Colors.red, // Cor da linha divisória
+                                      thickness: 4.0, // Espessura da linha
+                                    ),
+                                  ],
+                                ),
+                                actions: [
+                                  Center(
+                                    child: SizedBox(
+                                      width: 100.0,
+                                      height: 50.0,
+                                      child: Button(
+                                        onPressedProps: () {},
+                                        icon: Icons.play_arrow_rounded,
+                                        iconSize: 40.0,
+                                        bgColor: 0xFFE40928,
+                                        borderColor: 0xFFE40928,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           );
                         }
                       },
@@ -127,7 +202,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                   },
                 ),
         ),
-        SizedBox(height: 70.0),
+        const SizedBox(height: 70.0),
         Button(
           onPressedProps: () {},
           label: 'Adicionar Treino',
@@ -165,18 +240,18 @@ class _WorkoutPageState extends State<WorkoutPage> {
           Wrap(
             children: [
               Container(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Color(0xFFE40928),
+                  color: const Color(0xFFE40928),
                   borderRadius: BorderRadius.circular(7),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.fitness_center,
                   color: Colors.white,
                   size: 20,
                 ),
               ),
-              SizedBox(width: 8.0),
+              const SizedBox(width: 8.0),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -188,7 +263,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 1),
+                  const SizedBox(height: 1),
                   Text(
                     workout.muscleGroup,
                     style: GoogleFonts.plusJakartaSans(
@@ -205,13 +280,14 @@ class _WorkoutPageState extends State<WorkoutPage> {
               Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.edit, color: Colors.blue, size: 20.0),
+                    icon:
+                        const Icon(Icons.edit, color: Colors.blue, size: 20.0),
                     onPressed: () {
                       _editWorkout(workout);
                     },
                   ),
                   IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.delete,
                       color: Colors.red,
                       size: 20.0,
@@ -243,56 +319,6 @@ class _WorkoutPageState extends State<WorkoutPage> {
   }
 
   void _editWorkout(SimplifiedWorkoutModel workout) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EditWorkoutPage(
-          workout: workout,
-        ),
-      ),
-    );
-  }
-}
-
-class WorkoutDetailPage extends StatelessWidget {
-  final SimplifiedWorkoutModel workout;
-
-  const WorkoutDetailPage({Key? key, required this.workout}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(workout.name),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Treino: ${workout.name}'),
-            Text('Grupo Muscular: ${workout.muscleGroup}'),
-            Text('Quantidade de Exercícios: ${workout.exercisesCount}'),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class EditWorkoutPage extends StatelessWidget {
-  final SimplifiedWorkoutModel workout;
-
-  const EditWorkoutPage({Key? key, required this.workout}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Editar ${workout.name}'),
-      ),
-      body: Center(
-        child: Text('Aqui você pode editar o treino ${workout.name}'),
-      ),
-    );
+    // Lógica para editar o treino
   }
 }

@@ -45,19 +45,32 @@ class Button extends StatelessWidget {
             ? const CircularProgressIndicator(
                 color: Colors.white,
               )
-            : Text(
-                label,
-                style: GoogleFonts.plusJakartaSans(
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    shadows: const [
-                      Shadow(
-                        offset: Offset(0, 4),
-                        blurRadius: 4.0,
-                        color: Colors.black,
-                      )
-                    ]),
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    label,
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      shadows: const [
+                        Shadow(
+                          offset: Offset(0, 4),
+                          blurRadius: 4.0,
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (icon != null)
+                    Icon(
+                      icon,
+                      color: Colors.white,
+                      size: iconSize,
+                    ), // Exibe o ícone se não for nulo
+                ],
               ),
       ),
     );
