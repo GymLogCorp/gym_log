@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/components/button.dart';
+import 'package:gym_log/models/exercise.dart';
+import 'package:gym_log/models/workout.dart';
 import 'package:gym_log/pages/addWorkout/add_workout.dart';
 
 class WorkoutPage extends StatefulWidget {
@@ -24,25 +26,189 @@ class SimplifiedWorkoutModel {
 }
 
 class _WorkoutPageState extends State<WorkoutPage> {
-  final List<SimplifiedWorkoutModel> simplifiedWorkoutList = [
-    SimplifiedWorkoutModel(
-      id: 1,
-      name: 'PushDay',
-      muscleGroup: 'Peito',
-      exercisesCount: 6,
-    ),
-    SimplifiedWorkoutModel(
-      id: 2,
-      name: 'Costas e Bíceps',
-      muscleGroup: 'Costas',
-      exercisesCount: 6,
-    ),
-    SimplifiedWorkoutModel(
-      id: 3,
-      name: 'Espanca Perna',
-      muscleGroup: 'Quadriceps',
-      exercisesCount: 11,
-    )
+  final List<WorkoutModel> workoutList = [
+    WorkoutModel(
+        id: 1,
+        name: 'PushDay',
+        muscleGroup: 'Peito',
+        userId: 1,
+        exercises: [
+          ExerciseModel(
+              id: 1,
+              name: 'Supino Inclinado',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 1),
+          ExerciseModel(
+              id: 2,
+              name: 'Supino reto',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 1),
+          ExerciseModel(
+              id: 3,
+              name: 'Voador Peitoral',
+              countSeries: 2,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 1),
+          ExerciseModel(
+              id: 4,
+              name: 'Crossover Baixo',
+              countSeries: 2,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 1),
+          ExerciseModel(
+              id: 5,
+              name: 'Tríceps Pulley',
+              countSeries: 3,
+              countRepetition: 10,
+              weight: null,
+              workoutId: 1),
+          ExerciseModel(
+              id: 6,
+              name: 'Tríceps Francês',
+              countSeries: 3,
+              countRepetition: 10,
+              weight: null,
+              workoutId: 1),
+        ]),
+    WorkoutModel(
+        id: 2,
+        name: 'Costas e Bíceps',
+        muscleGroup: 'Costas',
+        userId: 1,
+        exercises: [
+          ExerciseModel(
+              id: 7,
+              name: 'Puxada Aberta',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 2),
+          ExerciseModel(
+              id: 8,
+              name: 'Remada na Barra',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 2),
+          ExerciseModel(
+              id: 9,
+              name: 'Remada Serrote',
+              countSeries: 2,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 2),
+          ExerciseModel(
+              id: 10,
+              name: 'Pulldown na Corda',
+              countSeries: 2,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 2),
+          ExerciseModel(
+              id: 11,
+              name: 'Rosca Direta',
+              countSeries: 3,
+              countRepetition: 10,
+              weight: null,
+              workoutId: 2),
+          ExerciseModel(
+              id: 12,
+              name: 'Rosca Martelo',
+              countSeries: 3,
+              countRepetition: 10,
+              weight: null,
+              workoutId: 2),
+        ]),
+    WorkoutModel(
+        id: 3,
+        name: 'Espanca Perna',
+        muscleGroup: 'Quadriceps',
+        userId: 1,
+        exercises: [
+          ExerciseModel(
+              id: 13,
+              name: 'Agachamento Hack',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 13,
+              name: 'Agachamento Hack',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 13,
+              name: 'Agachamento Hack',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 13,
+              name: 'Agachamento Búlgaro',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 13,
+              name: 'Agachamento Hack',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 13,
+              name: 'cccccccccccccccccccccccccccccc',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 14,
+              name: 'LegPress 45°',
+              countSeries: 3,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 15,
+              name: 'Extensora',
+              countSeries: 2,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 16,
+              name: 'Flexora',
+              countSeries: 2,
+              countRepetition: 12,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 17,
+              name: 'Mesa Flexora',
+              countSeries: 3,
+              countRepetition: 10,
+              weight: null,
+              workoutId: 3),
+          ExerciseModel(
+              id: 18,
+              name: 'Panturrilha Sentada',
+              countSeries: 3,
+              countRepetition: 10,
+              weight: null,
+              workoutId: 3),
+        ]),
   ];
 
   bool editMode =
@@ -87,101 +253,132 @@ class _WorkoutPageState extends State<WorkoutPage> {
         ),
         SizedBox(
           height: 480.0,
-          child: simplifiedWorkoutList.isEmpty
+          child: workoutList.isEmpty
               ? containerNotWorkout()
               : ListView.builder(
                   shrinkWrap: true,
-                  itemCount: simplifiedWorkoutList.length,
+                  itemCount: workoutList.length,
                   itemBuilder: (context, index) {
-                    final workout = simplifiedWorkoutList[index];
+                    final workout = workoutList[index];
                     return InkWell(
                       onTap: () {
                         if (!editMode) {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AlertDialog(
+                              return Dialog(
                                 backgroundColor: Color(0xFF1E1E1E),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(35.0),
                                 ),
-                                title: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
+                                child: SizedBox(
+                                  height: 500.0,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            'Exercícios',
-                                            style: GoogleFonts.plusJakartaSans(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              color: Colors.white,
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Text(
+                                              'Exercícios',
+                                              style:
+                                                  GoogleFonts.plusJakartaSans(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
-                                          Text(
-                                            'Séries',
-                                            style: GoogleFonts.plusJakartaSans(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              color: Colors.white,
+                                          Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Text(
+                                              'Séries',
+                                              style:
+                                                  GoogleFonts.plusJakartaSans(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ],
                                       ),
+                                      const Divider(
+                                        color: Colors.white,
+                                        thickness: 1.0,
+                                      ),
+
+                                      SizedBox(
+                                        height:
+                                            250.0, // Definindo a altura máxima da lista
+                                        child: ListView.builder(
+                                          itemCount: workout.exercises.length,
+                                          itemBuilder: (context, index) {
+                                            final exercise =
+                                                workout.exercises[index];
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 5.0),
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      exercise.name,
+                                                      style: GoogleFonts
+                                                          .plusJakartaSans(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 15,
+                                                        color: Colors.white,
+                                                      ),
+                                                      textAlign: TextAlign.left,
+                                                    ),
+                                                    Text(
+                                                      '${exercise.countSeries}x${exercise.countRepetition}',
+                                                      style: GoogleFonts
+                                                          .plusJakartaSans(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 15,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ]),
+                                            );
+                                          },
+                                        ),
+                                      ),
+
                                       const SizedBox(
                                           height:
-                                              8), // Espaço entre o texto e a linha
+                                              10.0), // Espaço entre o texto e a linha
                                       const Divider(
-                                        color: Colors.white, // Cor da linha
-                                        thickness: 1.0, // Espessura da linha
+                                        color: Colors.red,
+                                        thickness: 4.0,
                                       ),
-                                    ]),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      'Grupo Muscular: ${workout.muscleGroup}',
-                                      style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 16,
-                                        color: Colors.white,
+                                      SizedBox(
+                                        width: 100.0,
+                                        height: 50.0,
+                                        child: Button(
+                                          onPressed: () {},
+                                          icon: Icons.play_arrow_rounded,
+                                          iconSize: 40.0,
+                                          bgColor: 0xFFE40928,
+                                          borderColor: 0xFFE40928,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      'Quantidade de Exercícios: ${workout.exercisesCount}',
-                                      style: GoogleFonts.plusJakartaSans(
-                                        fontSize: 16,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                        height:
-                                            60.0), // Espaço entre o texto e a linha
-                                    const Divider(
-                                      color:
-                                          Colors.red, // Cor da linha divisória
-                                      thickness: 4.0, // Espessura da linha
-                                    ),
-                                  ],
-                                ),
-                                actions: [
-                                  Center(
-                                    child: SizedBox(
-                                      width: 100.0,
-                                      height: 50.0,
-                                      child: Button(
-                                        onPressed: () {},
-                                        icon: Icons.play_arrow_rounded,
-                                        iconSize: 40.0,
-                                        bgColor: 0xFFE40928,
-                                        borderColor: 0xFFE40928,
-                                      ),
-                                    ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               );
                             },
                           );
@@ -225,7 +422,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
     );
   }
 
-  Widget cardWorkout(SimplifiedWorkoutModel workout) {
+  Widget cardWorkout(WorkoutModel workout) {
     return Padding(
       padding:
           const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 5.0, top: 5.0),
@@ -295,7 +492,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
               ),
             ] else
               Text(
-                workout.exercisesCount.toString(),
+                workout.exercises.length.toString(),
                 style: GoogleFonts.plusJakartaSans(
                   color: Colors.white,
                   fontSize: 16.0,
@@ -309,11 +506,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
 
   void _deleteWorkout(int workoutId) {
     setState(() {
-      simplifiedWorkoutList.removeWhere((workout) => workout.id == workoutId);
+      workoutList.removeWhere((workout) => workout.id == workoutId);
     });
   }
 
-  void _editWorkout(SimplifiedWorkoutModel workout) {
+  void _editWorkout(WorkoutModel workout) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -351,7 +548,7 @@ class WorkoutDetailPage extends StatelessWidget {
 }
 
 class EditWorkoutPage extends StatelessWidget {
-  final SimplifiedWorkoutModel workout;
+  final WorkoutModel workout;
 
   const EditWorkoutPage({Key? key, required this.workout}) : super(key: key);
 
