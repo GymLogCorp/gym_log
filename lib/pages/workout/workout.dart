@@ -200,7 +200,11 @@ class _WorkoutPageState extends State<WorkoutPage> {
               Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.edit, color: Colors.blue, size: 20.0),
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.blue,
+                    ),
+                    padding: EdgeInsets.zero,
                     onPressed: () {
                       _editWorkout(workout);
                     },
@@ -209,8 +213,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
                     icon: Icon(
                       Icons.delete,
                       color: Colors.red,
-                      size: 20.0,
                     ),
+                    padding: EdgeInsets.zero,
                     onPressed: () {
                       _deleteWorkout(workout.id);
                     },
