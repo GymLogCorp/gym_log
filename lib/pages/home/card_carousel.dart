@@ -3,10 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/models/workout.dart';
 import 'package:sizer/sizer.dart';
 
-class WorkoutCard extends StatelessWidget {
+class CardCarousel extends StatelessWidget {
   final WorkoutModel workout;
 
-  const WorkoutCard({super.key, required this.workout});
+  const CardCarousel({super.key, required this.workout});
 
   @override
   Widget build(BuildContext context) {
@@ -90,9 +90,7 @@ class WorkoutCard extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    workout
-                                        .getSeriesRepsString()
-                                        .split(',')[index],
+                                    '${exercise.countSeries}x${exercise.countRepetition}',
                                     style: GoogleFonts.plusJakartaSans(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.w500,

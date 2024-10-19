@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gym_log/models/workout.dart';
 import 'package:gym_log/widgets/input.dart';
 import 'package:gym_log/pages/addWorkout/chip_list.dart';
 import 'package:gym_log/pages/addWorkout/exercise_table.dart';
 import 'package:gym_log/pages/layout.dart';
 import 'package:sizer/sizer.dart';
 
-class AddWorkout extends StatefulWidget {
-  const AddWorkout({super.key});
+class EditWorkout extends StatefulWidget {
+  WorkoutModel workout;
+  EditWorkout({super.key, required this.workout});
 
   @override
-  State<AddWorkout> createState() => _AddWorkoutState();
+  State<EditWorkout> createState() => _EditWorkoutState();
 }
 
-class _AddWorkoutState extends State<AddWorkout> {
+class _EditWorkoutState extends State<EditWorkout> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _workoutNameController = TextEditingController();
   String? _validateWorkoutName(String? value) {
@@ -21,6 +23,13 @@ class _AddWorkoutState extends State<AddWorkout> {
       return 'A nome é obrigatório';
     }
     return null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Definir o valor inicial do controller
+    _workoutNameController.text = widget.workout.name;
   }
 
   @override
