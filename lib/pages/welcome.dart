@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gym_log/components/button.dart';
+import 'package:gym_log/widgets/button.dart';
 import 'package:gym_log/pages/layout.dart';
 // Comentado para n precisar usar a autenticação
 import 'package:gym_log/pages/login.dart';

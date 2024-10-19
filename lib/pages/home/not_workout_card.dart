@@ -1,6 +1,6 @@
 // empty_training_section.dart
 import 'package:flutter/material.dart';
-import 'package:gym_log/components/button.dart';
+import 'package:gym_log/widgets/button.dart';
 import 'package:sizer/sizer.dart';
 // Make sure to import the Button widget if it's a custom widget
 

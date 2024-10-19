@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/pages/addWorkout/add_workout.dart';
 import 'package:gym_log/pages/historic.dart';
 import 'package:gym_log/pages/home/home.dart';
-import 'package:gym_log/pages/workout/workout.dart';
+import 'package:gym_log/pages/workout_list/workout_list.dart';
 
 void main() => runApp(const Layout());
 

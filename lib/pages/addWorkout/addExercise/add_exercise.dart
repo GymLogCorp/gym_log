@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gym_log/components/button.dart';
-import 'package:gym_log/components/input.dart';
+import 'package:gym_log/widgets/button.dart';
+import 'package:gym_log/widgets/input.dart';
 import 'package:sizer/sizer.dart';
 
 class AddExerciseModal extends StatefulWidget {
