@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/models/workout.dart';
-import 'package:gym_log/pages/session.dart';
+import 'package:gym_log/pages/session/session.dart';
 import 'package:gym_log/widgets/button.dart';
 import 'package:sizer/sizer.dart';
 
@@ -115,7 +115,7 @@ class WorkoutDetailComponent extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => SessionPage(
-                              workoutId: workout.id,
+                              workout: workout,
                             )),
                   );
                 },

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gym_log/mocks/mock_workout_list.dart';
+import 'package:gym_log/pages/session/session.dart';
 import 'package:gym_log/widgets/button.dart';
 import 'package:gym_log/pages/home/not_workout_card.dart';
 import 'package:gym_log/pages/home/card_carousel.dart';
-import 'package:gym_log/pages/session.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:sizer/sizer.dart';
 
