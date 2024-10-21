@@ -38,7 +38,7 @@ class DB {
   CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     fullName TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
+    email TEXT NOT NULL UNIQUE
   );
   ''';
 
@@ -60,7 +60,7 @@ class DB {
    name TEXT NOT NULL,
    muscle_group TEXT NOT NULL,
    id_user INTEGER NOT NULL,
-   FOREIGN KEY (id_user) REFERENCES user(id),
+   FOREIGN KEY (id_user) REFERENCES user(id)
   );
   ''';
 
@@ -69,7 +69,7 @@ class DB {
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     muscle_group TEXT NOT NULL,
-    isCustom INTEGER NOT NULL,
+    isCustom INTEGER NOT NULL
   );
   ''';
 
