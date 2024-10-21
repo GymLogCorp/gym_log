@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:gym_log/components/button.dart';
-import 'package:gym_log/models/exercise.dart';
-import 'package:gym_log/models/workout.dart';
+import 'package:gym_log/mocks/mock_workout_list.dart';
+import 'package:gym_log/widgets/button.dart';
 import 'package:gym_log/pages/home/not_workout_card.dart';
-import 'package:gym_log/pages/home/workout_card.dart';
-import 'package:gym_log/pages/session/session.dart';
-import 'package:gym_log/pages/session/session.dart';
+import 'package:gym_log/pages/home/card_carousel.dart';
+import 'package:gym_log/pages/session.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -18,190 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<WorkoutModel> workoutList = [
-    WorkoutModel(
-        id: 1,
-        name: 'PushDay',
-        muscleGroup: 'Peito',
-        userId: 1,
-        exercises: [
-          ExerciseModel(
-              id: 1,
-              name: 'Supino Inclinado',
-              countSeries: 3,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 1),
-          ExerciseModel(
-              id: 2,
-              name: 'Supino reto',
-              countSeries: 3,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 1),
-          ExerciseModel(
-              id: 3,
-              name: 'Voador Peitoral',
-              countSeries: 2,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 1),
-          ExerciseModel(
-              id: 4,
-              name: 'Crossover Baixo',
-              countSeries: 2,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 1),
-          ExerciseModel(
-              id: 5,
-              name: 'Tríceps Pulley',
-              countSeries: 3,
-              countRepetition: 10,
-              weight: null,
-              workoutId: 1),
-          ExerciseModel(
-              id: 6,
-              name: 'Tríceps Francês',
-              countSeries: 3,
-              countRepetition: 10,
-              weight: null,
-              workoutId: 1),
-        ]),
-    WorkoutModel(
-        id: 2,
-        name: 'Costas e Bíceps',
-        muscleGroup: 'Costas',
-        userId: 1,
-        exercises: [
-          ExerciseModel(
-              id: 7,
-              name: 'Puxada Aberta',
-              countSeries: 3,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 2),
-          ExerciseModel(
-              id: 8,
-              name: 'Remada na Barra',
-              countSeries: 3,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 2),
-          ExerciseModel(
-              id: 9,
-              name: 'Remada Serrote',
-              countSeries: 2,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 2),
-          ExerciseModel(
-              id: 10,
-              name: 'Pulldown na Corda',
-              countSeries: 2,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 2),
-          ExerciseModel(
-              id: 11,
-              name: 'Rosca Direta',
-              countSeries: 3,
-              countRepetition: 10,
-              weight: null,
-              workoutId: 2),
-          ExerciseModel(
-              id: 12,
-              name: 'Rosca Martelo',
-              countSeries: 3,
-              countRepetition: 10,
-              weight: null,
-              workoutId: 2),
-        ]),
-    WorkoutModel(
-        id: 3,
-        name: 'Espanca Perna',
-        muscleGroup: 'Quadriceps',
-        userId: 1,
-        exercises: [
-          ExerciseModel(
-              id: 13,
-              name: 'Agachamento Hack',
-              countSeries: 3,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 3),
-          ExerciseModel(
-              id: 13,
-              name: 'Agachamento Hack',
-              countSeries: 3,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 3),
-          ExerciseModel(
-              id: 13,
-              name: 'Agachamento Hack',
-              countSeries: 3,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 3),
-          ExerciseModel(
-              id: 13,
-              name: 'Agachamento Búlgaro',
-              countSeries: 3,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 3),
-          ExerciseModel(
-              id: 13,
-              name: 'Agachamento Hack',
-              countSeries: 3,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 3),
-          ExerciseModel(
-              id: 13,
-              name: 'cccccccccccccccccccccccccccccc',
-              countSeries: 3,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 3),
-          ExerciseModel(
-              id: 14,
-              name: 'LegPress 45°',
-              countSeries: 3,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 3),
-          ExerciseModel(
-              id: 15,
-              name: 'Extensora',
-              countSeries: 2,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 3),
-          ExerciseModel(
-              id: 16,
-              name: 'Flexora',
-              countSeries: 2,
-              countRepetition: 12,
-              weight: null,
-              workoutId: 3),
-          ExerciseModel(
-              id: 17,
-              name: 'Mesa Flexora',
-              countSeries: 3,
-              countRepetition: 10,
-              weight: null,
-              workoutId: 3),
-          ExerciseModel(
-              id: 18,
-              name: 'Panturrilha Sentada',
-              countSeries: 3,
-              countRepetition: 10,
-              weight: null,
-              workoutId: 3),
-        ]),
-  ];
   int _currentWorkoutId = 1;
 
   @override
@@ -219,7 +32,7 @@ class _HomePageState extends State<HomePage> {
                     ? const NotWorkoutCard()
                     : CarouselSlider(
                         items: workoutList
-                            .map((workout) => WorkoutCard(workout: workout))
+                            .map((workout) => CardCarousel(workout: workout))
                             .toList(),
                         options: CarouselOptions(
                           height: 85.h,

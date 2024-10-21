@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_log/Exceptions/auth_exception.dart';
-import 'package:gym_log/components/input.dart';
-import 'package:gym_log/components/button.dart';
+import 'package:gym_log/widgets/input.dart';
+import 'package:gym_log/widgets/button.dart';
 import 'package:gym_log/pages/layout.dart';
 import 'package:gym_log/pages/login.dart';
 import 'package:gym_log/pages/welcome.dart';

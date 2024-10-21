@@ -14,15 +14,15 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   //isso aqui permite que nós tenhamos um state global na aplicação onde qualquer componente pode escutar.
-  /* runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserRepository()),
-        ChangeNotifierProvider(create: (context) => AuthService()),
-      ],
-      child: const MyApp(),
-    ),
-  );*/
+  // runApp(
+  //   MultiProvider(
+  //     providers: [
+  //       ChangeNotifierProvider(create: (context) => UserRepository()),
+  //       ChangeNotifierProvider(create: (context) => AuthService()),
+  //     ],
+  //     child: const MyApp(),
+  //   ),
+  // );
   //Pra rodar com o device preview
   runApp(DevicePreview(
     enabled: !kReleaseMode,

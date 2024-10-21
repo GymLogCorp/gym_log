@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gym_log/components/input.dart';
+import 'package:gym_log/widgets/input.dart';
 import 'package:gym_log/pages/addWorkout/chip_list.dart';
 import 'package:gym_log/pages/addWorkout/exercise_table.dart';
 import 'package:gym_log/pages/layout.dart';
