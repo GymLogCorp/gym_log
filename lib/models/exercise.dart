@@ -3,7 +3,6 @@ class ExerciseModel {
   String name;
   int countSeries;
   int countRepetition;
-  String? weight;
   int? workoutId;
 
   ExerciseModel({
@@ -11,7 +10,6 @@ class ExerciseModel {
     required this.name,
     required this.countSeries,
     required this.countRepetition,
-    this.weight,
     this.workoutId,
   });
 }

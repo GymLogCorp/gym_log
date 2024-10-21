@@ -5,7 +5,6 @@ class WorkoutModel {
   String name;
   String muscleGroup;
   int userId;
-  // int? sessionId;
   List<ExerciseModel> exercises;
 
   WorkoutModel(
@@ -13,13 +12,5 @@ class WorkoutModel {
       required this.name,
       required this.muscleGroup,
       required this.userId,
-      // required this.sessionId,
       required this.exercises});
-
-  String getSeriesRepsString() {
-    return exercises
-        .map(
-            (exercise) => '${exercise.countSeries}x${exercise.countRepetition}')
-        .join(', ');
-  }
 }
