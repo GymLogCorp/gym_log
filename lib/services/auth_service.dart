@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_log/Exceptions/auth_exception.dart';
+import 'package:gym_log/models/user.dart';
+import 'package:gym_log/repositories/user_repository.dart';
 
 class AuthService extends ChangeNotifier {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final userRepository = UserRepository();
   User? usuario;
   bool isLoading = false;
 
@@ -30,6 +33,7 @@ class AuthService extends ChangeNotifier {
           .createUserWithEmailAndPassword(email: email, password: password);
       await userCredential.user!.updateDisplayName(
           fullName); //desse jeito nós podemos cadastrar o nome fornecido pela pessoa
+      await userRepository.createUser(fullName, email);
       notifyListeners();
 
       _getUser();
@@ -47,6 +51,10 @@ class AuthService extends ChangeNotifier {
   login(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserModel? userLocal = await userRepository.getUser(email);
+      if (userLocal == null) {
+        await userRepository.updateUser(email);
+      }
       _getUser();
       notifyListeners();
     } on FirebaseAuthException catch (e) {

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gym_log/main.dart';
+import 'package:gym_log/models/user.dart';
 import 'package:gym_log/pages/addWorkout/add_workout.dart';
 import 'package:gym_log/pages/historic.dart';
 import 'package:gym_log/pages/home/home.dart';
 import 'package:gym_log/pages/workout_list/workout_list.dart';
+import 'package:gym_log/repositories/user_repository.dart';
+import 'package:gym_log/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(const Layout());
 
@@ -26,6 +31,26 @@ class LayoutAppNav extends StatefulWidget {
 class _LayoutAppNavState extends State<LayoutAppNav> {
   int _currentIndex = 1; // Posição inicial no BottomNavigationBar
 
+  final wuserRepository = UserRepository();
+  Future<UserModel?>? user;
+
+  @override
+  void initState() {
+    super.initState();
+    user = wuserRepository.getUser("teste@email.com");
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    user?.then((user) {
+      if (user != null) {
+        print("${user.fullName}---------------------------------------------");
+      }
+      print("$user.fullName---------------------------------------------");
+    });
+  }
+
   navigateToAddWorkout(BuildContext context) {
     Navigator.push(
       context,
@@ -38,6 +63,7 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
     const HomePage(),
     const HistoricPage()
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +80,9 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
         leading: IconButton(
           icon: const Icon(Icons.menu),
           color: Colors.white,
-          onPressed: () {},
+          onPressed: () async {
+            await context.read<AuthService>().logout();
+          },
         ),
         leadingWidth: 36,
         actions: [
