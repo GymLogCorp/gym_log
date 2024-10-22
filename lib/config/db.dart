@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:gym_log/config/default_exercises.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -32,6 +35,7 @@ class DB {
     await db.execute(_historicLog);
     await db.execute(_workout_exercise);
     await db.execute(_session_exercise);
+    await insertDefaultExercises(db);
   }
 
   String get _user => '''
@@ -109,4 +113,21 @@ class DB {
     FOREIGN KEY (id_exercise) REFERENCES exercise(id)
   );
   ''';
+
+  Future<void> insertDefaultExercises(Database db) async {
+    for (var muscleGroup in defaultExercises) {
+      muscleGroup.forEach((muscle, exercises) async {
+        for (var exercise in exercises) {
+          print(
+              '${exercise['name']} adicionado ao grupo ${muscle}'); // Debugging
+
+          await db.insert('exercises', {
+            'name': exercise['name'],
+            'muscle_group': exercise['muscle'],
+            'isCustom': 0
+          });
+        }
+      });
+    }
+  }
 }
