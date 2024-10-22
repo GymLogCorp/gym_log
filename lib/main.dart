@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:gym_log/repositories/exercise_repository.dart';
+import 'package:gym_log/repositories/workout_repository.dart';
 import 'package:gym_log/services/auth_service.dart';
 import 'package:gym_log/widgets/auth_check.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +18,8 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
+        ChangeNotifierProvider(create: (context) => WorkoutRepository()),
+        ChangeNotifierProvider(create: (context) => ExerciseRepository()),
       ],
       child: const MyApp(),
     ),

@@ -8,35 +8,47 @@ class UserRepository {
   late Database db;
 
   Future<UserModel?> getUser(String email) async {
-    db = await DB.instance.database;
-    List response = await db.query(
-      'user',
-      limit: 1,
-      where: "email= ?",
-      whereArgs: [email],
-    );
-    if (response.isNotEmpty) {
-      UserModel user = UserModel.fromMap(response.first);
-      return user;
-    } else {
-      return null;
+    try {
+      db = await DB.instance.database;
+      List response = await db.query(
+        'user',
+        limit: 1,
+        where: "email= ?",
+        whereArgs: [email],
+      );
+      if (response.isNotEmpty) {
+        UserModel user = UserModel.fromMap(response.first);
+        return user;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
   createUser(String fullName, String email) async {
-    db = await DB.instance.database;
-    var dto = {
-      'fullName': fullName,
-      'email': email,
-    };
-    db.insert('user', dto);
+    try {
+      db = await DB.instance.database;
+      var dto = {
+        'fullName': fullName,
+        'email': email,
+      };
+      db.insert('user', dto);
+    } catch (e) {
+      print(e);
+    }
   }
 
   updateUser(String email) async {
-    db = await DB.instance.database;
-    db.update(
-      'user',
-      {'email': email},
-    );
+    try {
+      db = await DB.instance.database;
+      db.update(
+        'user',
+        {'email': email},
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gym_log/models/exercise.dart';
+import 'package:gym_log/repositories/exercise_repository.dart';
 import 'package:gym_log/widgets/button.dart';
 import 'package:gym_log/widgets/input.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class AddExerciseModal extends StatefulWidget {
@@ -13,22 +16,25 @@ class AddExerciseModal extends StatefulWidget {
 
 const List<String> menuOptions = <String>[
   'Peito',
+  'Ombro',
   'Costas',
-  'Biceps',
-  'Triceps',
-  'Abdomen',
-  'Gluteo',
+  'Bíceps',
+  'Tríceps',
+  'Antebraço',
+  'Abdomên',
+  'Glúteo',
   'Pernas',
   'Panturrilha'
 ];
 
 class _AddExerciseModalState extends State<AddExerciseModal> {
-  String valueSelected = '';
+  String muscleSelected = 'Peito';
   bool isCustomExercise = false;
+  Map<String, dynamic> exerciseSelected = {};
   String exerciseName = '';
   int seriesCount = 0;
-  int repetitionsCount = 0;
 
+  int repetitionsCount = 0;
   final TextEditingController _seriesCountController = TextEditingController();
   final TextEditingController _repetitionsCountController =
       TextEditingController();
@@ -38,6 +44,14 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
       return 'A nome é obrigatório';
     }
     return null;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<ExerciseRepository>(context, listen: false)
+        .getExerciseList(muscleSelected);
   }
 
   @override
@@ -107,10 +121,14 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                           DropdownMenu(
                             initialSelection: menuOptions.first,
                             textStyle: const TextStyle(color: Colors.white),
-                            onSelected: (String? value) {
+                            onSelected: (String? value) async {
                               setState(() {
-                                valueSelected = value!;
+                                muscleSelected = value!;
                               });
+
+                              await Provider.of<ExerciseRepository>(context,
+                                      listen: false)
+                                  .getExerciseList(muscleSelected);
                             },
                             dropdownMenuEntries: menuOptions
                                 .map<DropdownMenuEntry<String>>((String value) {
@@ -137,73 +155,52 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                         border: Border.all(color: Colors.grey),
                       ),
                       child: SizedBox(
-                        height: 15.0.h,
+                        height: 25.0.h,
                         width: 60.0.w,
-                        child: ListView(
-                          padding:
-                              const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                          children: [
-                            Text(
-                              'Supino reto',
-                              style: GoogleFonts.plusJakartaSans(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const Divider(
-                              color: Colors.grey,
-                            ),
-                            Text(
-                              'Supino Inclinado',
-                              style: GoogleFonts.plusJakartaSans(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const Divider(
-                              color: Colors.grey,
-                            ),
-                            Text(
-                              'Voador Peitoral',
-                              style: GoogleFonts.plusJakartaSans(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const Divider(
-                              color: Colors.grey,
-                            ),
-                            Text(
-                              'Supino reto',
-                              style: GoogleFonts.plusJakartaSans(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const Divider(
-                              color: Colors.grey,
-                            ),
-                            Text(
-                              'Supino Inclinado',
-                              style: GoogleFonts.plusJakartaSans(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const Divider(
-                              color: Colors.grey,
-                            ),
-                          ],
+                        child: Consumer<ExerciseRepository>(
+                          builder: (context, exerciseRepository, child) {
+                            List<ExerciseModel> exercises =
+                                exerciseRepository.exerciseList;
+
+                            if (exercises.isEmpty) {
+                              return const Text('Nenhum exercício encontrado');
+                            }
+
+                            return ListView.builder(
+                              padding: const EdgeInsets.only(
+                                  top: 10.0, bottom: 10.0),
+                              itemCount: exercises.length,
+                              itemBuilder: (context, index) {
+                                ExerciseModel item = exercises[index];
+                                return Column(
+                                  children: [
+                                    InkWell(
+                                      child: Text(
+                                        item.name,
+                                        style: GoogleFonts.plusJakartaSans(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      onTap: () {
+                                        setState(() {
+                                          exerciseSelected = {
+                                            'name': item.name,
+                                            'value': item.id
+                                          };
+                                        });
+                                      },
+                                    ),
+                                    const Divider(
+                                      color: Colors.grey,
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -268,7 +265,7 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
               Padding(
                 padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
                 child: Text(
-                  'Adicionar exercício: Supino Reto 3x15 ?',
+                  'Adicionar exercício: ${exerciseSelected['name']} 3x15 ?',
                   style: GoogleFonts.plusJakartaSans(
                     color: Colors.white,
                     fontSize: 14,
