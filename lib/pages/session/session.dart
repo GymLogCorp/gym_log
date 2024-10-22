@@ -25,7 +25,9 @@ class SessionPage extends StatelessWidget {
                     icon: const Icon(Icons.arrow_back),
                     color: Colors.white,
                     iconSize: 36,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   Text(
                     workout.name,
@@ -53,89 +55,7 @@ class SessionPage extends StatelessWidget {
                       final exercise = workout.exercises[index];
                       return CardSeries(exercise: exercise);
                     },
-                  )
-
-                  /*Table(
-                  border: TableBorder.all(),
-                  columnWidths: const {
-                    0: FlexColumnWidth(2),
-                    1: FlexColumnWidth(1),
-                    2: FlexColumnWidth(1),
-                  },
-                  children: [
-                    const TableRow(
-                      decoration: BoxDecoration(color: Color(0xFF212429)),
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'Exercício',
-                            style:GoogleFonts.plusJakartaSans(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'Séries',
-                            style:GoogleFonts.plusJakartaSans(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'Repetições',
-                            style:GoogleFonts.plusJakartaSans(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    for (var exercise in workout.exercises)
-                      TableRow(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              exercise.name,
-                              style: constGoogleFonts.plusJakartaSans(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              '${exercise.countSeries}',
-                              style: constGoogleFonts.plusJakartaSans(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              '${exercise.countRepetition}',
-                              style: constGoogleFonts.plusJakartaSans(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                  ],
-                ),*/
-                  ),
+                  )),
             ),
           ],
         ),
