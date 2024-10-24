@@ -12,38 +12,21 @@ class ExerciseTableWidget extends StatefulWidget {
 }
 
 class _ExerciseTableWidgetState extends State<ExerciseTableWidget> {
-  final List<ExerciseModel> exerciseList = [
-    ExerciseModel(
-        id: 1,
-        name: 'Supino Inclinado na Máquina',
-        countSeries: 4,
-        countRepetition: 10,
-        muscleGroup: ''),
-    ExerciseModel(
-        id: 2,
-        name: 'Supino Reto c/ Halteres',
-        countSeries: 3,
-        countRepetition: 10,
-        muscleGroup: ''),
-    ExerciseModel(
-        id: 3,
-        name: 'Voador',
-        countSeries: 3,
-        countRepetition: 12,
-        muscleGroup: ''),
-    ExerciseModel(
-        id: 4,
-        name: 'Tríceps c/ Corda',
-        countSeries: 3,
-        countRepetition: 12,
-        muscleGroup: ''),
-    ExerciseModel(
-        id: 5,
-        name: 'Tríceps Frânces na Polia',
-        countSeries: 3,
-        countRepetition: 12,
-        muscleGroup: '')
-  ];
+  final List<ExerciseModel> exerciseList = [];
+
+  void onExerciseAdded(Map<String, dynamic> exerciseData) {
+    setState(() {
+      exerciseList.add(ExerciseModel(
+        id: exerciseData['id'],
+        name: exerciseData['name'],
+        countSeries: exerciseData['series'],
+        countRepetition: exerciseData['repetitions'],
+        muscleGroup: '',
+        isCustom: false,
+      ));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -69,18 +52,18 @@ class _ExerciseTableWidgetState extends State<ExerciseTableWidget> {
                 child: IconButton(
                   onPressed: () => showDialog(
                       context: context,
-                      builder: (BuildContext context) => const Dialog(
-                            child: AddExerciseModal(),
+                      builder: (BuildContext context) => Dialog(
+                            child: AddExerciseModal(
+                              onSubmit: onExerciseAdded,
+                            ),
                           )),
                   icon: const Icon(
                     Icons.add_circle,
                     color: Color(0xFF617AFA),
-                    size: 24,
+                    size: 32,
                   ),
-                  padding:
-                      EdgeInsets.zero, // Remove padding interno do IconButton
-                  constraints:
-                      const BoxConstraints(), // Remove as restrições padrão do IconButton
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
                 ),
               ),
             ],
@@ -200,7 +183,11 @@ class _ExerciseTableWidgetState extends State<ExerciseTableWidget> {
                             Icons.delete,
                             color: Colors.red,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              exerciseList.remove(exercise);
+                            });
+                          },
                         ),
                       ),
                     )

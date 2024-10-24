@@ -50,11 +50,13 @@ class WorkoutRepository extends ChangeNotifier {
         // Adiciona o exercício ao treino correspondente
         workoutMap[workoutId]!.exercises.add(
               ExerciseModel(
-                  id: row['id_exercise'],
-                  name: row['name'], // Nome do exercício
-                  countSeries: row['default_series'],
-                  countRepetition: row['default_repetitions'],
-                  muscleGroup: row['muscle_group']),
+                id: row['id_exercise'],
+                name: row['name'], // Nome do exercício
+                countSeries: row['default_series'],
+                countRepetition: row['default_repetitions'],
+                muscleGroup: row['muscle_group'],
+                isCustom: row['isCustom'] == 1 ? true : false,
+              ),
             );
       }
       workoutList = workoutMap.values.toList();

@@ -4,6 +4,7 @@ class ExerciseModel {
   int? countSeries;
   int? countRepetition;
   String muscleGroup;
+  bool isCustom;
 
   ExerciseModel({
     required this.id,
@@ -11,6 +12,7 @@ class ExerciseModel {
     required this.countSeries,
     required this.countRepetition,
     required this.muscleGroup,
+    required this.isCustom,
   });
 
   factory ExerciseModel.fromMap(Map<String, dynamic> map) {
@@ -20,6 +22,7 @@ class ExerciseModel {
       countSeries: 0,
       countRepetition: 0,
       muscleGroup: map['muscle_group'],
+      isCustom: map['isCustom'] == 1 ? true : false,
     );
   }
 }
