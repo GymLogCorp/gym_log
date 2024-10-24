@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/models/exercise.dart';
@@ -8,8 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class AddExerciseModal extends StatefulWidget {
-  const AddExerciseModal({super.key});
-
+  final Function(Map<String, dynamic>) onSubmit;
+  const AddExerciseModal({super.key, required this.onSubmit});
   @override
   State<AddExerciseModal> createState() => _AddExerciseModalState();
 }
@@ -28,9 +30,11 @@ const List<String> menuOptions = <String>[
 ];
 
 class _AddExerciseModalState extends State<AddExerciseModal> {
+  final _formKey = GlobalKey<FormState>();
+
   String muscleSelected = 'Peito';
   bool isCustomExercise = false;
-  Map<String, dynamic> exerciseSelected = {};
+  Map<String, dynamic> exerciseSelected = {'name': '', 'value': null};
   String exerciseName = '';
   int seriesCount = 0;
 
@@ -46,12 +50,66 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
     return null;
   }
 
+  final exerciseRepository = ExerciseRepository();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
     Provider.of<ExerciseRepository>(context, listen: false)
         .getExerciseList(muscleSelected);
+
+    _seriesCountController.addListener(() {
+      setState(() {
+        seriesCount = int.parse(_seriesCountController.value.text);
+      });
+    });
+    _repetitionsCountController.addListener(() {
+      setState(() {
+        repetitionsCount = int.parse(_repetitionsCountController.value.text);
+      });
+    });
+  }
+
+  void addCustomExercise() async {
+    var exerciseName = _exerciseNameController.value.text;
+    if (exerciseName != '') {
+      await Provider.of<ExerciseRepository>(context, listen: false)
+          .createCustomExercise(exerciseName, muscleSelected);
+
+      await Provider.of<ExerciseRepository>(context, listen: false)
+          .getExerciseList(muscleSelected);
+      _exerciseNameController.clear();
+    }
+  }
+
+  void removeCustomExercise(int id) async {
+    await Provider.of<ExerciseRepository>(context, listen: false)
+        .deleteCustomExercise(id.toString());
+    await Provider.of<ExerciseRepository>(context, listen: false)
+        .getExerciseList(muscleSelected);
+    setState(() {
+      exerciseSelected = {
+        'name': '',
+        'value': '',
+      };
+    });
+  }
+
+  void handleSubmit(BuildContext context) async {
+    // if (_formKey.currentState!.validate()) {
+    widget.onSubmit(
+      {
+        'id': exerciseSelected['value'],
+        'name': exerciseSelected['name'],
+        'series': seriesCount,
+        'repetitions': repetitionsCount,
+        'muscleGroup': muscleSelected,
+        'isCustom': isCustomExercise
+      },
+    );
+    Navigator.pop(context);
+    // }
   }
 
   @override
@@ -107,6 +165,26 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                       padding: const EdgeInsets.only(top: 5.0, bottom: 8.0),
                       child: Column(
                         children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Checkbox(
+                                  value: isCustomExercise,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isCustomExercise = value!;
+                                    });
+                                  }),
+                              Text(
+                                "Exercício personalizado",
+                                style: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                           Text(
                             "Grupo muscular:",
                             style: GoogleFonts.plusJakartaSans(
@@ -138,104 +216,140 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                           ),
                         ],
                       )),
-                  if (!isCustomExercise) ...[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Exercícios disponíveis:",
-                        style: GoogleFonts.plusJakartaSans(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                  if (isCustomExercise) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        CustomTextFormField(
+                          placeholder: 'insira um nome para o exercício',
+                          title: 'Nome',
+                          obscureText: false,
+                          controller: _exerciseNameController,
+                          validator: _validateExerciseName,
+                          width: 48.0.w,
                         ),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                      ),
-                      child: SizedBox(
-                        height: 25.0.h,
-                        width: 60.0.w,
-                        child: Consumer<ExerciseRepository>(
-                          builder: (context, exerciseRepository, child) {
-                            List<ExerciseModel> exercises =
-                                exerciseRepository.exerciseList;
-
-                            if (exercises.isEmpty) {
-                              return const Text('Nenhum exercício encontrado');
-                            }
-
-                            return ListView.builder(
-                              padding: const EdgeInsets.only(
-                                  top: 10.0, bottom: 10.0),
-                              itemCount: exercises.length,
-                              itemBuilder: (context, index) {
-                                ExerciseModel item = exercises[index];
-                                return Column(
-                                  children: [
-                                    InkWell(
-                                      child: Text(
-                                        item.name,
-                                        style: GoogleFonts.plusJakartaSans(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      onTap: () {
-                                        setState(() {
-                                          exerciseSelected = {
-                                            'name': item.name,
-                                            'value': item.id
-                                          };
-                                        });
-                                      },
-                                    ),
-                                    const Divider(
-                                      color: Colors.grey,
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8.0,
-                    ),
-                  ] else ...[
-                    CustomTextFormField(
-                      placeholder: 'insira um nome para o exercício',
-                      title: 'Nome',
-                      obscureText: false,
-                      controller: _exerciseNameController,
-                      validator: _validateExerciseName,
-                      width: 280.0,
-                    ),
+                        Button(
+                          onPressed: () => {addCustomExercise()},
+                          bgColor: 0xFF617AFA,
+                          textColor: 0xFFFFFFFF,
+                          borderColor: 0xFF617AFA,
+                          height: 55,
+                          width: 25.0.w,
+                          label: 'Criar',
+                        )
+                      ],
+                    )
                   ],
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                          value: isCustomExercise,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isCustomExercise = value!;
-                            });
-                          }),
-                      Text(
-                        "Exercício personalizado",
-                        style: GoogleFonts.plusJakartaSans(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      isCustomExercise
+                          ? "Exercícios personalizados:"
+                          : "Exercícios disponíveis:",
+                      style: GoogleFonts.plusJakartaSans(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8.0,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    child: SizedBox(
+                      height: 25.0.h,
+                      width: 60.0.w,
+                      child: Consumer<ExerciseRepository>(
+                        builder: (context, exerciseRepository, child) {
+                          List<ExerciseModel> exercises =
+                              exerciseRepository.exerciseList;
+                          exercises = exercises
+                              .where(
+                                  (item) => item.isCustom == isCustomExercise)
+                              .toList()
+                              .reversed
+                              .toList();
+                          if (exercises.isEmpty) {
+                            return Center(
+                                child: Text(
+                              isCustomExercise
+                                  ? 'Nenhum exercício personalizado encontrado.'
+                                  : 'Nenhum exercício padrão encontrado.',
+                              style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.center,
+                            ));
+                          }
+
+                          return ListView.builder(
+                            padding:
+                                const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            itemCount: exercises.length,
+                            itemBuilder: (context, index) {
+                              ExerciseModel item = exercises[index];
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: InkWell(
+                                            child: Text(
+                                              item.name,
+                                              style:
+                                                  GoogleFonts.plusJakartaSans(
+                                                color: Colors.white,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              setState(() {
+                                                exerciseSelected = {
+                                                  'name': item.name,
+                                                  'value': item.id
+                                                };
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        if (isCustomExercise)
+                                          InkWell(
+                                            child: const Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                            ),
+                                            onTap: () {
+                                              removeCustomExercise(item.id);
+                                            },
+                                          )
+                                      ],
+                                    ),
+                                  ),
+                                  const Divider(
+                                    color: Colors.grey,
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -248,6 +362,11 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                         controller: _seriesCountController,
                         validator: _validateExerciseName,
                         width: 100.0,
+                        onChange: (value) {
+                          setState(() {
+                            seriesCount = int.tryParse(value) ?? 0;
+                          });
+                        },
                       ),
                       CustomTextFormField(
                         type: TextInputType.number,
@@ -257,6 +376,11 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                         controller: _repetitionsCountController,
                         validator: _validateExerciseName,
                         width: 120.0,
+                        onChange: (value) {
+                          setState(() {
+                            repetitionsCount = int.tryParse(value) ?? 0;
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -265,7 +389,7 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
               Padding(
                 padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
                 child: Text(
-                  'Adicionar exercício: ${exerciseSelected['name']} 3x15 ?',
+                  'Adicionar exercício: ${exerciseSelected['name']} ${seriesCount}x$repetitionsCount ?',
                   style: GoogleFonts.plusJakartaSans(
                     color: Colors.white,
                     fontSize: 14,
@@ -275,7 +399,7 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                 ),
               ),
               Button(
-                onPressed: () => {Navigator.pop(context)},
+                onPressed: () => {handleSubmit(context)},
                 bgColor: 0xFF617AFA,
                 textColor: 0xFFFFFFFF,
                 borderColor: 0xFF617AFA,
