@@ -6,11 +6,13 @@ import 'package:sqflite/sqflite.dart';
 
 class WorkoutRepository extends ChangeNotifier {
   late Database db;
+  List<WorkoutModel> workoutList = [];
 
-  Future<List<WorkoutModel>> getWorkoutList(String userId) async {
-    final db = await DB.instance.database;
-    List<Map<String, dynamic>> response = await db.rawQuery(
-      '''
+  Future<void> getWorkoutList(int userId) async {
+    try {
+      final db = await DB.instance.database;
+      List<Map<String, dynamic>> response = await db.rawQuery(
+        '''
     SELECT 
       workout.id AS workout_id, 
       workout.name AS workout_name, 
@@ -26,136 +28,154 @@ class WorkoutRepository extends ChangeNotifier {
     INNER JOIN exercises ON workout_exercise.id_exercise = exercises.id 
     WHERE workout.id_user = ?
     ''',
-      [userId],
-    );
+        [userId],
+      );
 
-    Map<int, WorkoutModel> workoutMap = {};
+      Map<int, WorkoutModel> workoutMap = {};
 
-    for (var row in response) {
-      int workoutId = row['id']; // ID do treino
+      for (var row in response) {
+        int workoutId = row['id']; // ID do treino
 
-      // Verifica se o treino já foi adicionado ao mapa
-      if (!workoutMap.containsKey(workoutId)) {
-        workoutMap[workoutId] = WorkoutModel(
-          id: workoutId,
-          name: row['name'],
-          muscleGroup: row['muscle_group'],
-          userId: row['id_user'],
-          exercises: [],
-        );
-      }
-
-      // Adiciona o exercício ao treino correspondente
-      workoutMap[workoutId]!.exercises.add(
-            ExerciseModel(
-              id: row['id_exercise'],
-              name: row['name'], // Nome do exercício
-              countSeries: row['default_series'],
-              countRepetition: row['default_repetitions'],
-              workoutId: workoutId,
-            ),
+        // Verifica se o treino já foi adicionado ao mapa
+        if (!workoutMap.containsKey(workoutId)) {
+          workoutMap[workoutId] = WorkoutModel(
+            id: workoutId,
+            name: row['name'],
+            muscleGroup: row['muscle_group'],
+            userId: row['id_user'],
+            exercises: [],
           );
-    }
+        }
 
-    return workoutMap.values.toList();
+        // Adiciona o exercício ao treino correspondente
+        workoutMap[workoutId]!.exercises.add(
+              ExerciseModel(
+                  id: row['id_exercise'],
+                  name: row['name'], // Nome do exercício
+                  countSeries: row['default_series'],
+                  countRepetition: row['default_repetitions'],
+                  muscleGroup: row['muscle_group']),
+            );
+      }
+      workoutList = workoutMap.values.toList();
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> createWorkout(WorkoutModel workout) async {
-    final db = await DB.instance.database;
+    try {
+      final db = await DB.instance.database;
 
-    await db.transaction((txn) async {
-      int workoutId = await txn.insert('workout', {
-        'name': workout.name,
-        'muscle_group': workout.muscleGroup,
-        'id_user': workout.userId
-      });
-
-      for (var exercise in workout.exercises) {
-        await txn.insert('workout_exercise', {
-          'id_workout': workoutId,
-          'id_exercise': exercise.id,
-          'default_series': exercise.countSeries,
-          'default_repetitions': exercise.countRepetition,
+      await db.transaction((txn) async {
+        int workoutId = await txn.insert('workout', {
+          'name': workout.name,
+          'muscle_group': workout.muscleGroup,
+          'id_user': workout.userId
         });
-      }
-    });
+
+        for (var exercise in workout.exercises) {
+          await txn.insert('workout_exercise', {
+            'id_workout': workoutId,
+            'id_exercise': exercise.id,
+            'default_series': exercise.countSeries,
+            'default_repetitions': exercise.countRepetition,
+          });
+        }
+      });
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> updateWorkout(WorkoutModel workout) async {
-    final db = await DB.instance.database;
-    var workoutIsExist = await db.query(
-      'workout',
-      where: "id= ?",
-      whereArgs: [workout.id],
-    );
-    if (workoutIsExist.isEmpty) {
-      throw Exception("Treino não encontrado.");
-    } else {
-      await db.transaction((txn) async {
-        await txn.update(
-          'workout',
-          {
-            'name': workout.name,
-            'muscle_group': workout.muscleGroup,
-          },
-          where: "id= ?",
-          whereArgs: [workout.id],
-        );
+    try {
+      final db = await DB.instance.database;
+      var workoutIsExist = await db.query(
+        'workout',
+        where: "id= ?",
+        whereArgs: [workout.id],
+      );
+      if (workoutIsExist.isEmpty) {
+        throw Exception("Treino não encontrado.");
+      } else {
+        await db.transaction((txn) async {
+          await txn.update(
+            'workout',
+            {
+              'name': workout.name,
+              'muscle_group': workout.muscleGroup,
+            },
+            where: "id= ?",
+            whereArgs: [workout.id],
+          );
 
-        //Lógica para remover os atuais exercícios e depois colocar os novos
+          //Lógica para remover os atuais exercícios e depois colocar os novos
 
-        List<Map<String, dynamic>> currentExercises = await txn.query(
-          'workout_exercise',
-          where: 'id_workout = ?',
-          whereArgs: [workout.id],
-        );
+          List<Map<String, dynamic>> currentExercises = await txn.query(
+            'workout_exercise',
+            where: 'id_workout = ?',
+            whereArgs: [workout.id],
+          );
 
-        List<int> currentExerciseIds =
-            currentExercises.map((e) => e['id_exercise'] as int).toList();
+          List<int> currentExerciseIds =
+              currentExercises.map((e) => e['id_exercise'] as int).toList();
 
-        List<int> newExerciseIds = workout.exercises.map((e) => e.id).toList();
+          List<int> newExerciseIds =
+              workout.exercises.map((e) => e.id).toList();
 
-        for (var exerciseId in currentExerciseIds) {
-          if (!newExerciseIds.contains(exerciseId)) {
-            await txn.delete(
+          for (var exerciseId in currentExerciseIds) {
+            if (!newExerciseIds.contains(exerciseId)) {
+              await txn.delete(
+                'workout_exercise',
+                where: 'id_exercise = ? AND id_workout = ?',
+                whereArgs: [exerciseId, workout.id],
+              );
+            }
+          }
+
+          for (var exercise in workout.exercises) {
+            await txn.insert(
               'workout_exercise',
-              where: 'id_exercise = ? AND id_workout = ?',
-              whereArgs: [exerciseId, workout.id],
+              {
+                'id_exercise': exercise.id,
+                'default_series': exercise.countSeries,
+                'default_repetitions': exercise.countRepetition
+              },
+              conflictAlgorithm: ConflictAlgorithm.replace,
             );
           }
-        }
-
-        for (var exercise in workout.exercises) {
-          await txn.insert(
-            'workout_exercise',
-            {
-              'id_exercise': exercise.id,
-              'default_series': exercise.countSeries,
-              'default_repetitions': exercise.countRepetition
-            },
-            conflictAlgorithm: ConflictAlgorithm.replace,
-          );
-        }
-      });
+        });
+      }
+      notifyListeners();
+    } catch (e) {
+      print(e);
     }
   }
 
   Future<void> deleteWorkoutById(int id) async {
-    final db = await DB.instance.database;
-    var workoutIsExist = await db.query(
-      'workout',
-      where: "id= ?",
-      whereArgs: [id],
-    );
-    if (workoutIsExist.isEmpty) {
-      throw Exception("Treino não encontrado.");
-    } else {
-      await db.transaction((txn) async {
-        await txn.delete('workout_exercise',
-            where: "id_workout= ?", whereArgs: [id]);
+    try {
+      final db = await DB.instance.database;
+      var workoutIsExist = await db.query(
+        'workout',
+        where: "id= ?",
+        whereArgs: [id],
+      );
+      if (workoutIsExist.isEmpty) {
+        throw Exception("Treino não encontrado.");
+      } else {
+        await db.transaction((txn) async {
+          await txn.delete('workout_exercise',
+              where: "id_workout= ?", whereArgs: [id]);
 
-        await txn.delete('workout', where: "id= ?", whereArgs: [id]);
-      });
+          await txn.delete('workout', where: "id= ?", whereArgs: [id]);
+        });
+      }
+      notifyListeners();
+    } catch (e) {
+      print(e);
     }
   }
 }

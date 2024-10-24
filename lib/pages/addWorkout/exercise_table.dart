@@ -14,35 +14,35 @@ class ExerciseTableWidget extends StatefulWidget {
 class _ExerciseTableWidgetState extends State<ExerciseTableWidget> {
   final List<ExerciseModel> exerciseList = [
     ExerciseModel(
-      id: 1,
-      name: 'Supino Inclinado na Máquina',
-      countSeries: 4,
-      countRepetition: 10,
-    ),
+        id: 1,
+        name: 'Supino Inclinado na Máquina',
+        countSeries: 4,
+        countRepetition: 10,
+        muscleGroup: ''),
     ExerciseModel(
-      id: 2,
-      name: 'Supino Reto c/ Halteres',
-      countSeries: 3,
-      countRepetition: 10,
-    ),
+        id: 2,
+        name: 'Supino Reto c/ Halteres',
+        countSeries: 3,
+        countRepetition: 10,
+        muscleGroup: ''),
     ExerciseModel(
-      id: 3,
-      name: 'Voador',
-      countSeries: 3,
-      countRepetition: 12,
-    ),
+        id: 3,
+        name: 'Voador',
+        countSeries: 3,
+        countRepetition: 12,
+        muscleGroup: ''),
     ExerciseModel(
-      id: 4,
-      name: 'Tríceps c/ Corda',
-      countSeries: 3,
-      countRepetition: 12,
-    ),
+        id: 4,
+        name: 'Tríceps c/ Corda',
+        countSeries: 3,
+        countRepetition: 12,
+        muscleGroup: ''),
     ExerciseModel(
-      id: 5,
-      name: 'Tríceps Frânces na Polia',
-      countSeries: 3,
-      countRepetition: 12,
-    )
+        id: 5,
+        name: 'Tríceps Frânces na Polia',
+        countSeries: 3,
+        countRepetition: 12,
+        muscleGroup: '')
   ];
   @override
   Widget build(BuildContext context) {
