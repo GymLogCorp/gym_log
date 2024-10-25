@@ -34,15 +34,15 @@ class WorkoutRepository extends ChangeNotifier {
       Map<int, WorkoutModel> workoutMap = {};
 
       for (var row in response) {
-        int workoutId = row['id']; // ID do treino
+        int workoutId = row['workout_id']; // ID do treino
 
         // Verifica se o treino já foi adicionado ao mapa
         if (!workoutMap.containsKey(workoutId)) {
           workoutMap[workoutId] = WorkoutModel(
             id: workoutId,
-            name: row['name'],
-            muscleGroup: row['muscle_group'],
-            userId: row['id_user'],
+            name: row['workout_name'],
+            muscleGroup: row['workout_muscle_group'],
+            userId: row['workout_user_id'],
             exercises: [],
           );
         }
@@ -50,11 +50,13 @@ class WorkoutRepository extends ChangeNotifier {
         // Adiciona o exercício ao treino correspondente
         workoutMap[workoutId]!.exercises.add(
               ExerciseModel(
-                  id: row['id_exercise'],
-                  name: row['name'], // Nome do exercício
-                  countSeries: row['default_series'],
-                  countRepetition: row['default_repetitions'],
-                  muscleGroup: row['muscle_group']),
+                id: row['exercise_id'],
+                name: row['exercise_name'], // Nome do exercício
+                countSeries: row['default_series'],
+                countRepetition: row['default_repetitions'],
+                muscleGroup: row['exercise_muscle_group'],
+                isCustom: row['exercise_isCustom'] == 1 ? true : false,
+              ),
             );
       }
       workoutList = workoutMap.values.toList();
@@ -74,6 +76,7 @@ class WorkoutRepository extends ChangeNotifier {
           'muscle_group': workout.muscleGroup,
           'id_user': workout.userId
         });
+        print(workoutId);
 
         for (var exercise in workout.exercises) {
           await txn.insert('workout_exercise', {

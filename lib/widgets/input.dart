@@ -12,6 +12,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? errorMessage; // mensagem de erro
   final double? width;
   final TextInputType type;
+  final Function(String)? onChange;
 
   const CustomTextFormField({
     super.key,
@@ -26,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
     this.errorMessage,
     this.width = 320.0,
     this.type = TextInputType.text,
+    this.onChange,
   });
 
   @override
@@ -48,6 +50,7 @@ class CustomTextFormField extends StatelessWidget {
               ),
             ),
           TextFormField(
+            onChanged: onChange,
             keyboardType: type,
             obscureText: obscureText,
             controller: controller,
