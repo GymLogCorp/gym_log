@@ -115,7 +115,7 @@ class WorkoutDetailComponent extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => SessionPage(
-                              workoutId: workout.id,
+                              workoutId: workout.id ?? 0,
                             )),
                   );
                 },

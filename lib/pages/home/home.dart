@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                           enlargeCenterPage: false,
                           onPageChanged: (index, reason) {
                             setState(() {
-                              _currentWorkoutId = workoutList[index].id;
+                              _currentWorkoutId = workoutList[index].id!;
                             });
                           },
                         ),

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/mocks/mock_workout_list.dart';
+import 'package:gym_log/models/workout.dart';
 import 'package:gym_log/pages/addWorkout/edit_workout.dart';
 import 'package:gym_log/pages/workout_list/card_workout_list.dart';
 import 'package:gym_log/pages/workout_list/modal_detail_workout.dart';
+import 'package:gym_log/repositories/workout_repository.dart';
 import 'package:gym_log/widgets/button.dart';
 import 'package:gym_log/pages/addWorkout/add_workout.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class WorkoutPage extends StatefulWidget {
@@ -18,6 +21,24 @@ class WorkoutPage extends StatefulWidget {
 class _WorkoutPageState extends State<WorkoutPage> {
   bool editMode =
       false; // Controla se os botões de editar/excluir estão visíveis
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<WorkoutRepository>(context, listen: false).getWorkoutList(1);
+  }
+
+  void handleRemove(int id) async {
+    try {
+      await Provider.of<WorkoutRepository>(context, listen: false)
+          .deleteWorkoutById(id);
+      await Provider.of<WorkoutRepository>(context, listen: false)
+          .getWorkoutList(1);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +79,16 @@ class _WorkoutPageState extends State<WorkoutPage> {
           SizedBox(
             height: 7.0.h,
           ),
-          Expanded(
-            child: workoutList.isEmpty
+          Expanded(child: Consumer<WorkoutRepository>(
+              builder: (context, workoutRepository, child) {
+            List<WorkoutModel> workouts = workoutRepository.workoutList;
+            print(workouts);
+            return workouts.isEmpty
                 ? containerNotWorkout()
                 : ListView.builder(
-                    itemCount: workoutList.length,
+                    itemCount: workouts.length,
                     itemBuilder: (context, index) {
-                      final workout = workoutList[index];
+                      final workout = workouts[index];
                       return InkWell(
                         onTap: () {
                           if (!editMode) {
@@ -86,7 +110,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
                         child: CardWorkoutList(
                           workout: workout,
                           editMode: editMode,
-                          onDelete: () => {},
+                          onDelete: () => {handleRemove(workout.id!)},
                           onEdit: () => {
                             Navigator.push(
                               context,
@@ -99,8 +123,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
                         ),
                       );
                     },
-                  ),
-          ),
+                  );
+          })),
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Button(

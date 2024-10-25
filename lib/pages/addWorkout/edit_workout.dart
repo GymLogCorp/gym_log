@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gym_log/models/exercise.dart';
 import 'package:gym_log/models/workout.dart';
 import 'package:gym_log/widgets/input.dart';
 import 'package:gym_log/pages/addWorkout/chip_list.dart';
@@ -18,6 +19,9 @@ class EditWorkout extends StatefulWidget {
 class _EditWorkoutState extends State<EditWorkout> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _workoutNameController = TextEditingController();
+  final List<ExerciseModel> exerciseList = [];
+  final List<String> muscleGroupList = [];
+
   String? _validateWorkoutName(String? value) {
     if (value == null || value.isEmpty) {
       return 'A nome é obrigatório';
@@ -30,6 +34,23 @@ class _EditWorkoutState extends State<EditWorkout> {
     super.initState();
     // Definir o valor inicial do controller
     _workoutNameController.text = widget.workout.name;
+  }
+
+  void handleAddExercise(Map<String, dynamic> exerciseData) {
+    setState(() {
+      exerciseList.add(ExerciseModel(
+        id: exerciseData['id'],
+        name: exerciseData['name'],
+        countSeries: exerciseData['series'],
+        countRepetition: exerciseData['repetitions'],
+        muscleGroup: '',
+        isCustom: false,
+      ));
+    });
+  }
+
+  void handleRemoveExercise(exercise) {
+    exerciseList.remove(exercise);
   }
 
   @override
@@ -100,11 +121,17 @@ class _EditWorkoutState extends State<EditWorkout> {
                       const SizedBox(
                         height: 10.0,
                       ),
-                      const ChipList(),
+                      ChipList(
+                        filter: muscleGroupList,
+                      ),
                       const SizedBox(
                         height: 10.0,
                       ),
-                      const ExerciseTableWidget()
+                      ExerciseTableWidget(
+                        onExerciseAdded: handleAddExercise,
+                        onExerciseRemoved: handleRemoveExercise,
+                        exerciseList: exerciseList,
+                      )
                     ],
                   ),
                 )

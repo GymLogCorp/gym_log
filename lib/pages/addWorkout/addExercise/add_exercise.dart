@@ -31,6 +31,7 @@ const List<String> menuOptions = <String>[
 
 class _AddExerciseModalState extends State<AddExerciseModal> {
   final _formKey = GlobalKey<FormState>();
+  final _formCustomExerciseKey = GlobalKey<FormState>();
 
   String muscleSelected = 'Peito';
   bool isCustomExercise = false;
@@ -43,9 +44,16 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
   final TextEditingController _repetitionsCountController =
       TextEditingController();
   final TextEditingController _exerciseNameController = TextEditingController();
-  String? _validateExerciseName(String? value) {
+  String? _validateInputs(String? value) {
     if (value == null || value.isEmpty) {
-      return 'A nome é obrigatório';
+      return '';
+    }
+    return null;
+  }
+
+  String? _validateInputName(String? value) {
+    if (value == null || value.isEmpty) {
+      return '';
     }
     return null;
   }
@@ -61,7 +69,7 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
 
     _seriesCountController.addListener(() {
       setState(() {
-        seriesCount = int.parse(_seriesCountController.value.text);
+        seriesCount = int.tryParse(_seriesCountController.value.text) ?? 0;
       });
     });
     _repetitionsCountController.addListener(() {
@@ -97,66 +105,65 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
   }
 
   void handleSubmit(BuildContext context) async {
-    // if (_formKey.currentState!.validate()) {
-    widget.onSubmit(
-      {
-        'id': exerciseSelected['value'],
-        'name': exerciseSelected['name'],
-        'series': seriesCount,
-        'repetitions': repetitionsCount,
-        'muscleGroup': muscleSelected,
-        'isCustom': isCustomExercise
-      },
-    );
-    Navigator.pop(context);
-    // }
+    if (_formKey.currentState!.validate()) {
+      widget.onSubmit(
+        {
+          'id': exerciseSelected['value'],
+          'name': exerciseSelected['name'],
+          'series': seriesCount,
+          'repetitions': repetitionsCount,
+          'muscleGroup': muscleSelected,
+          'isCustom': isCustomExercise
+        },
+      );
+      Navigator.pop(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 90.0.w,
+      width: 100.0.w,
       padding: const EdgeInsets.all(5.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
         color: const Color(0xFF212429),
       ),
-      child: Form(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 10.0, left: 10.0, right: 10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.red,
-                      size: 30.0,
-                    ),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10.0, left: 10.0, right: 10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.red,
+                    size: 30.0,
                   ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text(
-                  "Escolha um de nossos exercícios disponíveis ou crie um personalizado.",
-                  style: GoogleFonts.plusJakartaSans(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.center,
                 ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Text(
+                "Escolha um de nossos exercícios disponíveis ou crie um personalizado.",
+                style: GoogleFonts.plusJakartaSans(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
               ),
-              Expanded(
-                  child: ListView(
+            ),
+            Expanded(
+              child: ListView(
                 children: [
                   const SizedBox(
                     height: 5.0,
@@ -221,13 +228,16 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        CustomTextFormField(
-                          placeholder: 'insira um nome para o exercício',
-                          title: 'Nome',
-                          obscureText: false,
-                          controller: _exerciseNameController,
-                          validator: _validateExerciseName,
-                          width: 48.0.w,
+                        Form(
+                          key: _formCustomExerciseKey,
+                          child: CustomTextFormField(
+                            placeholder: 'insira um nome para o exercício',
+                            title: 'Nome',
+                            obscureText: false,
+                            controller: _exerciseNameController,
+                            validator: _validateInputName,
+                            width: 45.0.w,
+                          ),
                         ),
                         Button(
                           onPressed: () => {addCustomExercise()},
@@ -235,8 +245,9 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                           textColor: 0xFFFFFFFF,
                           borderColor: 0xFF617AFA,
                           height: 55,
-                          width: 25.0.w,
-                          label: 'Criar',
+                          width: 20.0.w,
+                          label: '',
+                          icon: Icons.plus_one,
                         )
                       ],
                     )
@@ -351,64 +362,67 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                       ),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      CustomTextFormField(
-                        type: TextInputType.number,
-                        placeholder: '0',
-                        title: 'Séries',
-                        obscureText: false,
-                        controller: _seriesCountController,
-                        validator: _validateExerciseName,
-                        width: 100.0,
-                        onChange: (value) {
-                          setState(() {
-                            seriesCount = int.tryParse(value) ?? 0;
-                          });
-                        },
-                      ),
-                      CustomTextFormField(
-                        type: TextInputType.number,
-                        placeholder: '0',
-                        title: 'Repetições',
-                        obscureText: false,
-                        controller: _repetitionsCountController,
-                        validator: _validateExerciseName,
-                        width: 120.0,
-                        onChange: (value) {
-                          setState(() {
-                            repetitionsCount = int.tryParse(value) ?? 0;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
+                  Form(
+                    key: _formKey,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CustomTextFormField(
+                          type: TextInputType.number,
+                          placeholder: '0',
+                          title: 'Séries',
+                          obscureText: false,
+                          controller: _seriesCountController,
+                          validator: _validateInputs,
+                          width: 100.0,
+                          onChange: (value) {
+                            setState(() {
+                              seriesCount = int.tryParse(value) ?? 0;
+                            });
+                          },
+                        ),
+                        CustomTextFormField(
+                          type: TextInputType.number,
+                          placeholder: '0',
+                          title: 'Repetições',
+                          obscureText: false,
+                          controller: _repetitionsCountController,
+                          validator: _validateInputs,
+                          width: 120.0,
+                          onChange: (value) {
+                            setState(() {
+                              repetitionsCount = int.tryParse(value) ?? 0;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  )
                 ],
-              )),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-                child: Text(
-                  'Adicionar exercício: ${exerciseSelected['name']} ${seriesCount}x$repetitionsCount ?',
-                  style: GoogleFonts.plusJakartaSans(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
               ),
-              Button(
-                onPressed: () => {handleSubmit(context)},
-                bgColor: 0xFF617AFA,
-                textColor: 0xFFFFFFFF,
-                borderColor: 0xFF617AFA,
-                height: 50,
-                width: 240,
-                label: 'Adicionar',
-              )
-            ],
-          ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+              child: Text(
+                'Adicionar exercício: ${exerciseSelected['name']} ${seriesCount}x$repetitionsCount ?',
+                style: GoogleFonts.plusJakartaSans(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Button(
+              onPressed: () => {handleSubmit(context)},
+              bgColor: 0xFF617AFA,
+              textColor: 0xFFFFFFFF,
+              borderColor: 0xFF617AFA,
+              height: 50,
+              width: 240,
+              label: 'Adicionar',
+            )
+          ],
         ),
       ),
     );
