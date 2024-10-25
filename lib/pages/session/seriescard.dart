@@ -1,6 +1,8 @@
+import 'dart:ffi';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gym_log/models/exercise.dart';
+import 'package:gym_log/widgets/button.dart';
 import 'package:sizer/sizer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -95,7 +97,8 @@ class _CardSeriesState extends State<CardSeries> {
           ),
         ),
         Column(
-          children: List.generate(widget.exercise.countSeries, (index) {//aqui que a mágica acontece
+          children: List.generate(widget.exercise.countSeries, (index) {
+            //aqui que a mágica acontece
             return SizedBox(
               width: 100.0.w,
               height: 5.0.h,
