@@ -1,14 +1,14 @@
 import 'package:gym_log/models/exercise.dart';
 
 class WorkoutModel {
-  int id;
+  int? id;
   String name;
   String muscleGroup;
   int userId;
   List<ExerciseModel> exercises;
 
   WorkoutModel(
-      {required this.id,
+      {this.id,
       required this.name,
       required this.muscleGroup,
       required this.userId,

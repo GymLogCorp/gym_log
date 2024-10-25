@@ -5,7 +5,7 @@ final List<WorkoutModel> workoutList = [
   WorkoutModel(
       id: 1,
       name: 'PushDay',
-      muscleGroup: 'Peito',
+      muscleGroup: 'Peito / Biceps / Triceps',
       userId: 1,
       exercises: [
         ExerciseModel(

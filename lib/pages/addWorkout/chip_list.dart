@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 class ChipList extends StatefulWidget {
-  const ChipList({super.key});
+  final List<String> filter;
+  const ChipList({super.key, required this.filter});
 
   @override
   State<ChipList> createState() => _ChipListState();
@@ -19,8 +20,6 @@ class _ChipListState extends State<ChipList> {
     "Bíceps",
     "Tríceps"
   ];
-
-  List<String> filter = [];
 
   @override
   Widget build(BuildContext context) {
@@ -58,13 +57,13 @@ class _ChipListState extends State<ChipList> {
                         borderRadius: BorderRadius.circular(22.0)),
                     checkmarkColor: Colors.white,
                     labelStyle: const TextStyle(color: Colors.white),
-                    selected: filter.contains(group),
+                    selected: widget.filter.contains(group),
                     onSelected: (bool selected) {
                       setState(() {
                         if (selected) {
-                          filter.add(group);
+                          widget.filter.add(group);
                         } else {
-                          filter.remove(group);
+                          widget.filter.remove(group);
                         }
                       });
                     });

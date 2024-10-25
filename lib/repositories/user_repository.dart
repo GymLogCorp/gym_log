@@ -12,10 +12,10 @@ class UserRepository {
       db = await DB.instance.database;
       List response = await db.query(
         'user',
-        limit: 1,
         where: "email= ?",
         whereArgs: [email],
       );
+      print(response);
       if (response.isNotEmpty) {
         UserModel user = UserModel.fromMap(response.first);
         return user;

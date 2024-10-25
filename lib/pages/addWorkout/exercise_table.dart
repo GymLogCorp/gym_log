@@ -5,28 +5,21 @@ import 'package:gym_log/pages/addWorkout/addExercise/add_exercise.dart';
 import 'package:sizer/sizer.dart';
 
 class ExerciseTableWidget extends StatefulWidget {
-  const ExerciseTableWidget({super.key});
+  final List<ExerciseModel> exerciseList;
+  final Function(Map<String, dynamic>) onExerciseAdded;
+  final Function(ExerciseModel) onExerciseRemoved;
+  const ExerciseTableWidget({
+    super.key,
+    required this.exerciseList,
+    required this.onExerciseAdded,
+    required this.onExerciseRemoved,
+  });
 
   @override
   State<ExerciseTableWidget> createState() => _ExerciseTableWidgetState();
 }
 
 class _ExerciseTableWidgetState extends State<ExerciseTableWidget> {
-  final List<ExerciseModel> exerciseList = [];
-
-  void onExerciseAdded(Map<String, dynamic> exerciseData) {
-    setState(() {
-      exerciseList.add(ExerciseModel(
-        id: exerciseData['id'],
-        name: exerciseData['name'],
-        countSeries: exerciseData['series'],
-        countRepetition: exerciseData['repetitions'],
-        muscleGroup: '',
-        isCustom: false,
-      ));
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -54,7 +47,7 @@ class _ExerciseTableWidgetState extends State<ExerciseTableWidget> {
                       context: context,
                       builder: (BuildContext context) => Dialog(
                             child: AddExerciseModal(
-                              onSubmit: onExerciseAdded,
+                              onSubmit: widget.onExerciseAdded,
                             ),
                           )),
                   icon: const Icon(
@@ -72,130 +65,144 @@ class _ExerciseTableWidgetState extends State<ExerciseTableWidget> {
         const SizedBox(height: 10.0),
         Card(
           color: const Color(0xFF212429),
-          child: Table(
-            border: TableBorder.all(
-                color: const Color(0xFF464A56),
-                borderRadius: BorderRadius.circular(20.0),
-                width: 2.0,
-                style: BorderStyle.solid),
-            columnWidths: <int, TableColumnWidth>{
-              0: FixedColumnWidth(40.0.w),
-              1: FixedColumnWidth(23.0.w),
-              2: FixedColumnWidth(18.0.w),
-              3: FixedColumnWidth(10.0.w)
-            },
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: [
-              TableRow(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Center(
-                      child: Text(
-                        "Nome",
-                        softWrap: true,
-                        style: GoogleFonts.plusJakartaSans(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Center(
-                      child: Text(
-                        "Séries",
-                        style: GoogleFonts.plusJakartaSans(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Center(
-                      child: Text(
-                        "Rep",
-                        style: GoogleFonts.plusJakartaSans(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox()
-                ],
-              ),
-              ...exerciseList.map(
-                (exercise) => TableRow(
-                  // decoration: const BoxDecoration(
-                  //     border: Border(
-                  //   top: BorderSide(color: Colors.white),
-                  // )),
+          child: widget.exerciseList.isNotEmpty
+              ? Table(
+                  border: TableBorder.all(
+                      color: const Color(0xFF464A56),
+                      borderRadius: BorderRadius.circular(20.0),
+                      width: 2.0,
+                      style: BorderStyle.solid),
+                  columnWidths: <int, TableColumnWidth>{
+                    0: FixedColumnWidth(40.0.w),
+                    1: FixedColumnWidth(23.0.w),
+                    2: FixedColumnWidth(18.0.w),
+                    3: FixedColumnWidth(10.0.w)
+                  },
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                   children: [
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          exercise.name,
-                          style: GoogleFonts.plusJakartaSans(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500,
+                    TableRow(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Center(
+                            child: Text(
+                              "Nome",
+                              softWrap: true,
+                              style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white,
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Center(
+                            child: Text(
+                              "Séries",
+                              style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white,
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Center(
+                            child: Text(
+                              "Rep",
+                              style: GoogleFonts.plusJakartaSans(
+                                color: Colors.white,
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox()
+                      ],
                     ),
-                    TableCell(
-                      child: Center(
-                        heightFactor: 2.5,
-                        child: Text(
-                          exercise.countSeries.toString(),
-                          style: GoogleFonts.plusJakartaSans(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500,
+                    ...widget.exerciseList.map(
+                      (exercise) => TableRow(
+                        // decoration: const BoxDecoration(
+                        //     border: Border(
+                        //   top: BorderSide(color: Colors.white),
+                        // )),
+                        children: [
+                          TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                exercise.name,
+                                style: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Center(
-                        child: Text(
-                          exercise.countRepetition.toString(),
-                          style: GoogleFonts.plusJakartaSans(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500,
+                          TableCell(
+                            child: Center(
+                              heightFactor: 2.5,
+                              child: Text(
+                                exercise.countSeries.toString(),
+                                style: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    TableCell(
-                      child: Center(
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.delete,
-                            color: Colors.red,
+                          TableCell(
+                            child: Center(
+                              child: Text(
+                                exercise.countRepetition.toString(),
+                                style: GoogleFonts.plusJakartaSans(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
                           ),
-                          onPressed: () {
-                            setState(() {
-                              exerciseList.remove(exercise);
-                            });
-                          },
-                        ),
+                          TableCell(
+                            child: Center(
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    widget.onExerciseRemoved(exercise);
+                                  });
+                                },
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     )
                   ],
+                )
+              : Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(10.sp),
+                    child: Text(
+                      'Insira um exercício.',
+                      style: GoogleFonts.plusJakartaSans(
+                        color: Colors.white,
+                        fontSize: 17.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-              )
-            ],
-          ),
         ),
         const SizedBox(
           height: 20.0,

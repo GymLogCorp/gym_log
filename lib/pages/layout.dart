@@ -37,7 +37,7 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
   @override
   void initState() {
     super.initState();
-    user = wuserRepository.getUser("teste@email.com");
+    user = wuserRepository.getUser("teste4@email.com");
   }
 
   @override
@@ -45,7 +45,7 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
     super.didChangeDependencies();
     user?.then((user) {
       if (user != null) {
-        print("${user.fullName}---------------------------------------------");
+        print("${user.id}---------------------------------------------");
       }
       print("$user.fullName---------------------------------------------");
     });

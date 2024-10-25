@@ -51,11 +51,19 @@ class CardWorkoutList extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 1),
-                  Text(
-                    workout.muscleGroup,
-                    style: GoogleFonts.plusJakartaSans(
-                      color: Colors.grey,
-                      fontSize: 14.0,
+                  Container(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.5,
+                    ),
+                    child: Text(
+                      workout.muscleGroup,
+                      style: GoogleFonts.plusJakartaSans(
+                        color: Colors.grey,
+                        fontSize: 14.0,
+                      ),
+                      overflow:
+                          TextOverflow.ellipsis, // Adiciona "..." ao final
+                      maxLines: 1, // Limita a uma linha
                     ),
                   ),
                 ],
