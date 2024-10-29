@@ -15,6 +15,34 @@ class CardSeries extends StatefulWidget {
 }
 
 class _CardSeriesState extends State<CardSeries> {
+  List<Map<String, dynamic>> seriesList = []; // lista de series
+
+  @override
+  void initState() {
+    super.initState();
+    // lista de séries com as informações existentes
+    int countSeries =
+        widget.exercise.countSeries ?? 0; //valor padrão se for nulo
+    int countRepetition = widget.exercise.countRepetition ?? 0;
+
+    for (int i = 0; i < countSeries; i++) {
+      seriesList.add({
+        'repetitions': countRepetition,
+        'weight': 0, // peso como 0 ou outro valor padrão
+      });
+    }
+  }
+
+  void _addSeries() {
+    setState(() {
+      seriesList.add({
+        'repetitions': widget.exercise
+            .countRepetition, // cao precise para um valor padrão desejado
+        'weight': 0, //peso como 0 ou outro valor padrão
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -43,7 +71,7 @@ class _CardSeriesState extends State<CardSeries> {
                     ),
                   ),
                   InkWell(
-                    onTap: () => {},
+                    onTap: _addSeries, // chamafunção
                     child: const Icon(
                       Icons.add_circle,
                       color: Color(0xFF617AFA),
@@ -97,8 +125,7 @@ class _CardSeriesState extends State<CardSeries> {
           ),
         ),
         Column(
-          children: List.generate(widget.exercise.countSeries, (index) {
-            //aqui que a mágica acontece
+          children: List.generate(seriesList.length, (index) {
             return SizedBox(
               width: 100.0.w,
               height: 5.0.h,
@@ -121,7 +148,7 @@ class _CardSeriesState extends State<CardSeries> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${index + 1}', //se não entender isso aqui tranca o curso
+                              '${index + 1}', //se não entender tranca o curso
                               style: GoogleFonts.plusJakartaSans(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -130,7 +157,7 @@ class _CardSeriesState extends State<CardSeries> {
                             ),
                             SizedBox(width: 1.sp),
                             Text(
-                              '${widget.exercise.countSeries}x${widget.exercise.countRepetition}', //"""histórico"""
+                              '${widget.exercise.countSeries}x${widget.exercise.countRepetition}',
                               style: GoogleFonts.plusJakartaSans(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -147,6 +174,12 @@ class _CardSeriesState extends State<CardSeries> {
                                   color: Colors.white,
                                   fontSize: 18.sp,
                                 ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    seriesList[index]['weight'] =
+                                        double.tryParse(value) ?? 0;
+                                  });
+                                },
                               ),
                             ),
                             SizedBox(
@@ -159,6 +192,12 @@ class _CardSeriesState extends State<CardSeries> {
                                   color: Colors.white,
                                   fontSize: 18.sp,
                                 ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    seriesList[index]['repetitions'] =
+                                        int.tryParse(value) ?? 0;
+                                  });
+                                },
                               ),
                             ),
                           ],
