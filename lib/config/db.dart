@@ -80,7 +80,7 @@ class DB {
   String get _historicLog => '''
   CREATE TABLE historic_log (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    moment_repetition INTEGER NOT NULL,
+    moment_repetitions INTEGER NOT NULL,
     moment_weight INTEGER NOT NULL,
     created_date TEXT NOT NULL,
     id_session_exercise INTEGER NOT NULL,

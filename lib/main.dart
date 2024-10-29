@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:gym_log/repositories/exercise_repository.dart';
+import 'package:gym_log/repositories/session_repository.dart';
 import 'package:gym_log/repositories/user_repository.dart';
 import 'package:gym_log/repositories/workout_repository.dart';
 import 'package:gym_log/services/auth_service.dart';
@@ -22,6 +23,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => WorkoutRepository()),
         ChangeNotifierProvider(create: (context) => ExerciseRepository()),
+        ChangeNotifierProvider(create: (context) => SessionRepository()),
       ],
       child: const MyApp(),
     ),
