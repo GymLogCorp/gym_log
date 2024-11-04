@@ -7,42 +7,22 @@ import 'package:sizer/sizer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CardSeries extends StatefulWidget {
-  ExerciseModel exercise;
-  CardSeries({super.key, required this.exercise});
+  final ExerciseModel exercise;
+  final List<Map<String, dynamic>> seriesList;
+  final VoidCallback onAddSeries;
+
+  const CardSeries({
+    super.key,
+    required this.exercise,
+    required this.seriesList,
+    required this.onAddSeries,
+  });
 
   @override
   State<CardSeries> createState() => _CardSeriesState();
 }
 
 class _CardSeriesState extends State<CardSeries> {
-  List<Map<String, dynamic>> seriesList = []; // lista de series
-
-  @override
-  void initState() {
-    super.initState();
-    // lista de séries com as informações existentes
-    int countSeries =
-        widget.exercise.countSeries ?? 0; //valor padrão se for nulo
-    int countRepetition = widget.exercise.countRepetition ?? 0;
-
-    for (int i = 0; i < countSeries; i++) {
-      seriesList.add({
-        'repetitions': countRepetition,
-        'weight': 0, // peso como 0 ou outro valor padrão
-      });
-    }
-  }
-
-  void _addSeries() {
-    setState(() {
-      seriesList.add({
-        'repetitions': widget.exercise
-            .countRepetition, // cao precise para um valor padrão desejado
-        'weight': 0, //peso como 0 ou outro valor padrão
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -71,7 +51,7 @@ class _CardSeriesState extends State<CardSeries> {
                     ),
                   ),
                   InkWell(
-                    onTap: _addSeries, // chamafunção
+                    onTap: widget.onAddSeries,
                     child: const Icon(
                       Icons.add_circle,
                       color: Color(0xFF617AFA),
@@ -125,7 +105,7 @@ class _CardSeriesState extends State<CardSeries> {
           ),
         ),
         Column(
-          children: List.generate(seriesList.length, (index) {
+          children: List.generate(widget.seriesList.length, (index) {
             return SizedBox(
               width: 100.0.w,
               height: 5.0.h,
@@ -176,7 +156,7 @@ class _CardSeriesState extends State<CardSeries> {
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    seriesList[index]['weight'] =
+                                    widget.seriesList[index]['weight'] =
                                         double.tryParse(value) ?? 0;
                                   });
                                 },
@@ -194,7 +174,7 @@ class _CardSeriesState extends State<CardSeries> {
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    seriesList[index]['repetitions'] =
+                                    widget.seriesList[index]['repetitions'] =
                                         int.tryParse(value) ?? 0;
                                   });
                                 },

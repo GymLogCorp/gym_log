@@ -6,10 +6,46 @@ import 'package:gym_log/widgets/button.dart';
 import 'package:sizer/sizer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SessionPage extends StatelessWidget {
+class SessionPage extends StatefulWidget {
   final WorkoutModel workout;
 
   const SessionPage({Key? key, required this.workout}) : super(key: key);
+
+  @override
+  _SessionPageState createState() => _SessionPageState();
+}
+
+class _SessionPageState extends State<SessionPage> {
+  List<List<Map<String, dynamic>>> seriesList =
+      []; // Lista de séries para cada exercício
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicializa a lista de séries com base nos exercícios
+    for (var exercise in widget.workout.exercises) {
+      int countSeries = exercise.countSeries ?? 0; // Valor padrão se for nulo
+      int countRepetition = exercise.countRepetition ?? 0;
+
+      List<Map<String, dynamic>> exerciseSeries = [];
+      for (int i = 0; i < countSeries; i++) {
+        exerciseSeries.add({
+          'repetitions': countRepetition,
+          'weight': 0, // Peso inicial
+        });
+      }
+      seriesList.add(exerciseSeries);
+    }
+  }
+
+  void _addSeries(int exerciseIndex) {
+    setState(() {
+      seriesList[exerciseIndex].add({
+        'repetitions': widget.workout.exercises[exerciseIndex].countRepetition,
+        'weight': 0, // Peso inicial
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +69,7 @@ class SessionPage extends StatelessWidget {
                     },
                   ),
                   Text(
-                    workout.name,
+                    widget.workout.name,
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
@@ -45,7 +81,7 @@ class SessionPage extends StatelessWidget {
                     color: const Color(0xFF617AFA),
                     iconSize: 36,
                     onPressed: () {
-                      // navigateTo (overlay/modal de finalizar o treino)
+                      // Navegar para modal de finalizar o treino
                     },
                   ),
                 ],
@@ -53,14 +89,19 @@ class SessionPage extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListView.builder(
-                    itemCount: workout.exercises.length,
-                    itemBuilder: (context, index) {
-                      final exercise = workout.exercises[index];
-                      return CardSeries(exercise: exercise);
-                    },
-                  )),
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.builder(
+                  itemCount: widget.workout.exercises.length,
+                  itemBuilder: (context, index) {
+                    final exercise = widget.workout.exercises[index];
+                    return CardSeries(
+                      exercise: exercise,
+                      seriesList: seriesList[index],
+                      onAddSeries: () => _addSeries(index),
+                    );
+                  },
+                ),
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(bottom: 20.sp),
