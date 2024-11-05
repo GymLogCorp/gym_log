@@ -2,18 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/models/workout.dart';
 import 'package:sizer/sizer.dart';
+import 'package:gym_log/repositories/workout_repository.dart';
+import 'package:provider/provider.dart';
 
-class CardCarousel extends StatelessWidget {
+class CardCarousel extends StatefulWidget {
   final WorkoutModel workout;
 
   const CardCarousel({super.key, required this.workout});
+
+  @override
+  State<CardCarousel> createState() => _CardCarouselState();
+}
+
+class _CardCarouselState extends State<CardCarousel> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<WorkoutRepository>(context, listen: false).getWorkoutList(1);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
-          workout.name,
+          widget.workout.name,
           style: const TextStyle(
             fontSize: 25.0,
             fontWeight: FontWeight.bold,
@@ -69,9 +83,9 @@ class CardCarousel extends StatelessWidget {
                     height: 50.0.h,
                     child: ListView.builder(
                       shrinkWrap: true,
-                      itemCount: workout.exercises.length,
+                      itemCount: widget.workout.exercises.length,
                       itemBuilder: (context, index) {
-                        final exercise = workout.exercises[index];
+                        final exercise = widget.workout.exercises[index];
                         return Column(
                           children: [
                             Padding(
