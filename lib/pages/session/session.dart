@@ -42,8 +42,17 @@ class _SessionPageState extends State<SessionPage> {
     setState(() {
       seriesList[exerciseIndex].add({
         'repetitions': widget.workout.exercises[exerciseIndex].countRepetition,
-        'weight': 0, // Peso inicial
+        'weight': 0,
       });
+    });
+  }
+
+  void _removeSeries(int exerciseIndex) {
+    setState(() {
+      if (seriesList[exerciseIndex].length > 1) {
+        //não apaga o primeiro da lista
+        seriesList[exerciseIndex].removeLast();
+      }
     });
   }
 
@@ -98,6 +107,7 @@ class _SessionPageState extends State<SessionPage> {
                       exercise: exercise,
                       seriesList: seriesList[index],
                       onAddSeries: () => _addSeries(index),
+                      onRemoveSeries: () => _removeSeries(index),
                     );
                   },
                 ),
