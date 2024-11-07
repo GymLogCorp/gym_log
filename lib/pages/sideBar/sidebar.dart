@@ -7,35 +7,36 @@ class SideBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1C1C21),
-        title: Padding(
-          padding: const EdgeInsets.only(left: 2),
-          child: Text(
-            'GymLog',
-            style: GoogleFonts.plusJakartaSans(
-                color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-        ),
-        leading: Builder(
-          builder: (context) {
-            return IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
-        ),
-        leadingWidth: 36,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset('assets/images/halter30.png'),
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0xFF1C1C21),
+      //   title: Padding(
+      //     padding: const EdgeInsets.only(left: 2),
+      //     child: Text(
+      //       'GymLog',
+      //       style: GoogleFonts.plusJakartaSans(
+      //           color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+      //     ),
+      //   ),
+      //   leading: Builder(
+      //     builder: (context) {
+      //       return IconButton(
+      //         icon: const Icon(Icons.menu),
+      //         onPressed: () {
+      //           print("clique");
+      //           Scaffold.of(context).openDrawer();
+      //         },
+      //       );
+      //     },
+      //   ),
+      //   leadingWidth: 36,
+      //   actions: [
+      //     Padding(
+      //       padding: const EdgeInsets.all(8.0),
+      //       child: Image.asset('assets/images/halter30.png'),
+      //     ),
+      //     const SizedBox(width: 16),
+      //   ],
+      // ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,

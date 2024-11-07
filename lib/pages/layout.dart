@@ -77,9 +77,12 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
                 color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
-        leading: Builder(
-          builder: (context) {
-            return IconButton(icon: const Icon(Icons.menu), onPressed: () {});
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          color: Colors.white,
+          onPressed: () {
+            print("clique");
+            SideBar();
           },
         ),
         leadingWidth: 36,
