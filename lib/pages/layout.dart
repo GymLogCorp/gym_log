@@ -4,6 +4,7 @@ import 'package:gym_log/models/user.dart';
 import 'package:gym_log/pages/addWorkout/add_workout.dart';
 import 'package:gym_log/pages/historic.dart';
 import 'package:gym_log/pages/home/home.dart';
+import 'package:gym_log/pages/sideBar/sidebar.dart';
 import 'package:gym_log/pages/workout_list/workout_list.dart';
 import 'package:gym_log/repositories/user_repository.dart';
 import 'package:gym_log/services/auth_service.dart';
@@ -76,11 +77,9 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
                 color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          color: Colors.white,
-          onPressed: () async {
-            await context.read<AuthService>().logout();
+        leading: Builder(
+          builder: (context) {
+            return IconButton(icon: const Icon(Icons.menu), onPressed: () {});
           },
         ),
         leadingWidth: 36,
@@ -92,6 +91,7 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
           const SizedBox(width: 16),
         ],
       ),
+      //const SideBar(),
       body: _pages[_currentIndex], // Renderiza a página atual
       backgroundColor: const Color(0xFF1C1C21),
       bottomNavigationBar: BottomNavigationBar(

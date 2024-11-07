@@ -1,13 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gym_log/models/user.dart';
-import 'package:gym_log/pages/addWorkout/add_workout.dart';
-import 'package:gym_log/pages/historic.dart';
-import 'package:gym_log/pages/home/home.dart';
-import 'package:gym_log/pages/workout_list/workout_list.dart';
-import 'package:gym_log/repositories/user_repository.dart';
-import 'package:gym_log/services/auth_service.dart';
-import 'package:provider/provider.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
@@ -15,25 +7,69 @@ class SideBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF1C1C21),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 2),
+          child: Text(
+            'GymLog',
+            style: GoogleFonts.plusJakartaSans(
+                color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+        ),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+        leadingWidth: 36,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('assets/images/halter30.png'),
+          ),
+          const SizedBox(width: 16),
+        ],
+      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(child: Text('Usuário')),
+            DrawerHeader(
+                child: Text(
+              'Usuário',
+              style: GoogleFonts.plusJakartaSans(fontSize: 20),
+            )),
             ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
+              leading: Image.asset('assets/images/home.png'),
+              title: Text(
+                'Home',
+                style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold),
+              ),
               onTap: () {},
             ),
             ListTile(
               //leading: const Icon(),
-              title: const Text('Treinos'),
+              title: Text(
+                'Treinos',
+                style: GoogleFonts.plusJakartaSans(),
+              ),
               onTap: () {},
             ),
             ListTile(
               leading: const Icon(Icons.home),
-              title: const Text('Histórico'),
+              title: Text(
+                'Histórico',
+                style: GoogleFonts.plusJakartaSans(),
+              ),
               onTap: () {},
             ),
           ],
