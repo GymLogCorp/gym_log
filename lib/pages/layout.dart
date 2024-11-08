@@ -77,12 +77,16 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
                 color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          color: Colors.white,
-          onPressed: () {
-            print("clique");
-            SideBar();
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              color: Colors.white,
+              onPressed: () {
+                print("clique");
+                Scaffold.of(context).openDrawer();
+              },
+            );
           },
         ),
         leadingWidth: 36,
@@ -94,7 +98,64 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
           const SizedBox(width: 16),
         ],
       ),
-      //const SideBar(),
+      drawer: Drawer(
+        backgroundColor: const Color(0xFF1C1C21),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+                child: Text(
+              'Usuário',
+              style: GoogleFonts.plusJakartaSans(
+                  color: Colors.white, fontSize: 22),
+            )),
+            ListTile(
+              leading: Image.asset('assets/images/home.png'),
+              title: Text(
+                'Home',
+                style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white, fontSize: 20),
+              ),
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+            ListTile(
+              leading: Image.asset('assets/images/treinos.png'),
+              title: Text(
+                'Treinos',
+                style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white, fontSize: 20),
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Image.asset('assets/images/historico.png'),
+              title: Text(
+                'Histórico',
+                style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white, fontSize: 20),
+              ),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              iconColor: const Color.fromARGB(255, 226, 51, 38),
+              title: Text(
+                'Encerrar sessão',
+                style: GoogleFonts.plusJakartaSans(
+                    color: const Color.fromARGB(255, 226, 51, 38),
+                    fontSize: 20),
+              ),
+              onTap: () async {
+                await context.read<AuthService>().logout();
+              },
+            ),
+          ],
+        ),
+      ),
       body: _pages[_currentIndex], // Renderiza a página atual
       backgroundColor: const Color(0xFF1C1C21),
       bottomNavigationBar: BottomNavigationBar(
