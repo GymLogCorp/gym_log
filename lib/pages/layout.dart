@@ -1,14 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/models/user.dart';
 import 'package:gym_log/pages/addWorkout/add_workout.dart';
 import 'package:gym_log/pages/historic.dart';
 import 'package:gym_log/pages/home/home.dart';
-import 'package:gym_log/pages/sideBar/sidebar.dart';
 import 'package:gym_log/pages/workout_list/workout_list.dart';
 import 'package:gym_log/repositories/user_repository.dart';
 import 'package:gym_log/services/auth_service.dart';
+import 'package:gym_log/widgets/auth_check.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 void main() => runApp(const Layout());
 
@@ -100,15 +102,23 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
       ),
       drawer: Drawer(
         backgroundColor: const Color(0xFF1C1C21),
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
-            DrawerHeader(
+            Container(
+              padding:
+                  EdgeInsets.all(35), // Ajuste o padding conforme necessário
+              alignment: Alignment.centerLeft,
+              child: Align(
+                alignment: Alignment.bottomLeft,
                 child: Text(
-              'Usuário',
-              style: GoogleFonts.plusJakartaSans(
-                  color: Colors.white, fontSize: 22),
-            )),
+                  FirebaseAuth.instance.currentUser?.displayName ?? 'Usuário',
+                  style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white,
+                    fontSize: 22,
+                  ),
+                ),
+              ),
+            ),
             ListTile(
               leading: Image.asset('assets/images/home.png'),
               title: Text(
@@ -116,9 +126,10 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
                 style: GoogleFonts.plusJakartaSans(
                     color: Colors.white, fontSize: 20),
               ),
-              onTap: (index) {
+              onTap: () {
+                Navigator.pop(context);
                 setState(() {
-                  _currentIndex = index;
+                  _currentIndex = 1;
                 });
               },
             ),
@@ -129,7 +140,12 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
                 style: GoogleFonts.plusJakartaSans(
                     color: Colors.white, fontSize: 20),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _currentIndex = 0;
+                });
+              },
             ),
             ListTile(
               leading: Image.asset('assets/images/historico.png'),
@@ -138,8 +154,14 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
                 style: GoogleFonts.plusJakartaSans(
                     color: Colors.white, fontSize: 20),
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _currentIndex = 2;
+                });
+              },
             ),
+            Spacer(), // Adiciona o espaçamento flexível
             ListTile(
               leading: const Icon(Icons.logout),
               iconColor: const Color.fromARGB(255, 226, 51, 38),
