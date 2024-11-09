@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gym_log/main.dart';
 import 'package:gym_log/models/user.dart';
 import 'package:gym_log/pages/addWorkout/add_workout.dart';
 import 'package:gym_log/pages/historic.dart';
@@ -17,7 +17,7 @@ class Layout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LayoutAppNav(); // O Scaffold e o BottomNavigationBar estão no LayoutAppNav
+    return const LayoutAppNav();
   }
 }
 
@@ -33,23 +33,6 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
 
   final wuserRepository = UserRepository();
   Future<UserModel?>? user;
-
-  @override
-  void initState() {
-    super.initState();
-    user = wuserRepository.getUser("teste4@email.com");
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    user?.then((user) {
-      if (user != null) {
-        print("${user.id}---------------------------------------------");
-      }
-      print("$user.fullName---------------------------------------------");
-    });
-  }
 
   navigateToAddWorkout(BuildContext context) {
     Navigator.push(
@@ -77,11 +60,15 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
                 color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          color: Colors.white,
-          onPressed: () async {
-            await context.read<AuthService>().logout();
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              color: Colors.white,
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
           },
         ),
         leadingWidth: 36,
@@ -92,6 +79,84 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
           ),
           const SizedBox(width: 16),
         ],
+      ),
+      drawer: Drawer(
+        backgroundColor: const Color(0xFF1C1C21),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(
+                  35), // Ajuste o padding conforme necessário
+              alignment: Alignment.centerLeft,
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  FirebaseAuth.instance.currentUser?.displayName ?? 'Usuário',
+                  style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white,
+                    fontSize: 22,
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Image.asset('assets/images/home.png'),
+              title: Text(
+                'Home',
+                style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white, fontSize: 20),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _currentIndex = 1;
+                });
+              },
+            ),
+            ListTile(
+              leading: Image.asset('assets/images/treinos.png'),
+              title: Text(
+                'Treinos',
+                style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white, fontSize: 20),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _currentIndex = 0;
+                });
+              },
+            ),
+            ListTile(
+              leading: Image.asset('assets/images/historico.png'),
+              title: Text(
+                'Histórico',
+                style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white, fontSize: 20),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() {
+                  _currentIndex = 2;
+                });
+              },
+            ),
+            const Spacer(), // Adiciona o espaçamento flexível
+            ListTile(
+              leading: const Icon(Icons.logout),
+              iconColor: const Color.fromARGB(255, 226, 51, 38),
+              title: Text(
+                'Encerrar sessão',
+                style: GoogleFonts.plusJakartaSans(
+                    color: const Color.fromARGB(255, 226, 51, 38),
+                    fontSize: 20),
+              ),
+              onTap: () async {
+                await context.read<AuthService>().logout();
+              },
+            ),
+          ],
+        ),
       ),
       body: _pages[_currentIndex], // Renderiza a página atual
       backgroundColor: const Color(0xFF1C1C21),
