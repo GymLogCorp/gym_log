@@ -8,9 +8,7 @@ import 'package:gym_log/pages/home/home.dart';
 import 'package:gym_log/pages/workout_list/workout_list.dart';
 import 'package:gym_log/repositories/user_repository.dart';
 import 'package:gym_log/services/auth_service.dart';
-import 'package:gym_log/widgets/auth_check.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 
 void main() => runApp(const Layout());
 
@@ -19,7 +17,7 @@ class Layout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LayoutAppNav(); // O Scaffold e o BottomNavigationBar estão no LayoutAppNav
+    return const LayoutAppNav();
   }
 }
 
@@ -35,23 +33,6 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
 
   final wuserRepository = UserRepository();
   Future<UserModel?>? user;
-
-  @override
-  void initState() {
-    super.initState();
-    user = wuserRepository.getUser("teste4@email.com");
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    user?.then((user) {
-      if (user != null) {
-        print("${user.id}---------------------------------------------");
-      }
-      print("$user.fullName---------------------------------------------");
-    });
-  }
 
   navigateToAddWorkout(BuildContext context) {
     Navigator.push(
@@ -85,7 +66,6 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
               icon: const Icon(Icons.menu),
               color: Colors.white,
               onPressed: () {
-                print("clique");
                 Scaffold.of(context).openDrawer();
               },
             );
@@ -105,8 +85,8 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
         child: Column(
           children: [
             Container(
-              padding:
-                  EdgeInsets.all(35), // Ajuste o padding conforme necessário
+              padding: const EdgeInsets.all(
+                  35), // Ajuste o padding conforme necessário
               alignment: Alignment.centerLeft,
               child: Align(
                 alignment: Alignment.bottomLeft,
@@ -161,7 +141,7 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
                 });
               },
             ),
-            Spacer(), // Adiciona o espaçamento flexível
+            const Spacer(), // Adiciona o espaçamento flexível
             ListTile(
               leading: const Icon(Icons.logout),
               iconColor: const Color.fromARGB(255, 226, 51, 38),
