@@ -5,8 +5,16 @@ import 'package:sizer/sizer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CardSeries extends StatefulWidget {
-  ExerciseModel exercise;
-  CardSeries({super.key, required this.exercise});
+  final ExerciseModel exercise;
+  final List<Map<String, dynamic>> seriesList;
+  final VoidCallback onAddSeries;
+
+  const CardSeries({
+    super.key,
+    required this.exercise,
+    required this.seriesList,
+    required this.onAddSeries,
+  });
 
   @override
   State<CardSeries> createState() => _CardSeriesState();
@@ -41,7 +49,7 @@ class _CardSeriesState extends State<CardSeries> {
                     ),
                   ),
                   InkWell(
-                    onTap: () => {},
+                    onTap: widget.onAddSeries,
                     child: const Icon(
                       Icons.add_circle,
                       color: Color(0xFF617AFA),
@@ -119,7 +127,7 @@ class _CardSeriesState extends State<CardSeries> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${index + 1}', //se não entender isso aqui tranca o curso
+                              '${index + 1}', //se não entender tranca o curso
                               style: GoogleFonts.plusJakartaSans(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -128,7 +136,7 @@ class _CardSeriesState extends State<CardSeries> {
                             ),
                             SizedBox(width: 1.sp),
                             Text(
-                              '${widget.exercise.countSeries}x${widget.exercise.countRepetition}', //"""histórico"""
+                              '${widget.exercise.countSeries}x${widget.exercise.countRepetition}',
                               style: GoogleFonts.plusJakartaSans(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -145,6 +153,12 @@ class _CardSeriesState extends State<CardSeries> {
                                   color: Colors.white,
                                   fontSize: 18.sp,
                                 ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    widget.seriesList[index]['weight'] =
+                                        double.tryParse(value) ?? 0;
+                                  });
+                                },
                               ),
                             ),
                             SizedBox(
@@ -157,6 +171,12 @@ class _CardSeriesState extends State<CardSeries> {
                                   color: Colors.white,
                                   fontSize: 18.sp,
                                 ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    widget.seriesList[index]['repetitions'] =
+                                        int.tryParse(value) ?? 0;
+                                  });
+                                },
                               ),
                             ),
                           ],
