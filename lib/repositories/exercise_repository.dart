@@ -26,6 +26,28 @@ class ExerciseRepository extends ChangeNotifier {
     }
   }
 
+  Future<List<ExerciseModel>> searchExerciseListByName(String name) async {
+    try {
+      db = await DB.instance.database;
+      List<Map<String, dynamic>> response = await db.rawQuery('''
+          SELECT * FROM exercises 
+          WHERE name LIKE '%$name%' 
+          AND id IN (SELECT exercise_id FROM historic)
+          ''');
+      List<ExerciseModel> data = [];
+      if (response.isNotEmpty) {
+        for (var item in response) {
+          ExerciseModel exercise = ExerciseModel.fromMap(item);
+          data.add(exercise);
+        }
+        return data;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return [];
+  }
+
   Future<void> createCustomExercise(String name, String muscle_group) async {
     try {
       final db = await DB.instance.database;

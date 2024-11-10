@@ -3,6 +3,7 @@ class ExerciseModel {
   String name;
   int? countSeries;
   int? countRepetition;
+  int? weight;
   String muscleGroup;
   bool isCustom;
 
@@ -13,6 +14,7 @@ class ExerciseModel {
     required this.countRepetition,
     required this.muscleGroup,
     required this.isCustom,
+    this.weight,
   });
 
   factory ExerciseModel.fromMap(Map<String, dynamic> map) {
@@ -25,4 +27,24 @@ class ExerciseModel {
       isCustom: map['isCustom'] == 1 ? true : false,
     );
   }
+}
+
+class ExerciseToHistoricModel {
+  String name;
+  List<ChartDataModel> chartData = [];
+
+  ExerciseToHistoricModel({
+    required this.name,
+    required this.chartData,
+  });
+}
+
+class ChartDataModel {
+  final String weight;
+  final String date;
+
+  ChartDataModel({
+    required this.weight,
+    required this.date,
+  });
 }

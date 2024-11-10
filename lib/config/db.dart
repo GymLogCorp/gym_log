@@ -32,9 +32,8 @@ class DB {
     await db.execute(_session);
     await db.execute(_workout);
     await db.execute(_exercise);
-    await db.execute(_historicLog);
     await db.execute(_workout_exercise);
-    await db.execute(_session_exercise);
+    await db.execute(_historic);
     await insertDefaultExercises(db);
   }
 
@@ -53,8 +52,8 @@ class DB {
     duration_time TEXT,
     start_time TEXT NOT NULL,
     end_time TEXT,
-    id_user INTEGER NOT NULL,
-    FOREIGN KEY (id_user) REFERENCES user(id)
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id)
   );
   ''';
 
@@ -63,8 +62,8 @@ class DB {
    id INTEGER PRIMARY KEY AUTOINCREMENT,
    name TEXT NOT NULL,
    muscle_group TEXT NOT NULL,
-   id_user INTEGER NOT NULL,
-   FOREIGN KEY (id_user) REFERENCES user(id)
+   user_id INTEGER NOT NULL,
+   FOREIGN KEY (user_id) REFERENCES user(id)
   );
   ''';
 
@@ -77,40 +76,30 @@ class DB {
   );
   ''';
 
-  String get _historicLog => '''
-  CREATE TABLE historic_log (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    moment_repetition INTEGER NOT NULL,
-    moment_weight INTEGER NOT NULL,
-    created_date TEXT NOT NULL,
-    id_session_exercise INTEGER NOT NULL,
-    FOREIGN KEY (id_session_exercise) REFERENCES session_exercise(id) 
-  );
-  ''';
-
   String get _workout_exercise => '''
   CREATE TABLE workout_exercise (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     default_series INTEGER NOT NULL,
     default_repetitions INTEGER NOT NULL,
-    id_workout INTEGER NOT NULL,
-    id_exercise INTEGER NOT NULL,
-    FOREIGN KEY (id_workout) REFERENCES workout(id),
-    FOREIGN KEY (id_exercise) REFERENCES exercise(id),
-    UNIQUE(id_workout, id_exercise)
+    workout_id INTEGER NOT NULL,
+    exercise_id INTEGER NOT NULL,
+    FOREIGN KEY (workout_id) REFERENCES workout(id),
+    FOREIGN KEY (exercise_id) REFERENCES exercise(id),
+    UNIQUE(workout_id, exercise_id)
   );
   ''';
 
-  String get _session_exercise => '''
-  CREATE TABLE session_exercise (
+  String get _historic => '''
+  CREATE TABLE historic (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     series INTEGER NOT NULL,
     repetitions INTEGER NOT NULL,
     weight INTEGER NOT NULL,
-    id_session INTEGER NOT NULL,
-    id_exercise INTEGER NOT NULL  ,
-    FOREIGN KEY (id_session) REFERENCES session(id),
-    FOREIGN KEY (id_exercise) REFERENCES exercise(id)
+    created_date TEXT NOT NULL,
+    session_id INTEGER NOT NULL,
+    exercise_id INTEGER NOT NULL  ,
+    FOREIGN KEY (session_id) REFERENCES session(id),
+    FOREIGN KEY (exercise_id) REFERENCES exercise(id)
   );
   ''';
 

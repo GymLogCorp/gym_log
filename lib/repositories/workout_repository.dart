@@ -17,16 +17,16 @@ class WorkoutRepository extends ChangeNotifier {
       workout.id AS workout_id, 
       workout.name AS workout_name, 
       workout.muscle_group AS workout_muscle_group, 
-      workout.id_user AS workout_user_id,
+      workout.user_id AS workout_user_id,
       workout_exercise.*, 
       exercises.id AS exercise_id, 
       exercises.name AS exercise_name, 
       exercises.muscle_group AS exercise_muscle_group, 
       exercises.isCustom AS exercise_isCustom
     FROM workout_exercise
-    INNER JOIN workout ON workout_exercise.id_workout = workout.id
-    INNER JOIN exercises ON workout_exercise.id_exercise = exercises.id 
-    WHERE workout.id_user = ?
+    INNER JOIN workout ON workout_exercise.workout_id = workout.id
+    INNER JOIN exercises ON workout_exercise.exercise_id = exercises.id 
+    WHERE workout.user_id = ?
     ''',
         [userId],
       );
@@ -74,14 +74,14 @@ class WorkoutRepository extends ChangeNotifier {
         int workoutId = await txn.insert('workout', {
           'name': workout.name,
           'muscle_group': workout.muscleGroup,
-          'id_user': workout.userId
+          'user_id': workout.userId
         });
         print(workoutId);
 
         for (var exercise in workout.exercises) {
           await txn.insert('workout_exercise', {
-            'id_workout': workoutId,
-            'id_exercise': exercise.id,
+            'workout_id': workoutId,
+            'exercise_id': exercise.id,
             'default_series': exercise.countSeries,
             'default_repetitions': exercise.countRepetition,
           });
@@ -119,12 +119,12 @@ class WorkoutRepository extends ChangeNotifier {
 
           List<Map<String, dynamic>> currentExercises = await txn.query(
             'workout_exercise',
-            where: 'id_workout = ?',
+            where: 'workout_id = ?',
             whereArgs: [workout.id],
           );
 
           List<int> currentExerciseIds =
-              currentExercises.map((e) => e['id_exercise'] as int).toList();
+              currentExercises.map((e) => e['exercise_id'] as int).toList();
 
           List<int> newExerciseIds =
               workout.exercises.map((e) => e.id).toList();
@@ -133,7 +133,7 @@ class WorkoutRepository extends ChangeNotifier {
             if (!newExerciseIds.contains(exerciseId)) {
               await txn.delete(
                 'workout_exercise',
-                where: 'id_exercise = ? AND id_workout = ?',
+                where: 'exercise_id = ? AND workout_id = ?',
                 whereArgs: [exerciseId, workout.id],
               );
             }
@@ -143,7 +143,7 @@ class WorkoutRepository extends ChangeNotifier {
             await txn.insert(
               'workout_exercise',
               {
-                'id_exercise': exercise.id,
+                'exercise_id': exercise.id,
                 'default_series': exercise.countSeries,
                 'default_repetitions': exercise.countRepetition
               },
@@ -171,7 +171,7 @@ class WorkoutRepository extends ChangeNotifier {
       } else {
         await db.transaction((txn) async {
           await txn.delete('workout_exercise',
-              where: "id_workout= ?", whereArgs: [id]);
+              where: "workout_id= ?", whereArgs: [id]);
 
           await txn.delete('workout', where: "id= ?", whereArgs: [id]);
         });
