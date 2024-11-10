@@ -10,7 +10,7 @@ class SessionRepository extends ChangeNotifier {
     try {
       db = await DB.instance.database;
       currentSessionId = await db.insert('session', {
-        'id_user': userId,
+        'user_id': userId,
         'start_time': DateTime.now().toString(),
       });
       notifyListeners();
@@ -32,19 +32,13 @@ class SessionRepository extends ChangeNotifier {
             whereArgs: [currentSessionId]);
 
         for (var exercise in exerciseList) {
-          var idSessionExercise = await txn.insert('session_exercise', {
+          await txn.insert('historic', {
             'series': exercise.countSeries,
             'repetitions': exercise.countRepetition,
             'weight': exercise.weight,
-            'id_exercise': exercise.id,
-            'id_session': currentSessionId
-          });
-
-          await db.insert('historic_log', {
-            'moment_repetitions': exercise.countRepetition,
-            'moment_weight': exercise.weight,
+            'exercise_id': exercise.id,
+            'session_id': currentSessionId,
             'created_date': DateTime.now().toString(),
-            'id_session_exercise': idSessionExercise
           });
         }
       });

@@ -30,16 +30,21 @@ class ExerciseModel {
 }
 
 class ExerciseToHistoricModel {
-  int id;
   String name;
-  String momentRepetitions;
-  String momentWeight;
-  String createdDate;
+  List<ChartDataModel> chartData = [];
 
-  ExerciseToHistoricModel(
-      {required this.id,
-      required this.name,
-      required this.momentRepetitions,
-      required this.momentWeight,
-      required this.createdDate});
+  ExerciseToHistoricModel({
+    required this.name,
+    required this.chartData,
+  });
+}
+
+class ChartDataModel {
+  final String weight;
+  final String date;
+
+  ChartDataModel({
+    required this.weight,
+    required this.date,
+  });
 }
