@@ -8,12 +8,14 @@ class CardSeries extends StatefulWidget {
   final ExerciseModel exercise;
   final List<Map<String, dynamic>> seriesList;
   final VoidCallback onAddSeries;
+  final VoidCallback onRemoveSeries;
 
   const CardSeries({
     super.key,
     required this.exercise,
     required this.seriesList,
     required this.onAddSeries,
+    required this.onRemoveSeries,
   });
 
   @override
@@ -195,10 +197,10 @@ class _CardSeriesState extends State<CardSeries> {
                   ),
                   SizedBox(width: 2.0.w),
                   InkWell(
-                    onTap: () => {},
-                    child: const Icon(
+                    onTap: widget.onRemoveSeries,
+                    child: Icon(
                       Icons.delete_forever_rounded,
-                      color: Color(0xFFE40928),
+                      color: index == 0 ? Colors.grey : const Color(0xFFE40928),
                       size: 32,
                     ),
                   ),
