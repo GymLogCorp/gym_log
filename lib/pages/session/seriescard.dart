@@ -103,7 +103,7 @@ class _CardSeriesState extends State<CardSeries> {
           ),
         ),
         Column(
-          children: List.generate(widget.exercise.countSeries ?? 0, (index) {
+          children: List.generate(widget.seriesList.length, (index) {
             //aqui que a mágica acontece
             return SizedBox(
               width: 100.0.w,
