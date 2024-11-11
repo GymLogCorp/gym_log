@@ -1,11 +1,21 @@
 // empty_training_section.dart
 import 'package:flutter/material.dart';
+import 'package:gym_log/pages/workout_list/workout_list.dart';
 import 'package:gym_log/widgets/button.dart';
 import 'package:sizer/sizer.dart';
-// Make sure to import the Button widget if it's a custom widget
+import 'package:gym_log/pages/addWorkout/add_workout.dart';
 
 class NotWorkoutCard extends StatelessWidget {
   const NotWorkoutCard({super.key});
+
+  void navigateToWorkout(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AddWorkout(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +62,7 @@ class NotWorkoutCard extends StatelessWidget {
                         icon: Icons.add,
                         iconSize: 30.0,
                         onPressed: () {
-                          //navigateToWorkout(context);
+                          navigateToWorkout(context);
                         },
                       ),
                     ],
