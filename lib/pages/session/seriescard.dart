@@ -9,7 +9,7 @@ class CardSeries extends StatefulWidget {
   final List<Map<String, dynamic>> seriesList;
   final VoidCallback onAddSeries;
   final VoidCallback onRemoveSeries;
-  final VoidCallback onCheckSeries;
+  final void Function(int) onCheckSeries;
 
   const CardSeries({
     super.key,
@@ -25,7 +25,6 @@ class CardSeries extends StatefulWidget {
 }
 
 class _CardSeriesState extends State<CardSeries> {
-  bool checkMode = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -120,9 +119,15 @@ class _CardSeriesState extends State<CardSeries> {
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                        side: const BorderSide(color: Colors.white, width: 1.0),
+                        side: BorderSide(
+                            color: Color(widget.seriesList[index]['checked']
+                                ? 0xFF000000
+                                : Colors.white.value),
+                            width: 1.0),
                       ),
-                      color: const Color(0xFF1C1C21),
+                      color: Color(widget.seriesList[index]['checked']
+                          ? 0xFF617AFA
+                          : 0xFF1C1C21),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: 20.sp,
@@ -135,7 +140,9 @@ class _CardSeriesState extends State<CardSeries> {
                               '${index + 1}', //se não entender tranca o curso
                               style: GoogleFonts.plusJakartaSans(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: Color(widget.seriesList[index]['checked']
+                                    ? 0xFF000000
+                                    : Colors.white.value),
                                 fontSize: 18.sp,
                               ),
                             ),
@@ -144,7 +151,9 @@ class _CardSeriesState extends State<CardSeries> {
                               '${widget.exercise.countSeries}x${widget.exercise.countRepetition}',
                               style: GoogleFonts.plusJakartaSans(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: Color(widget.seriesList[index]['checked']
+                                    ? 0xFF000000
+                                    : Colors.white.value),
                                 fontSize: 18.sp,
                               ),
                             ),
@@ -159,7 +168,10 @@ class _CardSeriesState extends State<CardSeries> {
                                 keyboardType: TextInputType.number,
                                 style: GoogleFonts.plusJakartaSans(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: Color(widget.seriesList[index]
+                                          ['checked']
+                                      ? 0xFF000000
+                                      : Colors.white.value),
                                   fontSize: 18.sp,
                                 ),
                                 onChanged: (value) {
@@ -181,7 +193,10 @@ class _CardSeriesState extends State<CardSeries> {
                                 keyboardType: TextInputType.number,
                                 style: GoogleFonts.plusJakartaSans(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: Color(widget.seriesList[index]
+                                          ['checked']
+                                      ? 0xFF000000
+                                      : Colors.white.value),
                                   fontSize: 18.sp,
                                 ),
                                 onChanged: (value) {
@@ -199,13 +214,9 @@ class _CardSeriesState extends State<CardSeries> {
                   ),
                   SizedBox(width: 3.0.w),
                   InkWell(
-                    onTap: () {
-                      setState(() {
-                        checkMode = !checkMode;
-                      });
-                    },
+                    onTap: () => widget.onCheckSeries(index),
                     child: Icon(
-                      checkMode
+                      widget.seriesList[index]['checked']
                           ? Icons.check_circle
                           : Icons.check_circle_outline_outlined,
                       color: Color(0xFF617AFA),
