@@ -18,6 +18,7 @@ class SessionPage extends StatefulWidget {
 class _SessionPageState extends State<SessionPage> {
   List<List<Map<String, dynamic>>> seriesList =
       []; // Lista de séries para cada exercício
+  bool checkMode = false; // Controla se os botões de check estão visíveis
 
   @override
   void initState() {
@@ -56,6 +57,10 @@ class _SessionPageState extends State<SessionPage> {
     });
   }
 
+  void _checkSeries(int exerciseIndex) {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, screenType) {
@@ -90,7 +95,18 @@ class _SessionPageState extends State<SessionPage> {
                     color: const Color(0xFF617AFA),
                     iconSize: 36,
                     onPressed: () {
-                      // Navegar para modal de finalizar o treino
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            backgroundColor: const Color(0xFF212429),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: SessionPageModal(),
+                          );
+                        },
+                      );
                     },
                   ),
                 ],
@@ -108,6 +124,7 @@ class _SessionPageState extends State<SessionPage> {
                       seriesList: seriesList[index],
                       onAddSeries: () => _addSeries(index),
                       onRemoveSeries: () => _removeSeries(index),
+                      onCheckSeries: () => _checkSeries(index),
                     );
                   },
                 ),

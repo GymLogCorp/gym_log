@@ -87,7 +87,7 @@ class CardWorkoutList extends StatelessWidget {
                     GestureDetector(
                       onTap: onDelete,
                       child: const Icon(
-                        Icons.delete,
+                        Icons.delete_forever_rounded,
                         color: Colors.red,
                         size: 20.0,
                       ),

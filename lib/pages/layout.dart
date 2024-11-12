@@ -81,8 +81,7 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(
-                  35), // Ajuste o padding conforme necessário
+              padding: const EdgeInsets.all(35),
               alignment: Alignment.centerLeft,
               child: Align(
                 alignment: Alignment.bottomLeft,
@@ -137,7 +136,7 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
                 });
               },
             ),
-            const Spacer(), // Adiciona o espaçamento flexível
+            const Spacer(),
             ListTile(
               leading: const Icon(Icons.logout),
               iconColor: const Color.fromARGB(255, 226, 51, 38),

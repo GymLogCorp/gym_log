@@ -9,6 +9,7 @@ class CardSeries extends StatefulWidget {
   final List<Map<String, dynamic>> seriesList;
   final VoidCallback onAddSeries;
   final VoidCallback onRemoveSeries;
+  final VoidCallback onCheckSeries;
 
   const CardSeries({
     super.key,
@@ -16,6 +17,7 @@ class CardSeries extends StatefulWidget {
     required this.seriesList,
     required this.onAddSeries,
     required this.onRemoveSeries,
+    required this.onCheckSeries,
   });
 
   @override
@@ -23,6 +25,7 @@ class CardSeries extends StatefulWidget {
 }
 
 class _CardSeriesState extends State<CardSeries> {
+  bool checkMode = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -149,6 +152,10 @@ class _CardSeriesState extends State<CardSeries> {
                               width: 27.sp,
                               height: 20.sp,
                               child: TextFormField(
+                                maxLength: 3,
+                                decoration: InputDecoration(
+                                  counterText: '',
+                                ),
                                 keyboardType: TextInputType.number,
                                 style: GoogleFonts.plusJakartaSans(
                                   fontWeight: FontWeight.bold,
@@ -167,6 +174,10 @@ class _CardSeriesState extends State<CardSeries> {
                               width: 27.sp,
                               height: 20.sp,
                               child: TextFormField(
+                                maxLength: 3,
+                                decoration: InputDecoration(
+                                  counterText: '',
+                                ),
                                 keyboardType: TextInputType.number,
                                 style: GoogleFonts.plusJakartaSans(
                                   fontWeight: FontWeight.bold,
@@ -188,9 +199,15 @@ class _CardSeriesState extends State<CardSeries> {
                   ),
                   SizedBox(width: 3.0.w),
                   InkWell(
-                    onTap: () => {},
-                    child: const Icon(
-                      Icons.check_circle_outline_outlined,
+                    onTap: () {
+                      setState(() {
+                        checkMode = !checkMode;
+                      });
+                    },
+                    child: Icon(
+                      checkMode
+                          ? Icons.check_circle
+                          : Icons.check_circle_outline_outlined,
                       color: Color(0xFF617AFA),
                       size: 32,
                     ),
