@@ -18,7 +18,6 @@ class SessionPage extends StatefulWidget {
 class _SessionPageState extends State<SessionPage> {
   List<List<Map<String, dynamic>>> seriesList =
       []; // Lista de séries para cada exercício
-  bool checkMode = false; // Controla se os botões de check estão visíveis
 
   @override
   void initState() {
@@ -32,7 +31,8 @@ class _SessionPageState extends State<SessionPage> {
       for (int i = 0; i < countSeries; i++) {
         exerciseSeries.add({
           'repetitions': countRepetition,
-          'weight': 0, // Peso inicial
+          'weight': 0,
+          'checked': false,
         });
       }
       seriesList.add(exerciseSeries);
@@ -44,6 +44,7 @@ class _SessionPageState extends State<SessionPage> {
       seriesList[exerciseIndex].add({
         'repetitions': widget.workout.exercises[exerciseIndex].countRepetition,
         'weight': 0, // Peso inicial
+        'checked': false
       });
     });
   }
@@ -51,14 +52,16 @@ class _SessionPageState extends State<SessionPage> {
   void _removeSeries(int exerciseIndex) {
     setState(() {
       if (seriesList[exerciseIndex].length > 1) {
-        //não apaga o primeiro da lista
         seriesList[exerciseIndex].removeLast();
       }
     });
   }
 
-  void _checkSeries(int exerciseIndex) {
-    setState(() {});
+  void _checkSeries(int seriesIndex, int rowIndex) {
+    setState(() {
+      seriesList[seriesIndex][rowIndex]['checked'] =
+          !seriesList[seriesIndex][rowIndex]['checked'];
+    });
   }
 
   @override
@@ -124,7 +127,8 @@ class _SessionPageState extends State<SessionPage> {
                       seriesList: seriesList[index],
                       onAddSeries: () => _addSeries(index),
                       onRemoveSeries: () => _removeSeries(index),
-                      onCheckSeries: () => _checkSeries(index),
+                      onCheckSeries: (rowIndex) =>
+                          _checkSeries(index, rowIndex),
                     );
                   },
                 ),
