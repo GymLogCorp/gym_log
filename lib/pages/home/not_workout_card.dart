@@ -1,6 +1,6 @@
 // empty_training_section.dart
 import 'package:flutter/material.dart';
-import 'package:gym_log/pages/workout_list/workout_list.dart';
+//import 'package:gym_log/pages/workout_list/workout_list.dart';
 import 'package:gym_log/widgets/button.dart';
 import 'package:sizer/sizer.dart';
 import 'package:gym_log/pages/addWorkout/add_workout.dart';

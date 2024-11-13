@@ -43,6 +43,7 @@ dependencies:
   sqflite: ^2.3.3
   carousel_slider: ^5.0.0
   sizer: ^3.0.3
+  fl_chart: ^0.69.0
 
 dev_dependencies:
   rename_app: ^1.6.1

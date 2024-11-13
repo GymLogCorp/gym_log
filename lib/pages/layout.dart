@@ -41,11 +41,7 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
     );
   }
 
-  final List _pages = [
-    const WorkoutPage(),
-    const HomePage(),
-    const HistoricPage()
-  ];
+  final List _pages = [const WorkoutPage(), const HomePage(), HistoricPage()];
 
   @override
   Widget build(BuildContext context) {
