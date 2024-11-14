@@ -22,10 +22,20 @@ class WorkoutRepository extends ChangeNotifier {
       exercises.id AS exercise_id, 
       exercises.name AS exercise_name, 
       exercises.muscle_group AS exercise_muscle_group, 
-      exercises.isCustom AS exercise_isCustom
+      exercises.isCustom AS exercise_isCustom,
+      (SELECT h.repetitions 
+     FROM historic h 
+     WHERE h.exercise_id = exercises.id 
+     ORDER BY h.created_date DESC 
+     LIMIT 1) AS last_repetitions,
+    (SELECT h.weight 
+     FROM historic h 
+     WHERE h.exercise_id = exercises.id 
+     ORDER BY h.created_date DESC 
+     LIMIT 1) AS last_weight
     FROM workout_exercise
     INNER JOIN workout ON workout_exercise.workout_id = workout.id
-    INNER JOIN exercises ON workout_exercise.exercise_id = exercises.id 
+    INNER JOIN exercises ON workout_exercise.exercise_id = exercises.id
     WHERE workout.user_id = ?
     ''',
         [userId],
@@ -35,7 +45,6 @@ class WorkoutRepository extends ChangeNotifier {
 
       for (var row in response) {
         int workoutId = row['workout_id']; // ID do treino
-
         // Verifica se o treino já foi adicionado ao mapa
         if (!workoutMap.containsKey(workoutId)) {
           workoutMap[workoutId] = WorkoutModel(
@@ -47,6 +56,9 @@ class WorkoutRepository extends ChangeNotifier {
           );
         }
 
+        var lastSessionConcat =
+            '${row['last_weight'] ?? 0}x${row['last_repetitions'] ?? 0}';
+
         // Adiciona o exercício ao treino correspondente
         workoutMap[workoutId]!.exercises.add(
               ExerciseModel(
@@ -56,6 +68,7 @@ class WorkoutRepository extends ChangeNotifier {
                 countRepetition: row['default_repetitions'],
                 muscleGroup: row['exercise_muscle_group'],
                 isCustom: row['exercise_isCustom'] == 1 ? true : false,
+                lastSession: lastSessionConcat,
               ),
             );
       }
