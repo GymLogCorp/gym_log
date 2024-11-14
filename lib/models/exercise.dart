@@ -6,6 +6,7 @@ class ExerciseModel {
   int? weight;
   String muscleGroup;
   bool isCustom;
+  String? lastSession;
 
   ExerciseModel({
     required this.id,
@@ -14,6 +15,7 @@ class ExerciseModel {
     required this.countRepetition,
     required this.muscleGroup,
     required this.isCustom,
+    this.lastSession,
     this.weight,
   });
 

@@ -148,7 +148,7 @@ class _CardSeriesState extends State<CardSeries> {
                             ),
                             SizedBox(width: 1.sp),
                             Text(
-                              '${widget.exercise.countSeries}x${widget.exercise.countRepetition}',
+                              widget.exercise.lastSession ?? '',
                               style: GoogleFonts.plusJakartaSans(
                                 fontWeight: FontWeight.bold,
                                 color: Color(widget.seriesList[index]['checked']
