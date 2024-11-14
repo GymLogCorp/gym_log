@@ -64,6 +64,8 @@ class _AddWorkoutState extends State<AddWorkout> {
         );
         await Provider.of<WorkoutRepository>(context, listen: false)
             .createWorkout(dto);
+        await Provider.of<WorkoutRepository>(context, listen: false)
+            .getWorkoutList(1);
         Navigator.pop(context);
       }
     } catch (e) {
