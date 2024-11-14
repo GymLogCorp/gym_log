@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart';
 class SessionRepository extends ChangeNotifier {
   late Database db;
   int? currentSessionId;
-  Future<void>? startSession(String userId) async {
+  Future<void>? startSession(int userId) async {
     try {
       db = await DB.instance.database;
       currentSessionId = await db.insert('session', {
@@ -40,8 +40,10 @@ class SessionRepository extends ChangeNotifier {
             'session_id': currentSessionId,
             'created_date': DateTime.now().toString(),
           });
+          print(exercise);
         }
       });
+      currentSessionId = null;
       notifyListeners();
     } catch (e) {
       print(e);

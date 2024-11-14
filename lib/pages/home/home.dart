@@ -21,12 +21,19 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<WorkoutRepository>(context, listen: false).getWorkoutList(1);
+    final workoutRepository =
+        Provider.of<WorkoutRepository>(context, listen: false);
+    workoutRepository.getWorkoutList(1).then((_) {
+      if (workoutRepository.workoutList.isNotEmpty) {
+        setState(() {
+          _currentWorkoutId = workoutRepository.workoutList.first.id;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final workoutList = Provider.of<WorkoutRepository>(context).workoutList;
     return Sizer(builder: (context, orientation, screenType) {
       return Scaffold(
         backgroundColor: const Color(0xFF1C1C21),
@@ -36,49 +43,63 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                workoutList.isEmpty
-                    ? const NotWorkoutCard()
-                    : CarouselSlider(
-                        items: workoutList
-                            .map((workout) => CardCarousel(workout: workout))
-                            .toList(),
-                        options: CarouselOptions(
-                          height: 85.h,
-                          viewportFraction: 0.8,
-                          enableInfiniteScroll: true,
-                          autoPlay: false,
-                          autoPlayInterval: const Duration(seconds: 3),
-                          autoPlayAnimationDuration:
-                              const Duration(milliseconds: 800),
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          enlargeCenterPage: false,
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              _currentWorkoutId = workoutList[index].id!;
-                            });
-                          },
-                        ),
-                      ),
-                Button(
-                  label: 'COMEÇAR',
-                  bgColor: workoutList.isEmpty ? 0xFF38383D : 0xFF617AFA,
-                  textColor: 0xFFFFFFFF,
-                  borderColor: workoutList.isEmpty ? 0xFF38383D : 0xFF617AFA,
-                  width: 250,
-                  height: 68,
-                  icon: Icons.play_arrow_rounded,
-                  iconSize: 30.0.sp,
-                  onPressed: () {
-                    final selectedWorkout = workoutList.firstWhere(
-                      (workout) => workout.id == _currentWorkoutId,
-                    );
+                Consumer<WorkoutRepository>(
+                  builder: (context, workoutRepository, child) {
+                    final workoutList = workoutRepository.workoutList;
+                    return workoutList.isEmpty
+                        ? const NotWorkoutCard()
+                        : CarouselSlider(
+                            items: workoutList
+                                .map(
+                                    (workout) => CardCarousel(workout: workout))
+                                .toList(),
+                            options: CarouselOptions(
+                              height: 85.h,
+                              viewportFraction: 0.8,
+                              enableInfiniteScroll: true,
+                              autoPlay: false,
+                              autoPlayInterval: const Duration(seconds: 3),
+                              autoPlayAnimationDuration:
+                                  const Duration(milliseconds: 800),
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              enlargeCenterPage: false,
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  _currentWorkoutId = workoutList[index].id!;
+                                });
+                              },
+                            ),
+                          );
+                  },
+                ),
+                Consumer<WorkoutRepository>(
+                  builder: (context, workoutRepository, child) {
+                    final workoutList = workoutRepository.workoutList;
+                    return Button(
+                      label: 'COMEÇAR',
+                      bgColor: workoutList.isEmpty ? 0xFF38383D : 0xFF617AFA,
+                      textColor: 0xFFFFFFFF,
+                      borderColor:
+                          workoutList.isEmpty ? 0xFF38383D : 0xFF617AFA,
+                      width: 250,
+                      height: 68,
+                      icon: Icons.play_arrow_rounded,
+                      iconSize: 30.0.sp,
+                      onPressed: workoutList.isEmpty
+                          ? null
+                          : () {
+                              final selectedWorkout = workoutList.firstWhere(
+                                (workout) => workout.id == _currentWorkoutId,
+                              );
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            SessionPage(workout: selectedWorkout),
-                      ),
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SessionPage(workout: selectedWorkout),
+                                ),
+                              );
+                            },
                     );
                   },
                 ),

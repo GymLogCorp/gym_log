@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gym_log/pages/addWorkout/addExercise/add_exercise.dart';
+import 'package:gym_log/models/exercise.dart';
+import 'package:gym_log/pages/layout.dart';
+import 'package:gym_log/repositories/session_repository.dart';
 import 'package:gym_log/widgets/button.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-class SessionPageModal extends StatelessWidget {
-  const SessionPageModal({super.key});
+class SessionPageModal extends StatefulWidget {
+  final List<ExerciseModel> exerciseToFinish;
+  const SessionPageModal({super.key, required this.exerciseToFinish});
+  @override
+  State<SessionPageModal> createState() => _SessionPageModalState();
+}
+
+class _SessionPageModalState extends State<SessionPageModal> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _handleSubmit() async {
+    await Provider.of<SessionRepository>(context, listen: false)
+        .finishSession(widget.exerciseToFinish);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +81,7 @@ class SessionPageModal extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
-                      children: [
+                      children: const [
                         TextSpan(
                           text:
                               'Tenha Certeza de Concluir TODAS as SÉRIES do seu Treino. Marque o Botão ',
@@ -95,6 +113,11 @@ class SessionPageModal extends StatelessWidget {
                   height: 30.sp,
                   onPressed: () {
                     //navigateTO tela de Treino finalizado com o resumo do treino
+                    _handleSubmit();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Layout()),
+                    );
                   },
                 ),
               ),
