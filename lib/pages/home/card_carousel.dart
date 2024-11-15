@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/models/workout.dart';
 import 'package:sizer/sizer.dart';
-import 'package:gym_log/repositories/workout_repository.dart';
-import 'package:provider/provider.dart';
 
 class CardCarousel extends StatefulWidget {
   final WorkoutModel workout;
@@ -19,7 +17,6 @@ class _CardCarouselState extends State<CardCarousel> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<WorkoutRepository>(context, listen: false).getWorkoutList(1);
   }
 
   @override

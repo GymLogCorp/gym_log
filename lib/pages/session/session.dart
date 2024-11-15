@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gym_log/models/exercise.dart';
 import 'package:gym_log/models/workout.dart';
 import 'package:gym_log/pages/session/modal_finish.dart';
 import 'package:gym_log/pages/session/seriescard.dart';
+import 'package:gym_log/repositories/session_repository.dart';
 import 'package:gym_log/widgets/button.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -16,12 +19,28 @@ class SessionPage extends StatefulWidget {
 }
 
 class _SessionPageState extends State<SessionPage> {
-  List<List<Map<String, dynamic>>> seriesList =
-      []; // Lista de séries para cada exercício
+  List<Map<String, List>> exerciseWithSeries = [];
+  List<ExerciseModel> exercisesToFinish = [];
+
+  void startSession() async {
+    await Provider.of<SessionRepository>(context, listen: false)
+        .startSession(1);
+  }
+
+  // var exercisewithSeries  = {
+  //   "Supino": [
+  //     {
+  //       'repetitions': 0,
+  //       'weight': 0,
+  //       'checked': false,
+  //     }
+  //   ]
+  // };
 
   @override
   void initState() {
     super.initState();
+    startSession();
     // Inicializa a lista de séries com base nos exercícios
     for (var exercise in widget.workout.exercises) {
       int countSeries = exercise.countSeries ?? 0; // Valor padrão se for nulo
@@ -31,28 +50,83 @@ class _SessionPageState extends State<SessionPage> {
       for (int i = 0; i < countSeries; i++) {
         exerciseSeries.add({
           'repetitions': countRepetition,
-          'weight': 0, // Peso inicial
+          'weight': 0,
+          'checked': false,
         });
       }
-      seriesList.add(exerciseSeries);
+      exerciseWithSeries.add(
+        {
+          exercise.name: exerciseSeries,
+        },
+      );
     }
   }
 
-  void _addSeries(int exerciseIndex) {
+  void _handleFinish() {
+    for (var item in exerciseWithSeries) {
+      String exerciseName = item.keys.first;
+      var seriesList = item[exerciseName];
+
+      var exercise = widget.workout.exercises
+          .firstWhere((exercise) => exercise.name == exerciseName);
+
+      // Especifica o tipo de Map para o reduce
+      var maxWeightSeries = (seriesList as List<Map<String, dynamic>>?)
+          ?.reduce((Map<String, dynamic> curr, Map<String, dynamic> next) {
+        return curr['weight'] > next['weight'] ? curr : next;
+      });
+
+      exercisesToFinish.add(ExerciseModel(
+        id: exercise.id, // ID do exercício
+        name: exerciseName,
+        countSeries: seriesList?.length,
+        countRepetition:
+            maxWeightSeries?['repetitions'], // Rep da série com maior peso
+        muscleGroup: exercise.muscleGroup,
+        weight: (maxWeightSeries?['weight'] as num?)?.toInt(), // Maior peso
+        isCustom: exercise.isCustom, // Valor de isCustom
+      ));
+    }
+  }
+
+  void _addSeries(String exerciseName) {
     setState(() {
-      seriesList[exerciseIndex].add({
-        'repetitions': widget.workout.exercises[exerciseIndex].countRepetition,
-        'weight': 0, // Peso inicial
+      exerciseWithSeries
+          .firstWhere(
+              (element) => element.containsKey(exerciseName))[exerciseName]
+          ?.add({
+        'repetitions': widget.workout.exercises
+                .firstWhere((exercise) => exercise.name == exerciseName)
+                .countRepetition ??
+            0,
+        'weight': 0,
+        'checked': false,
       });
     });
   }
 
-  void _removeSeries(int exerciseIndex) {
+  void _removeSeries(String exerciseName, serieIndex) {
     setState(() {
-      if (seriesList[exerciseIndex].length > 1) {
-        //não apaga o primeiro da lista
-        seriesList[exerciseIndex].removeLast();
+      if (exerciseWithSeries
+              .firstWhere(
+                  (element) => element.containsKey(exerciseName))[exerciseName]!
+              .length >
+          1) {
+        exerciseWithSeries
+            .firstWhere(
+                (element) => element.containsKey(exerciseName))[exerciseName]!
+            .removeAt(serieIndex);
       }
+    });
+  }
+
+  void _checkSeries(String exerciseName, int serieIndex) {
+    setState(() {
+      exerciseWithSeries.firstWhere(
+              (element) => element.containsKey(exerciseName))[exerciseName]
+          ?[serieIndex]['checked'] = !exerciseWithSeries.firstWhere(
+              (element) => element.containsKey(exerciseName))[exerciseName]
+          ?[serieIndex]['checked'];
     });
   }
 
@@ -90,7 +164,21 @@ class _SessionPageState extends State<SessionPage> {
                     color: const Color(0xFF617AFA),
                     iconSize: 36,
                     onPressed: () {
-                      // Navegar para modal de finalizar o treino
+                      _handleFinish();
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            backgroundColor: const Color(0xFF212429),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: SessionPageModal(
+                              exerciseToFinish: exercisesToFinish,
+                            ),
+                          );
+                        },
+                      );
                     },
                   ),
                 ],
@@ -105,9 +193,12 @@ class _SessionPageState extends State<SessionPage> {
                     final exercise = widget.workout.exercises[index];
                     return CardSeries(
                       exercise: exercise,
-                      seriesList: seriesList[index],
-                      onAddSeries: () => _addSeries(index),
-                      onRemoveSeries: () => _removeSeries(index),
+                      seriesList: exerciseWithSeries,
+                      onAddSeries: () => _addSeries(exercise.name),
+                      onRemoveSeries: (serieIndex) =>
+                          _removeSeries(exercise.name, serieIndex),
+                      onCheckSeries: (serieIndex) =>
+                          _checkSeries(exercise.name, serieIndex),
                     );
                   },
                 ),
@@ -123,6 +214,7 @@ class _SessionPageState extends State<SessionPage> {
                 width: 180,
                 height: 20,
                 onPressed: () {
+                  _handleFinish();
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -131,7 +223,9 @@ class _SessionPageState extends State<SessionPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
                         ),
-                        child: SessionPageModal(),
+                        child: SessionPageModal(
+                          exerciseToFinish: exercisesToFinish,
+                        ),
                       );
                     },
                   );

@@ -174,7 +174,7 @@ class _ExerciseTableWidgetState extends State<ExerciseTableWidget> {
                             child: Center(
                               child: IconButton(
                                 icon: const Icon(
-                                  Icons.delete,
+                                  Icons.delete_forever_rounded,
                                   color: Colors.red,
                                 ),
                                 onPressed: () {
