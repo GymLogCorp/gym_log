@@ -15,17 +15,19 @@ class HistoricRepository extends ChangeNotifier {
       historicExercisesList.clear();
       var response = await db
           .query('historic', where: 'exercise_id= ?', whereArgs: [exerciseId]);
-
+      print(response);
       List<ChartDataModel> tempChartData = [];
       for (var row in response) {
         DateTime createdDate = DateTime.parse(row['created_date'] as String);
         String formattedDate = DateFormat('dd/MM').format(createdDate);
         tempChartData.add(ChartDataModel(
-            weight: row['weight'] as String, date: formattedDate));
+            weight: (row['weight'] as int).toString(), date: formattedDate));
+        //weight: row['weight'] as String
       }
 
       historicExercisesList.add(ExerciseToHistoricModel(
           name: exerciseName, chartData: tempChartData));
+      notifyListeners();
     } catch (e) {
       print(e);
     }
@@ -59,6 +61,7 @@ class HistoricRepository extends ChangeNotifier {
           ));
         }
       });
+      notifyListeners();
     } catch (e) {
       print(e);
     }
