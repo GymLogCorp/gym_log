@@ -63,6 +63,8 @@ class _SessionPageState extends State<SessionPage> {
   }
 
   void _handleFinish() {
+    exercisesToFinish.clear();
+
     for (var item in exerciseWithSeries) {
       String exerciseName = item.keys.first;
       var seriesList = item[exerciseName];
@@ -70,21 +72,20 @@ class _SessionPageState extends State<SessionPage> {
       var exercise = widget.workout.exercises
           .firstWhere((exercise) => exercise.name == exerciseName);
 
-      // Especifica o tipo de Map para o reduce
-      var maxWeightSeries = (seriesList as List<Map<String, dynamic>>?)
-          ?.reduce((Map<String, dynamic> curr, Map<String, dynamic> next) {
+      // Obtém os dados da série com maior peso, se existir
+      var maxWeightSeries =
+          (seriesList as List<Map<String, dynamic>>?)?.reduce((curr, next) {
         return curr['weight'] > next['weight'] ? curr : next;
       });
 
       exercisesToFinish.add(ExerciseModel(
-        id: exercise.id, // ID do exercício
+        id: exercise.id,
         name: exerciseName,
         countSeries: seriesList?.length,
-        countRepetition:
-            maxWeightSeries?['repetitions'], // Rep da série com maior peso
+        countRepetition: maxWeightSeries?['repetitions'],
         muscleGroup: exercise.muscleGroup,
-        weight: (maxWeightSeries?['weight'] as num?)?.toInt(), // Maior peso
-        isCustom: exercise.isCustom, // Valor de isCustom
+        weight: (maxWeightSeries?['weight'] as num?)?.toInt(),
+        isCustom: exercise.isCustom,
       ));
     }
   }

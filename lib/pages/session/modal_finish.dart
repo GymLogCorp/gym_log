@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/models/exercise.dart';
-import 'package:gym_log/pages/layout.dart';
+import 'summarymodal.dart';
 import 'package:gym_log/repositories/session_repository.dart';
 import 'package:gym_log/widgets/button.dart';
 import 'package:provider/provider.dart';
@@ -9,20 +9,30 @@ import 'package:sizer/sizer.dart';
 
 class SessionPageModal extends StatefulWidget {
   final List<ExerciseModel> exerciseToFinish;
-  const SessionPageModal({super.key, required this.exerciseToFinish});
+
+  const SessionPageModal({Key? key, required this.exerciseToFinish})
+      : super(key: key);
+
   @override
   State<SessionPageModal> createState() => _SessionPageModalState();
 }
 
 class _SessionPageModalState extends State<SessionPageModal> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+  /// Submete os dados de `exerciseToFinish` ao banco de dados
   void _handleSubmit() async {
     await Provider.of<SessionRepository>(context, listen: false)
         .finishSession(widget.exerciseToFinish);
+  }
+
+  void _navigateToSummary() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SummaryPage(
+          exercises: widget.exerciseToFinish,
+        ),
+      ),
+    );
   }
 
   @override
@@ -36,7 +46,7 @@ class _SessionPageModalState extends State<SessionPageModal> {
         ),
         color: const Color(0xFF212429),
         child: Padding(
-          padding: const EdgeInsets.only(left: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -70,7 +80,7 @@ class _SessionPageModalState extends State<SessionPageModal> {
                 ],
               ),
               Padding(
-                padding: EdgeInsets.only(top: 25.sp),
+                padding: EdgeInsets.only(top: 20.sp),
                 child: Align(
                   alignment: Alignment.center,
                   child: RichText(
@@ -112,12 +122,8 @@ class _SessionPageModalState extends State<SessionPageModal> {
                   width: 55.sp,
                   height: 30.sp,
                   onPressed: () {
-                    //navigateTO tela de Treino finalizado com o resumo do treino
-                    _handleSubmit();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Layout()),
-                    );
+                    _handleSubmit(); // Salva os dados no banco
+                    _navigateToSummary(); // Navega para a tela de resumo
                   },
                 ),
               ),
