@@ -18,6 +18,8 @@ class AuthService extends ChangeNotifier {
     _auth.authStateChanges().listen((User? user) {
       usuario = (user == null) ? null : user;
       isLoading = false;
+      print(
+          "########################################### $usuario -------------------------------------------------");
       notifyListeners();
     });
   }
@@ -77,6 +79,9 @@ class AuthService extends ChangeNotifier {
 
   logout() async {
     await _auth.signOut();
+    usuario = null; // Reseta o usuário diretamente
+    isLoading = false;
     _getUser();
+    notifyListeners();
   }
 }

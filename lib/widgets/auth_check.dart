@@ -1,34 +1,31 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gym_log/pages/layout.dart';
 import 'package:gym_log/pages/welcome.dart';
+import 'package:gym_log/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
-class AuthCheck extends StatefulWidget {
+class AuthCheck extends StatelessWidget {
   const AuthCheck({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _AuthCheckState createState() => _AuthCheckState();
-}
-
-class _AuthCheckState extends State<AuthCheck> {
-  @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+    return Consumer<AuthService>(
+      builder: (context, authService, _) {
+        if (authService.isLoading) {
+          print("LOADING-----------------$authService.usuario----------------");
           return loading();
-        } else if (snapshot.hasData) {
+        } else if (authService.usuario != null) {
+          print("LAYOUT----------------$authService.usuario-----------------");
           return const Layout();
         } else {
+          print("WELCOME----------------$authService.usuario-----------------");
           return const Welcome();
         }
       },
     );
   }
 
-  loading() {
+  Widget loading() {
     return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
