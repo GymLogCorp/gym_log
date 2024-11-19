@@ -15,7 +15,6 @@ class UserRepository {
         where: "email= ?",
         whereArgs: [email],
       );
-      print(response);
       if (response.isNotEmpty) {
         UserModel user = UserModel.fromMap(response.first);
         return user;

@@ -5,6 +5,7 @@ import 'package:gym_log/models/user.dart';
 import 'package:gym_log/pages/addWorkout/add_workout.dart';
 import 'package:gym_log/pages/historic.dart';
 import 'package:gym_log/pages/home/home.dart';
+import 'package:gym_log/pages/welcome.dart';
 import 'package:gym_log/pages/workout_list/workout_list.dart';
 import 'package:gym_log/repositories/user_repository.dart';
 import 'package:gym_log/services/auth_service.dart';
@@ -152,6 +153,12 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
               ),
               onTap: () async {
                 await context.read<AuthService>().logout();
+                if (mounted) {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Welcome()),
+                  );
+                }
               },
             ),
           ],

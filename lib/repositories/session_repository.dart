@@ -40,7 +40,6 @@ class SessionRepository extends ChangeNotifier {
             'session_id': currentSessionId,
             'created_date': DateTime.now().toString(),
           });
-          print(exercise);
         }
       });
       currentSessionId = null;
