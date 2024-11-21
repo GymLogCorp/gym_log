@@ -1,23 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:gym_log/models/exercise.dart';
-import 'package:gym_log/widgets/button.dart';
+import 'package:gym_log/models/session.dart';
+import 'package:gym_log/states/SessionState.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CardSeries extends StatefulWidget {
-  final ExerciseModel exercise;
-  final List<Map<String, dynamic>> seriesList;
-  final VoidCallback onAddSeries;
-  final Function(int) onRemoveSeries;
-  final void Function(int) onCheckSeries;
+  final ExerciseSeries exercise;
 
   const CardSeries({
     super.key,
     required this.exercise,
-    required this.seriesList,
-    required this.onAddSeries,
-    required this.onRemoveSeries,
-    required this.onCheckSeries,
   });
 
   @override
@@ -27,11 +20,7 @@ class CardSeries extends StatefulWidget {
 class _CardSeriesState extends State<CardSeries> {
   @override
   Widget build(BuildContext context) {
-    // Filtra as séries do exercício atual
-    final exerciseSeries = widget.seriesList.firstWhere(
-      (element) => element.containsKey(widget.exercise.name),
-    )[widget.exercise.name] as List<Map<String, dynamic>>;
-
+    final exerciseName = widget.exercise.name;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -49,16 +38,24 @@ class _CardSeriesState extends State<CardSeries> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.exercise.name,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: 18.sp,
+                  Expanded(
+                    child: Text(
+                      exerciseName,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      softWrap: false,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 18.sp,
+                      ),
                     ),
                   ),
                   InkWell(
-                    onTap: widget.onAddSeries,
+                    onTap: () => {
+                      Provider.of<SessionState>(context, listen: false)
+                          .addSeries(widget.exercise.name)
+                    },
                     child: const Icon(
                       Icons.add_circle,
                       color: Color(0xFF617AFA),
@@ -113,8 +110,8 @@ class _CardSeriesState extends State<CardSeries> {
         ),
         // Lista de séries do exercício
         Column(
-          children: List.generate(exerciseSeries.length, (index) {
-            final serie = exerciseSeries[index];
+          children: List.generate(widget.exercise.series.length, (index) {
+            final serie = widget.exercise.series[index];
 
             return SizedBox(
               width: 100.0.w,
@@ -127,12 +124,12 @@ class _CardSeriesState extends State<CardSeries> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         side: BorderSide(
-                            color: Color(serie['checked']
+                            color: Color(serie.checked
                                 ? 0xFF000000
                                 : Colors.white.value),
                             width: 1.0),
                       ),
-                      color: Color(serie['checked'] ? 0xFF617AFA : 0xFF1C1C21),
+                      color: Color(serie.checked ? 0xFF617AFA : 0xFF1C1C21),
                       child: Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: 20.sp,
@@ -145,7 +142,7 @@ class _CardSeriesState extends State<CardSeries> {
                               '${index + 1}', // Índice da série
                               style: GoogleFonts.plusJakartaSans(
                                 fontWeight: FontWeight.bold,
-                                color: Color(serie['checked']
+                                color: Color(serie.checked
                                     ? 0xFF000000
                                     : Colors.white.value),
                                 fontSize: 18.sp,
@@ -153,10 +150,10 @@ class _CardSeriesState extends State<CardSeries> {
                             ),
                             SizedBox(width: 1.sp),
                             Text(
-                              widget.exercise.lastSession ?? '',
+                              serie.lastSession,
                               style: GoogleFonts.plusJakartaSans(
                                 fontWeight: FontWeight.bold,
-                                color: Color(serie['checked']
+                                color: Color(serie.checked
                                     ? 0xFF000000
                                     : Colors.white.value),
                                 fontSize: 18.sp,
@@ -168,21 +165,22 @@ class _CardSeriesState extends State<CardSeries> {
                               height: 20.sp,
                               child: TextFormField(
                                 maxLength: 3,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   counterText: '',
+                                  hintText: '00',
                                 ),
+                                enabled: !serie.checked,
                                 keyboardType: TextInputType.number,
                                 style: GoogleFonts.plusJakartaSans(
                                   fontWeight: FontWeight.bold,
-                                  color: Color(serie['checked']
+                                  color: Color(serie.checked
                                       ? 0xFF000000
                                       : Colors.white.value),
                                   fontSize: 18.sp,
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    serie['weight'] =
-                                        double.tryParse(value) ?? 0;
+                                    serie.weight = double.tryParse(value) ?? 0;
                                   });
                                 },
                               ),
@@ -195,18 +193,20 @@ class _CardSeriesState extends State<CardSeries> {
                                 maxLength: 3,
                                 decoration: InputDecoration(
                                   counterText: '',
+                                  hintText: serie.repetitions.toString(),
                                 ),
+                                enabled: !serie.checked,
                                 keyboardType: TextInputType.number,
                                 style: GoogleFonts.plusJakartaSans(
                                   fontWeight: FontWeight.bold,
-                                  color: Color(serie['checked']
+                                  color: Color(serie.checked
                                       ? 0xFF000000
                                       : Colors.white.value),
                                   fontSize: 18.sp,
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    serie['repetitions'] =
+                                    serie.repetitions =
                                         int.tryParse(value) ?? 0;
                                   });
                                 },
@@ -220,19 +220,28 @@ class _CardSeriesState extends State<CardSeries> {
                   SizedBox(width: 3.0.w),
                   // Checkbox para marcar série como concluída
                   InkWell(
-                    onTap: () => widget.onCheckSeries(index),
+                    onTap: () =>
+                        Provider.of<SessionState>(context, listen: false)
+                            .checkSeries(exerciseName, index),
                     child: Icon(
-                      serie['checked']
+                      serie.checked
                           ? Icons.check_circle
                           : Icons.check_circle_outline_outlined,
-                      color: Color(0xFF617AFA),
+                      color: const Color(0xFF617AFA),
                       size: 32,
                     ),
                   ),
                   SizedBox(width: 2.0.w),
                   // Ícone de remoção de série
                   InkWell(
-                    onTap: () => widget.onRemoveSeries(index),
+                    onTap: () {
+                      print('Índice no CardSeries: $index');
+                      print(
+                          'Séries atuais no CardSeries: ${widget.exercise.series}');
+                      Provider.of<SessionState>(context, listen: false)
+                          .removeSeries(exerciseName, index);
+                      setState(() {});
+                    },
                     child: Icon(
                       Icons.delete_forever_rounded,
                       color: index == 0 ? Colors.grey : const Color(0xFFE40928),

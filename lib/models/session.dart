@@ -13,3 +13,31 @@ class SessionModel {
     required this.endTime,
   });
 }
+
+class SeriesModel {
+  int repetitions;
+  double weight;
+  bool checked;
+  String lastSession;
+
+  SeriesModel({
+    required this.repetitions,
+    required this.weight,
+    required this.checked,
+    required this.lastSession,
+  });
+}
+
+class ExerciseSeries {
+  String name;
+  int defaultRepetitions;
+  String lastSession;
+  List<SeriesModel> series;
+
+  ExerciseSeries({
+    required this.name,
+    required this.defaultRepetitions,
+    required this.lastSession,
+    required this.series,
+  });
+}
