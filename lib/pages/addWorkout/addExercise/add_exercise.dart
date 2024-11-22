@@ -386,7 +386,7 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                           obscureText: false,
                           controller: _repetitionsCountController,
                           validator: _validateInputs,
-                          width: 120.0,
+                          width: 140.0,
                           onChange: (value) {
                             setState(() {
                               repetitionsCount = int.tryParse(value) ?? 0;
