@@ -83,9 +83,11 @@ class CardWorkoutList extends StatelessWidget {
                         size: 20.0,
                       ),
                     ),
-                    const SizedBox(width: 10.0), // Espaçamento entre os ícones
+                    const SizedBox(width: 10.0),
                     GestureDetector(
-                      onTap: onDelete,
+                      onTap: () {
+                        _showDeleteConfirmationModal(context);
+                      },
                       child: const Icon(
                         Icons.delete_forever_rounded,
                         color: Colors.red,
@@ -106,6 +108,62 @@ class CardWorkoutList extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _showDeleteConfirmationModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF212429),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Text(
+            'Confirmar Exclusão',
+            style: GoogleFonts.plusJakartaSans(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'Tem Certeza de que deseja EXCLUIR o Treino "${workout.name}"?',
+            style: GoogleFonts.plusJakartaSans(
+              color: Colors.white70,
+              fontSize: 16,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Fecha o modal
+              },
+              child: Text(
+                'Cancelar',
+                style: GoogleFonts.plusJakartaSans(
+                  color: Colors.grey,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Fecha o modal
+                onDelete(); // Chama a função original de exclusão
+              },
+              child: Text(
+                'Deletar',
+                style: GoogleFonts.plusJakartaSans(
+                  color: Colors.red,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
