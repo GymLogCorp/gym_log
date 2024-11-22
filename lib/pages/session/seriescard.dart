@@ -50,7 +50,10 @@ class _CardSeriesState extends State<CardSeries> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.exercise.name,
+                    widget.exercise.name.length > 20
+                        ? widget.exercise.name.substring(0, 20) + '...'
+                        : widget.exercise.name,
+                    overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.plusJakartaSans(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,

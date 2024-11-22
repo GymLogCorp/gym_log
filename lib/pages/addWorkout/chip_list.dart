@@ -12,13 +12,16 @@ class ChipList extends StatefulWidget {
 
 class _ChipListState extends State<ChipList> {
   List<String> groupMuscleList = [
-    "Peito",
-    "Costas",
-    "Abdómen",
-    "Pernas",
-    "Panturrilha",
-    "Bíceps",
-    "Tríceps"
+    'Peito',
+    'Ombro',
+    'Costas',
+    'Bíceps',
+    'Tríceps',
+    'Antebraço',
+    'Abdomên',
+    'Glúteo',
+    'Pernas',
+    'Panturrilha'
   ];
 
   @override
