@@ -80,7 +80,7 @@ class CardWorkoutList extends StatelessWidget {
                       child: const Icon(
                         Icons.edit,
                         color: Colors.blue,
-                        size: 20.0,
+                        size: 25.0,
                       ),
                     ),
                     const SizedBox(width: 10.0),
@@ -91,7 +91,7 @@ class CardWorkoutList extends StatelessWidget {
                       child: const Icon(
                         Icons.delete_forever_rounded,
                         color: Colors.red,
-                        size: 20.0,
+                        size: 25.0,
                       ),
                     ),
                   ],

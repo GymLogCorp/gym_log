@@ -57,7 +57,7 @@ class NotWorkoutCard extends StatelessWidget {
                         bgColor: (0xFF617AFA),
                         textColor: 0xFFFFFFFF,
                         borderColor: (0xFF617AFA),
-                        width: 150,
+                        width: 160,
                         height: 55,
                         icon: Icons.add,
                         iconSize: 30.0,

@@ -17,9 +17,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int? _currentWorkoutId;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     final workoutRepository =
         Provider.of<WorkoutRepository>(context, listen: false);
@@ -75,31 +75,36 @@ class _HomePageState extends State<HomePage> {
                 Consumer<WorkoutRepository>(
                   builder: (context, workoutRepository, child) {
                     final workoutList = workoutRepository.workoutList;
-                    return Button(
-                      label: 'COMEÇAR',
-                      bgColor: workoutList.isEmpty ? 0xFF38383D : 0xFF617AFA,
-                      textColor: 0xFFFFFFFF,
-                      borderColor:
-                          workoutList.isEmpty ? 0xFF38383D : 0xFF617AFA,
-                      width: 250,
-                      height: 68,
-                      icon: Icons.play_arrow_rounded,
-                      iconSize: 30.0.sp,
-                      onPressed: workoutList.isEmpty
-                          ? null
-                          : () {
-                              final selectedWorkout = workoutList.firstWhere(
-                                (workout) => workout.id == _currentWorkoutId,
-                              );
 
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      SessionPage(workout: selectedWorkout),
-                                ),
-                              );
-                            },
+                    return Visibility(
+                      visible: workoutList
+                          .isNotEmpty, // Exibe o botão apenas se houver treino
+                      child: Button(
+                        label: 'COMEÇAR',
+                        bgColor: workoutList.isEmpty ? 0xFF38383D : 0xFF617AFA,
+                        textColor: 0xFFFFFFFF,
+                        borderColor:
+                            workoutList.isEmpty ? 0xFF38383D : 0xFF617AFA,
+                        width: 250,
+                        height: 68,
+                        icon: Icons.play_arrow_rounded,
+                        iconSize: 30.0.sp,
+                        onPressed: workoutList.isEmpty
+                            ? null
+                            : () {
+                                final selectedWorkout = workoutList.firstWhere(
+                                  (workout) => workout.id == _currentWorkoutId,
+                                );
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SessionPage(workout: selectedWorkout),
+                                  ),
+                                );
+                              },
+                      ),
                     );
                   },
                 ),

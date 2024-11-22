@@ -67,13 +67,14 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 icon: Icon(
                   editMode ? Icons.check : Icons.edit,
                   color: Colors.white,
+                  size: 30.0,
                 ),
                 onPressed: () {
                   setState(() {
                     editMode = !editMode;
                   });
                 },
-              ),
+              )
             ],
           ),
           SizedBox(
