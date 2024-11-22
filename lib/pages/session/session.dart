@@ -133,6 +133,7 @@ class _SessionPageState extends State<SessionPage> {
                       itemBuilder: (context, index) {
                         final exercise = sessionState.exerciseWithSeries[index];
                         return CardSeries(
+                          key: ValueKey(exercise.name),
                           exercise: exercise,
                         );
                       },
@@ -141,25 +142,6 @@ class _SessionPageState extends State<SessionPage> {
                 ),
               ),
             ),
-            // Expanded(
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(8.0),
-            //     child: ListView.builder(
-            //       itemCount: Provider.of<SessionState>(context, listen: false)
-            //           .exerciseWithSeries
-            //           .length,
-            //       itemBuilder: (context, index) {
-            //         final exercise =
-            //             Provider.of<SessionState>(context, listen: false)
-            //                 .exerciseWithSeries[index];
-            //         return CardSeries(
-            //           // key: ValueKey('${exercise.keys.first}_$index'),
-            //           exercise: exercise,
-            //         );
-            //       },
-            //     ),
-            //   ),
-            // ),
             Padding(
               padding: EdgeInsets.only(bottom: 20.sp),
               child: Button(

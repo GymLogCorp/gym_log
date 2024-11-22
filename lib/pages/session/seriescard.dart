@@ -112,7 +112,6 @@ class _CardSeriesState extends State<CardSeries> {
         Column(
           children: List.generate(widget.exercise.series.length, (index) {
             final serie = widget.exercise.series[index];
-
             return SizedBox(
               width: 100.0.w,
               height: 5.0.h,
@@ -124,9 +123,9 @@ class _CardSeriesState extends State<CardSeries> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         side: BorderSide(
-                            color: Color(serie.checked
-                                ? 0xFF000000
-                                : Colors.white.value),
+                            color: Color(
+                              serie.checked ? 0xFF000000 : Colors.white.value,
+                            ),
                             width: 1.0),
                       ),
                       color: Color(serie.checked ? 0xFF617AFA : 0xFF1C1C21),
@@ -235,12 +234,8 @@ class _CardSeriesState extends State<CardSeries> {
                   // Ícone de remoção de série
                   InkWell(
                     onTap: () {
-                      print('Índice no CardSeries: $index');
-                      print(
-                          'Séries atuais no CardSeries: ${widget.exercise.series}');
                       Provider.of<SessionState>(context, listen: false)
-                          .removeSeries(exerciseName, index);
-                      setState(() {});
+                          .removeSeries(exerciseName, serie.id);
                     },
                     child: Icon(
                       Icons.delete_forever_rounded,

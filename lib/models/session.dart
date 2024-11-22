@@ -19,8 +19,10 @@ class SeriesModel {
   double weight;
   bool checked;
   String lastSession;
+  String id;
 
   SeriesModel({
+    required this.id,
     required this.repetitions,
     required this.weight,
     required this.checked,
