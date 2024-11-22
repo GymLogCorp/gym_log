@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gym_log/models/exercise.dart';
+import 'package:gym_log/models/session.dart';
 import 'package:gym_log/models/workout.dart';
 import 'package:gym_log/pages/session/modal_finish.dart';
 import 'package:gym_log/pages/session/seriescard.dart';
 import 'package:gym_log/repositories/session_repository.dart';
+import 'package:gym_log/states/SessionState.dart';
 import 'package:gym_log/widgets/button.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -12,14 +14,14 @@ import 'package:google_fonts/google_fonts.dart';
 class SessionPage extends StatefulWidget {
   final WorkoutModel workout;
 
-  const SessionPage({Key? key, required this.workout}) : super(key: key);
+  const SessionPage({super.key, required this.workout});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SessionPageState createState() => _SessionPageState();
 }
 
 class _SessionPageState extends State<SessionPage> {
-  List<Map<String, List>> exerciseWithSeries = [];
   List<ExerciseModel> exercisesToFinish = [];
 
   void startSession() async {
@@ -27,108 +29,43 @@ class _SessionPageState extends State<SessionPage> {
         .startSession(1);
   }
 
-  // var exercisewithSeries  = {
-  //   "Supino": [
-  //     {
-  //       'repetitions': 0,
-  //       'weight': 0,
-  //       'checked': false,
-  //     }
-  //   ]
-  // };
-
   @override
   void initState() {
     super.initState();
     startSession();
-    // Inicializa a lista de séries com base nos exercícios
-    for (var exercise in widget.workout.exercises) {
-      int countSeries = exercise.countSeries ?? 0; // Valor padrão se for nulo
-      int countRepetition = exercise.countRepetition ?? 0;
-
-      List<Map<String, dynamic>> exerciseSeries = [];
-      for (int i = 0; i < countSeries; i++) {
-        exerciseSeries.add({
-          'repetitions': countRepetition,
-          'weight': 0,
-          'checked': false,
-        });
-      }
-      exerciseWithSeries.add(
-        {
-          exercise.name: exerciseSeries,
-        },
-      );
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<SessionState>(context, listen: false)
+          .setDefaultWorkout(widget.workout);
+    });
   }
 
   void _handleFinish() {
-    exercisesToFinish.clear();
-
-    for (var item in exerciseWithSeries) {
-      String exerciseName = item.keys.first;
-      var seriesList = item[exerciseName];
+    final exerciseWithSeries =
+        Provider.of<SessionState>(context, listen: false).exerciseWithSeries;
+    for (var exerciseSeries in exerciseWithSeries) {
+      String exerciseName = exerciseSeries.name;
+      var seriesList = exerciseSeries.series;
 
       var exercise = widget.workout.exercises
           .firstWhere((exercise) => exercise.name == exerciseName);
 
-      // Obtém os dados da série com maior peso, se existir
+      // Especifica o tipo de Map para o reduce
       var maxWeightSeries =
-          (seriesList as List<Map<String, dynamic>>?)?.reduce((curr, next) {
-        return curr['weight'] > next['weight'] ? curr : next;
+          seriesList.reduce((SeriesModel curr, SeriesModel next) {
+        return curr.weight > next.weight ? curr : next;
       });
 
       exercisesToFinish.add(ExerciseModel(
         id: exercise.id,
         name: exerciseName,
-        countSeries: seriesList?.length,
-        countRepetition: maxWeightSeries?['repetitions'],
+        countSeries: seriesList.length,
+        countRepetition:
+            maxWeightSeries.repetitions, // Rep da série com maior peso
         muscleGroup: exercise.muscleGroup,
-        weight: (maxWeightSeries?['weight'] as num?)?.toInt(),
-        isCustom: exercise.isCustom,
+        weight: maxWeightSeries.weight.toInt(), // Maior peso
+        isCustom: exercise.isCustom, // Valor de isCustom
       ));
     }
-  }
-
-  void _addSeries(String exerciseName) {
-    setState(() {
-      exerciseWithSeries
-          .firstWhere(
-              (element) => element.containsKey(exerciseName))[exerciseName]
-          ?.add({
-        'repetitions': widget.workout.exercises
-                .firstWhere((exercise) => exercise.name == exerciseName)
-                .countRepetition ??
-            0,
-        'weight': 0,
-        'checked': false,
-      });
-    });
-  }
-
-  void _removeSeries(String exerciseName, serieIndex) {
-    setState(() {
-      if (exerciseWithSeries
-              .firstWhere(
-                  (element) => element.containsKey(exerciseName))[exerciseName]!
-              .length >
-          1) {
-        exerciseWithSeries
-            .firstWhere(
-                (element) => element.containsKey(exerciseName))[exerciseName]!
-            .removeAt(serieIndex);
-      }
-    });
-  }
-
-  void _checkSeries(String exerciseName, int serieIndex) {
-    setState(() {
-      exerciseWithSeries.firstWhere(
-              (element) => element.containsKey(exerciseName))[exerciseName]
-          ?[serieIndex]['checked'] = !exerciseWithSeries.firstWhere(
-              (element) => element.containsKey(exerciseName))[exerciseName]
-          ?[serieIndex]['checked'];
-    });
   }
 
   @override
@@ -144,14 +81,15 @@ class _SessionPageState extends State<SessionPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    color: Colors.white,
-                    iconSize: 36,
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+                  // IconButton(
+                  //   icon: const Icon(Icons.arrow_back),
+                  //   color: Colors.white,
+                  //   iconSize: 36,
+                  //   onPressed: () {
+                  //     Navigator.pop(context);
+                  //   },
+                  // ),
+                  Image.asset('assets/images/halter30.png'),
                   Text(
                     widget.workout.name,
                     style: GoogleFonts.plusJakartaSans(
@@ -188,18 +126,17 @@ class _SessionPageState extends State<SessionPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ListView.builder(
-                  itemCount: widget.workout.exercises.length,
-                  itemBuilder: (context, index) {
-                    final exercise = widget.workout.exercises[index];
-                    return CardSeries(
-                      exercise: exercise,
-                      seriesList: exerciseWithSeries,
-                      onAddSeries: () => _addSeries(exercise.name),
-                      onRemoveSeries: (serieIndex) =>
-                          _removeSeries(exercise.name, serieIndex),
-                      onCheckSeries: (serieIndex) =>
-                          _checkSeries(exercise.name, serieIndex),
+                child: Consumer<SessionState>(
+                  builder: (context, sessionState, child) {
+                    return ListView.builder(
+                      itemCount: sessionState.exerciseWithSeries.length,
+                      itemBuilder: (context, index) {
+                        final exercise = sessionState.exerciseWithSeries[index];
+                        return CardSeries(
+                          key: ValueKey(exercise.name),
+                          exercise: exercise,
+                        );
+                      },
                     );
                   },
                 ),
