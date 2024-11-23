@@ -77,14 +77,12 @@ class _HomePageState extends State<HomePage> {
                     final workoutList = workoutRepository.workoutList;
 
                     return Visibility(
-                      visible: workoutList
-                          .isNotEmpty, // Exibe o botão apenas se houver treino
+                      visible: workoutList.isNotEmpty,
                       child: Button(
                         label: 'COMEÇAR',
-                        bgColor: workoutList.isEmpty ? 0xFF38383D : 0xFF617AFA,
+                        bgColor: 0xFF617AFA,
                         textColor: 0xFFFFFFFF,
-                        borderColor:
-                            workoutList.isEmpty ? 0xFF38383D : 0xFF617AFA,
+                        borderColor: 0xFF617AFA,
                         width: 250,
                         height: 68,
                         icon: Icons.play_arrow_rounded,
