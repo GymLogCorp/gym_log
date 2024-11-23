@@ -13,15 +13,15 @@ class HistoricRepository extends ChangeNotifier {
     try {
       db = await DB.instance.database;
       historicExercisesList.clear();
-      var response = await db
-          .query('historic', where: 'exercise_id= ?', whereArgs: [exerciseId]);
+      var response = await db.query('historic',
+          where: 'exercise_id= ?', whereArgs: [exerciseId], limit: 5);
       print(response);
       List<ChartDataModel> tempChartData = [];
       for (var row in response) {
         DateTime createdDate = DateTime.parse(row['created_date'] as String);
         String formattedDate = DateFormat('dd/MM').format(createdDate);
         tempChartData.add(ChartDataModel(
-            weight: (row['weight'] as int).toString(), date: formattedDate));
+            weight: (row['weight'] as int), date: formattedDate));
         //weight: row['weight'] as String
       }
 
@@ -42,19 +42,19 @@ class HistoricRepository extends ChangeNotifier {
       historicExercisesList.clear();
       await db.transaction((txn) async {
         for (var exercise in exerciseList) {
-          var historicExercise = await txn.query(
-            'historic',
-            where: "exercise_id= ?",
-            whereArgs: [exercise.id],
-          );
+          print(exercise.id);
+          var historicExercise = await txn.query('historic',
+              where: "exercise_id= ?", whereArgs: [exercise.id], limit: 5);
           List<ChartDataModel> tempChartData = [];
           for (var row in historicExercise) {
             DateTime createdDate =
                 DateTime.parse(row['created_date'] as String);
             String formattedDate = DateFormat('dd/MM').format(createdDate);
             tempChartData.add(ChartDataModel(
-                weight: row['weight'] as String, date: formattedDate));
+                weight: row['weight'] as int, date: formattedDate));
           }
+          print(exercise.id);
+
           historicExercisesList.add(ExerciseToHistoricModel(
             name: exercise.name,
             chartData: tempChartData,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/models/user.dart';
 import 'package:gym_log/pages/addWorkout/add_workout.dart';
-import 'package:gym_log/pages/historic.dart';
+import 'package:gym_log/pages/historic/historic.dart';
 import 'package:gym_log/pages/home/home.dart';
 import 'package:gym_log/pages/workout_list/workout_list.dart';
 import 'package:gym_log/repositories/user_repository.dart';

@@ -157,6 +157,7 @@ class WorkoutRepository extends ChangeNotifier {
               'workout_exercise',
               {
                 'exercise_id': exercise.id,
+                'workout_id': workout.id,
                 'default_series': exercise.countSeries,
                 'default_repetitions': exercise.countRepetition
               },
