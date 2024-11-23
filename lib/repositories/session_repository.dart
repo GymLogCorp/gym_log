@@ -32,7 +32,7 @@ class SessionRepository extends ChangeNotifier {
             whereArgs: [currentSessionId]);
 
         for (var exercise in exerciseList) {
-          await txn.insert('historic', {
+          var abacaxi = await txn.insert('historic', {
             'series': exercise.countSeries,
             'repetitions': exercise.countRepetition,
             'weight': exercise.weight,
@@ -40,6 +40,8 @@ class SessionRepository extends ChangeNotifier {
             'session_id': currentSessionId,
             'created_date': DateTime.now().toString(),
           });
+          print(exercise.id);
+          print(exercise.name);
         }
       });
       currentSessionId = null;

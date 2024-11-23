@@ -109,6 +109,7 @@ class _CardSeriesState extends State<CardSeries> {
           ),
         ),
         // Lista de séries do exercício
+        // Lista de séries do exercício
         Column(
           children: List.generate(widget.exercise.series.length, (index) {
             final serie = widget.exercise.series[index];
@@ -159,6 +160,7 @@ class _CardSeriesState extends State<CardSeries> {
                               ),
                             ),
                             // Campo de peso
+                            // Campo de peso
                             SizedBox(
                               width: 27.sp,
                               height: 20.sp,
@@ -184,6 +186,7 @@ class _CardSeriesState extends State<CardSeries> {
                                 },
                               ),
                             ),
+                            // Campo de repetições
                             // Campo de repetições
                             SizedBox(
                               width: 27.sp,
@@ -217,6 +220,7 @@ class _CardSeriesState extends State<CardSeries> {
                     ),
                   ),
                   SizedBox(width: 3.0.w),
+                  // Checkbox para marcar série como concluída
                   // Checkbox para marcar série como concluída
                   InkWell(
                     onTap: () =>

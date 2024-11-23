@@ -5,6 +5,7 @@ import 'summarymodal.dart';
 import 'package:gym_log/repositories/session_repository.dart';
 import 'package:gym_log/widgets/button.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class SessionPageModal extends StatefulWidget {
