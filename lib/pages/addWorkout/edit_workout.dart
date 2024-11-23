@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/models/exercise.dart';
 import 'package:gym_log/models/workout.dart';
+import 'package:gym_log/repositories/workout_repository.dart';
 import 'package:gym_log/widgets/input.dart';
 import 'package:gym_log/pages/addWorkout/chip_list.dart';
 import 'package:gym_log/pages/addWorkout/exercise_table.dart';
 import 'package:gym_log/pages/layout.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class EditWorkout extends StatefulWidget {
@@ -19,8 +21,8 @@ class EditWorkout extends StatefulWidget {
 class _EditWorkoutState extends State<EditWorkout> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _workoutNameController = TextEditingController();
-  final List<ExerciseModel> exerciseList = [];
-  final List<String> muscleGroupList = [];
+  List<ExerciseModel> exerciseList = [];
+  List<String> muscleGroupList = [];
 
   String? _validateWorkoutName(String? value) {
     if (value == null || value.isEmpty) {
@@ -32,7 +34,9 @@ class _EditWorkoutState extends State<EditWorkout> {
   @override
   void initState() {
     super.initState();
-    // Definir o valor inicial do controller
+    formatterMuscleGroup();
+    exerciseList = List<ExerciseModel>.from(widget.workout.exercises);
+    // Configurar o nome inicial no controller
     _workoutNameController.text = widget.workout.name;
   }
 
@@ -49,8 +53,43 @@ class _EditWorkoutState extends State<EditWorkout> {
     });
   }
 
+  void handleSubmit() async {
+    var name = _workoutNameController.value.text;
+    var muscleGroup = '';
+    for (var muscle in muscleGroupList) {
+      muscleGroup = muscleGroup + '$muscle / ';
+    }
+    try {
+      if (_formKey.currentState!.validate() &&
+          muscleGroup != '' &&
+          exerciseList.isNotEmpty) {
+        var dto = WorkoutModel(
+          id: widget.workout.id,
+          name: name,
+          muscleGroup: muscleGroup,
+          userId: 1,
+          exercises: exerciseList,
+        );
+        await Provider.of<WorkoutRepository>(context, listen: false)
+            .updateWorkout(dto);
+        await Provider.of<WorkoutRepository>(context, listen: false)
+            .getWorkoutList(1);
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   void handleRemoveExercise(exercise) {
     exerciseList.remove(exercise);
+  }
+
+  void formatterMuscleGroup() {
+    var cutMuscleGroupList = widget.workout.muscleGroup.split(" /");
+    List<String> formattedList =
+        cutMuscleGroupList.map((item) => item.trim()).toList();
+    muscleGroupList = formattedList;
   }
 
   @override
@@ -77,6 +116,7 @@ class _EditWorkoutState extends State<EditWorkout> {
             actions: [
               IconButton(
                 onPressed: () {
+                  handleSubmit();
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => const Layout()),

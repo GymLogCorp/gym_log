@@ -109,6 +109,7 @@ class WorkoutRepository extends ChangeNotifier {
   Future<void> updateWorkout(WorkoutModel workout) async {
     try {
       final db = await DB.instance.database;
+      print(workout.id);
       var workoutIsExist = await db.query(
         'workout',
         where: "id= ?",
@@ -157,6 +158,7 @@ class WorkoutRepository extends ChangeNotifier {
               'workout_exercise',
               {
                 'exercise_id': exercise.id,
+                'workout_id': workout.id,
                 'default_series': exercise.countSeries,
                 'default_repetitions': exercise.countRepetition
               },
