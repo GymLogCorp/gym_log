@@ -232,17 +232,24 @@ class _CardSeriesState extends State<CardSeries> {
                   ),
                   SizedBox(width: 2.0.w),
                   // Ícone de remoção de série
-                  InkWell(
-                    onTap: () {
-                      Provider.of<SessionState>(context, listen: false)
-                          .removeSeries(exerciseName, serie.id);
-                    },
-                    child: Icon(
+                  if (index == widget.exercise.series.length - 1 && index != 0)
+                    InkWell(
+                      onTap: () {
+                        Provider.of<SessionState>(context, listen: false)
+                            .removeSeries(exerciseName, serie.id);
+                      },
+                      child: const Icon(
+                        Icons.delete_forever_rounded,
+                        color: Color(0xFFE40928),
+                        size: 32,
+                      ),
+                    )
+                  else
+                    const Icon(
                       Icons.delete_forever_rounded,
-                      color: index == 0 ? Colors.grey : const Color(0xFFE40928),
+                      color: Colors.transparent,
                       size: 32,
-                    ),
-                  ),
+                    )
                 ],
               ),
             );

@@ -61,7 +61,9 @@ class SessionState extends ChangeNotifier {
     //   print(element.repetitions);
     // }
 
-    exercise.series.removeWhere((serie) => serie.id == serieId);
+    if (exercise.series.isNotEmpty) {
+      exercise.series.removeLast();
+    }
 
     notifyListeners();
     // print(
