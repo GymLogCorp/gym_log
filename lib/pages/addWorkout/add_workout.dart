@@ -24,7 +24,10 @@ class _AddWorkoutState extends State<AddWorkout> {
   final List<String> muscleGroupList = [];
   String? _validateWorkoutName(String? value) {
     if (value == null || value.isEmpty) {
-      return 'A nome é obrigatório';
+      return 'O nome é obrigatório';
+    }
+    if (value.length > 20) {
+      return 'O nome deve ter no máximo 20 caracteres';
     }
     return null;
   }
