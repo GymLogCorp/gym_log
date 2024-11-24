@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/models/user.dart';
 import 'package:gym_log/pages/addWorkout/add_workout.dart';
-import 'package:gym_log/pages/historic.dart';
+import 'package:gym_log/pages/historic/historic.dart';
 import 'package:gym_log/pages/home/home.dart';
 import 'package:gym_log/pages/welcome.dart';
 import 'package:gym_log/pages/workout_list/workout_list.dart';
@@ -42,11 +42,7 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
     );
   }
 
-  final List _pages = [
-    const WorkoutPage(),
-    const HomePage(),
-    const HistoricPage()
-  ];
+  final List _pages = [const WorkoutPage(), const HomePage(), HistoricPage()];
 
   @override
   Widget build(BuildContext context) {

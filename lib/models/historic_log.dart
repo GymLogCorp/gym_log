@@ -1,17 +1,21 @@
-class HistoricLogModel {
-  int id;
-  String exercisesRegister;
-  String momentRepetition;
-  String momentWeight;
-  String createdDate;
-  int exerciseId;
+class ExerciseToHistoricModel {
+  String name;
+  List<ChartDataModel> chartData = [];
 
-  HistoricLogModel({
-    required this.id,
-    required this.exercisesRegister,
-    required this.momentRepetition,
-    required this.momentWeight,
-    required this.createdDate,
-    required this.exerciseId,
+  ExerciseToHistoricModel({
+    required this.name,
+    required this.chartData,
+  });
+}
+
+class ChartDataModel {
+  final String weight;
+  final String date;
+
+  static var name;
+
+  ChartDataModel({
+    required this.weight,
+    required this.date,
   });
 }

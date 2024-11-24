@@ -42,7 +42,7 @@ class ExerciseToHistoricModel {
 }
 
 class ChartDataModel {
-  final String weight;
+  final int weight;
   final String date;
 
   ChartDataModel({

@@ -8,6 +8,7 @@ import 'package:gym_log/repositories/session_repository.dart';
 import 'package:gym_log/states/SessionState.dart';
 import 'package:gym_log/widgets/button.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -118,6 +119,21 @@ class _SessionPageState extends State<SessionPage> {
                           );
                         },
                       );
+                      _handleFinish();
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            backgroundColor: const Color(0xFF212429),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: SessionPageModal(
+                              exerciseToFinish: exercisesToFinish,
+                            ),
+                          );
+                        },
+                      );
                     },
                   ),
                 ],
@@ -153,6 +169,7 @@ class _SessionPageState extends State<SessionPage> {
                 height: 58,
                 onPressed: () {
                   _handleFinish();
+                  _handleFinish();
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -160,6 +177,9 @@ class _SessionPageState extends State<SessionPage> {
                         backgroundColor: const Color(0xFF212429),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: SessionPageModal(
+                          exerciseToFinish: exercisesToFinish,
                         ),
                         child: SessionPageModal(
                           exerciseToFinish: exercisesToFinish,
