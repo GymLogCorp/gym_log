@@ -166,7 +166,7 @@ class _SessionPageState extends State<SessionPage> {
                 textColor: 0xFFFFFFFF,
                 borderColor: 0xFF617AFA,
                 width: 180,
-                height: 20,
+                height: 58,
                 onPressed: () {
                   _handleFinish();
                   _handleFinish();
