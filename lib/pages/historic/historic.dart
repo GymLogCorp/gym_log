@@ -6,6 +6,8 @@ import 'package:gym_log/repositories/historic_repository.dart';
 import 'package:gym_log/repositories/workout_repository.dart';
 import 'package:gym_log/resources/app_colors.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sizer/sizer.dart';
 
 class HistoricPage extends StatefulWidget {
   const HistoricPage({super.key});
@@ -22,10 +24,16 @@ class _HistoricPageState extends State<HistoricPage> {
   @override
   void initState() {
     super.initState();
-    menuOptions =
+
+    var workoutList =
         Provider.of<WorkoutRepository>(context, listen: false).workoutList;
-    getHistoricByWorkout(menuOptions.first);
-    workoutSelected = menuOptions.first;
+    if (workoutList.isNotEmpty) {
+      menuOptions = workoutList;
+      workoutSelected = menuOptions.first;
+      getHistoricByWorkout(menuOptions.first);
+    } else {
+      menuOptions = [];
+    }
   }
 
   void getHistoricByWorkout(WorkoutModel workout) async {
@@ -37,44 +45,42 @@ class _HistoricPageState extends State<HistoricPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        DropdownButton<WorkoutModel>(
-          value: workoutSelected,
-          style: const TextStyle(color: Colors.white),
-          onChanged: (WorkoutModel? workoutSelected) {
-            if (workoutSelected != null) {
-              setState(() {
-                this.workoutSelected = workoutSelected;
-              });
-              getHistoricByWorkout(workoutSelected);
-            }
-          },
-          items: menuOptions
-              .map<DropdownMenuItem<WorkoutModel>>((WorkoutModel item) {
-            return DropdownMenuItem(
-                value: item,
-                child: Text(
-                  item.name,
-                  style: const TextStyle(color: AppColors.contentColorBlue),
-                ));
-          }).toList(),
-        ),
-        Consumer<HistoricRepository>(
-          builder: (context, historicRepository, child) {
-            if (historicRepository.historicExercisesList.isEmpty) {
-              return const Center(
-                child: Text(
-                  'Nenhum dado encontrado.',
-                  style: TextStyle(
-                    color: AppColors.contentColorBlue,
-                    fontSize: 16,
-                  ),
-                ),
-              );
-            } else {
-              List<ChartDataModel> chartData = historicRepository
-                  .historicExercisesList[selectedExerciseIndex].chartData;
-
-              if (chartData.isEmpty || chartData.length == 1) {
+        if (menuOptions.isEmpty)
+          Center(
+            child: Text(
+              'Você não possui nenhum treino para visualizar o histórico.',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.plusJakartaSans(
+                  color: Colors.white,
+                  fontSize: 17.sp,
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        else ...[
+          DropdownButton<WorkoutModel>(
+            value: workoutSelected,
+            style: const TextStyle(color: Colors.white),
+            onChanged: (WorkoutModel? workoutSelected) {
+              if (workoutSelected != null) {
+                setState(() {
+                  this.workoutSelected = workoutSelected;
+                });
+                getHistoricByWorkout(workoutSelected);
+              }
+            },
+            items: menuOptions
+                .map<DropdownMenuItem<WorkoutModel>>((WorkoutModel item) {
+              return DropdownMenuItem(
+                  value: item,
+                  child: Text(
+                    item.name,
+                    style: const TextStyle(color: AppColors.contentColorBlue),
+                  ));
+            }).toList(),
+          ),
+          Consumer<HistoricRepository>(
+            builder: (context, historicRepository, child) {
+              if (historicRepository.historicExercisesList.isEmpty) {
                 return const Center(
                   child: Text(
                     'Nenhum dado encontrado.',
@@ -84,30 +90,45 @@ class _HistoricPageState extends State<HistoricPage> {
                     ),
                   ),
                 );
-              }
+              } else {
+                List<ChartDataModel> chartData = historicRepository
+                    .historicExercisesList[selectedExerciseIndex].chartData;
 
-              // return Center(
-              //   child: HistoricChart(chartData: chartData),
-              // );
-              return Column(
-                children: historicRepository.historicExercisesList
-                    .map((exercise) => Column(
-                          children: [
-                            Text(
-                              exercise.name,
-                              style: const TextStyle(
-                                color: AppColors.contentColorBlue,
-                                fontSize: 16,
+                if (chartData.isEmpty || chartData.length == 1) {
+                  return const Center(
+                    child: Text(
+                      'Nenhum dado encontrado.',
+                      style: TextStyle(
+                        color: AppColors.contentColorBlue,
+                        fontSize: 16,
+                      ),
+                    ),
+                  );
+                }
+
+                // return Center(
+                //   child: HistoricChart(chartData: chartData),
+                // );
+                return Column(
+                  children: historicRepository.historicExercisesList
+                      .map((exercise) => Column(
+                            children: [
+                              Text(
+                                exercise.name,
+                                style: const TextStyle(
+                                  color: AppColors.contentColorBlue,
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
-                            HistoricChart(chartData: exercise.chartData),
-                          ],
-                        ))
-                    .toList(),
-              );
-            }
-          },
-        )
+                              HistoricChart(chartData: exercise.chartData),
+                            ],
+                          ))
+                      .toList(),
+                );
+              }
+            },
+          )
+        ]
       ],
     );
   }

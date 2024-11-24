@@ -44,9 +44,13 @@ class HistoricRepository extends ChangeNotifier {
         for (var exercise in exerciseList) {
           print(exercise.id);
           var historicExercise = await txn.query('historic',
-              where: "exercise_id= ?", whereArgs: [exercise.id], limit: 5);
+              where: "exercise_id= ?",
+              whereArgs: [exercise.id],
+              limit: 5,
+              orderBy: 'created_date DESC'); // Get the last 5 records
           List<ChartDataModel> tempChartData = [];
-          for (var row in historicExercise) {
+          for (var row in historicExercise.reversed) {
+            // Reverse to order from oldest to youngest
             DateTime createdDate =
                 DateTime.parse(row['created_date'] as String);
             String formattedDate = DateFormat('dd/MM').format(createdDate);
