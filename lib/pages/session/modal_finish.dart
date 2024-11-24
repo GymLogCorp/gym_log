@@ -39,8 +39,8 @@ class _SessionPageModalState extends State<SessionPageModal> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 80.0.w,
-      height: 40.0.h,
+      width: 90.0.w,
+      height: 50.0.h,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(40.0),
@@ -69,15 +69,21 @@ class _SessionPageModalState extends State<SessionPageModal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
-                    'Continue Assim!',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  Padding(
+                    padding: EdgeInsets.only(top: 20.sp),
+                    child: Text(
+                      'Continue Assim!',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                  Image.asset('assets/images/halter30.png'),
+                  Padding(
+                    padding: EdgeInsets.only(top: 20.sp),
+                    child: Image.asset('assets/images/halter30.png'),
+                  ),
                 ],
               ),
               Padding(
@@ -120,7 +126,7 @@ class _SessionPageModalState extends State<SessionPageModal> {
                   bgColor: 0xFF617AFA,
                   textColor: 0xFFFFFFFF,
                   borderColor: 0xFF617AFA,
-                  width: 55.sp,
+                  width: 60.sp,
                   height: 30.sp,
                   onPressed: () {
                     _handleSubmit(); // Salva os dados no banco

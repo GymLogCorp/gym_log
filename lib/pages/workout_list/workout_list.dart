@@ -136,6 +136,8 @@ class _WorkoutPageState extends State<WorkoutPage> {
                 );
               },
               label: 'Adicionar Treino',
+              width: 250,
+              height: 68,
               bgColor: 0xFF617AFA,
               textColor: 0xFFFFFFFF,
               borderColor: 0xFF617AFA,
