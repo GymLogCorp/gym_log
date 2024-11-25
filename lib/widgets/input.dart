@@ -13,6 +13,7 @@ class CustomTextFormField extends StatelessWidget {
   final double? width;
   final TextInputType type;
   final Function(String)? onChange;
+  final int? limitator;
 
   const CustomTextFormField({
     super.key,
@@ -28,6 +29,7 @@ class CustomTextFormField extends StatelessWidget {
     this.width = 320.0,
     this.type = TextInputType.text,
     this.onChange,
+    this.limitator,
   });
 
   @override
@@ -50,6 +52,7 @@ class CustomTextFormField extends StatelessWidget {
               ),
             ),
           TextFormField(
+            maxLength: limitator,
             onChanged: onChange,
             keyboardType: type,
             obscureText: obscureText,

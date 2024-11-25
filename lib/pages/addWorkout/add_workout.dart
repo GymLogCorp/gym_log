@@ -26,9 +26,6 @@ class _AddWorkoutState extends State<AddWorkout> {
     if (value == null || value.isEmpty) {
       return 'O nome é obrigatório';
     }
-    if (value.length > 20) {
-      return 'O nome deve ter no máximo 20 caracteres';
-    }
     return null;
   }
 
@@ -132,6 +129,7 @@ class _AddWorkoutState extends State<AddWorkout> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomTextFormField(
+                        limitator: 20,
                         placeholder: 'insira um nome para o treino',
                         title: 'Nome',
                         obscureText: false,

@@ -19,33 +19,33 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   //isso aqui permite que nós tenhamos um state global na aplicação onde qualquer componente pode escutar.
-  // runApp(
-  //   MultiProvider(
-  //     providers: [
-  //       ChangeNotifierProvider(create: (context) => AuthService()),
-  //       ChangeNotifierProvider(create: (context) => WorkoutRepository()),
-  //       ChangeNotifierProvider(create: (context) => ExerciseRepository()),
-  //       ChangeNotifierProvider(create: (context) => SessionRepository()),
-  //       ChangeNotifierProvider(create: (context) => SessionState())
-  //     ],
-  //     child: const MyApp(),
-  //   ),
-  // );
-  //Pra rodar com o device preview
-  runApp(DevicePreview(
-    enabled: !kReleaseMode,
-    builder: (context) => MultiProvider(
+  runApp(
+    MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
         ChangeNotifierProvider(create: (context) => WorkoutRepository()),
         ChangeNotifierProvider(create: (context) => ExerciseRepository()),
         ChangeNotifierProvider(create: (context) => SessionRepository()),
-        ChangeNotifierProvider(create: (context) => HistoricRepository()),
         ChangeNotifierProvider(create: (context) => SessionState())
       ],
       child: const MyApp(),
     ),
-  ));
+  );
+  //Pra rodar com o device preview
+  // runApp(DevicePreview(
+  //   enabled: !kReleaseMode,
+  //   builder: (context) => MultiProvider(
+  //     providers: [
+  //       ChangeNotifierProvider(create: (context) => AuthService()),
+  //       ChangeNotifierProvider(create: (context) => WorkoutRepository()),
+  //       ChangeNotifierProvider(create: (context) => ExerciseRepository()),
+  //       ChangeNotifierProvider(create: (context) => SessionRepository()),
+  //       ChangeNotifierProvider(create: (context) => HistoricRepository()),
+  //       ChangeNotifierProvider(create: (context) => SessionState())
+  //     ],
+  //     child: const MyApp(),
+  //   ),
+  // ));
 }
 
 class MyApp extends StatelessWidget {
