@@ -69,7 +69,7 @@ class _HistoricChartState extends State<HistoricChart> {
                       (LineChartBarData barData, List<int> spotIndexes) {
                     return spotIndexes.map((index) {
                       return TouchedSpotIndicatorData(
-                        const FlLine(color: Colors.pink),
+                        const FlLine(color: Colors.white),
                         FlDotData(
                           show: true,
                           getDotPainter: (spot, percent, barData, index) =>
@@ -106,8 +106,8 @@ class _HistoricChartState extends State<HistoricChart> {
                       gradient: LinearGradient(
                         colors: [
                           AppColors.contentColorBlue.withOpacity(0.4),
-                          AppColors.contentColorPink.withOpacity(0.4),
-                          AppColors.contentColorRed.withOpacity(0.4),
+                          AppColors.contentColorBlue.withOpacity(0.4),
+                          AppColors.contentColorBlue.withOpacity(0.4),
                         ],
                       ),
                     ),
@@ -115,8 +115,8 @@ class _HistoricChartState extends State<HistoricChart> {
                     gradient: const LinearGradient(
                       colors: [
                         AppColors.contentColorBlue,
-                        AppColors.contentColorPink,
-                        AppColors.contentColorRed,
+                        AppColors.contentColorBlue,
+                        AppColors.contentColorBlue,
                       ],
                       stops: [0.1, 0.4, 0.9],
                     ),
@@ -136,7 +136,7 @@ class _HistoricChartState extends State<HistoricChart> {
                         return Text(
                           widget.chartData[value.toInt()].date,
                           style: const TextStyle(
-                            color: AppColors.contentColorBlue,
+                            color: Colors.white,
                             fontSize: 12,
                           ),
                         );
@@ -169,7 +169,7 @@ class _HistoricChartState extends State<HistoricChart> {
                         return Text(
                           value.toInt().toString(),
                           style: const TextStyle(
-                            color: AppColors.contentColorBlue,
+                            color: Colors.white,
                             fontSize: 12,
                           ),
                         );

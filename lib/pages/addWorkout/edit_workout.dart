@@ -152,6 +152,7 @@ class _EditWorkoutState extends State<EditWorkout> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomTextFormField(
+                        limitator: 20,
                         placeholder: 'insira um nome para o treino',
                         title: 'Nome',
                         obscureText: false,

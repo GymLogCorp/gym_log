@@ -4,7 +4,6 @@ import 'package:gym_log/models/workout.dart';
 import 'package:gym_log/pages/historic/historic_chart.dart';
 import 'package:gym_log/repositories/historic_repository.dart';
 import 'package:gym_log/repositories/workout_repository.dart';
-import 'package:gym_log/resources/app_colors.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -43,7 +42,8 @@ class _HistoricPageState extends State<HistoricPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
+      padding: EdgeInsets.all(8.0),
       children: [
         if (menuOptions.isEmpty)
           Center(
@@ -57,26 +57,36 @@ class _HistoricPageState extends State<HistoricPage> {
             ),
           )
         else ...[
-          DropdownButton<WorkoutModel>(
-            value: workoutSelected,
-            style: const TextStyle(color: Colors.white),
-            onChanged: (WorkoutModel? workoutSelected) {
-              if (workoutSelected != null) {
-                setState(() {
-                  this.workoutSelected = workoutSelected;
-                });
-                getHistoricByWorkout(workoutSelected);
-              }
-            },
-            items: menuOptions
-                .map<DropdownMenuItem<WorkoutModel>>((WorkoutModel item) {
-              return DropdownMenuItem(
-                  value: item,
-                  child: Text(
-                    item.name,
-                    style: const TextStyle(color: AppColors.contentColorBlue),
-                  ));
-            }).toList(),
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: DropdownButton<WorkoutModel>(
+                value: workoutSelected,
+                onChanged: (WorkoutModel? workoutSelected) {
+                  if (workoutSelected != null) {
+                    setState(() {
+                      this.workoutSelected = workoutSelected;
+                    });
+                    getHistoricByWorkout(workoutSelected);
+                  }
+                },
+                items: menuOptions
+                    .map<DropdownMenuItem<WorkoutModel>>((WorkoutModel item) {
+                  return DropdownMenuItem(
+                      value: item,
+                      child: Text(
+                        item.name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: GoogleFonts.plusJakartaSans(
+                            color: Colors.grey,
+                            fontSize: 17.sp,
+                            fontWeight: FontWeight.bold),
+                      ));
+                }).toList(),
+              ),
+            ),
           ),
           Consumer<HistoricRepository>(
             builder: (context, historicRepository, child) {
@@ -85,7 +95,7 @@ class _HistoricPageState extends State<HistoricPage> {
                   child: Text(
                     'Nenhum dado encontrado.',
                     style: TextStyle(
-                      color: AppColors.contentColorBlue,
+                      color: Colors.white,
                       fontSize: 16,
                     ),
                   ),
@@ -99,31 +109,34 @@ class _HistoricPageState extends State<HistoricPage> {
                     child: Text(
                       'Nenhum dado encontrado.',
                       style: TextStyle(
-                        color: AppColors.contentColorBlue,
+                        color: Colors.white,
                         fontSize: 16,
                       ),
                     ),
                   );
                 }
 
-                // return Center(
-                //   child: HistoricChart(chartData: chartData),
-                // );
-                return Column(
-                  children: historicRepository.historicExercisesList
-                      .map((exercise) => Column(
-                            children: [
-                              Text(
-                                exercise.name,
-                                style: const TextStyle(
-                                  color: AppColors.contentColorBlue,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              HistoricChart(chartData: exercise.chartData),
-                            ],
-                          ))
-                      .toList(),
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: historicRepository.historicExercisesList.length,
+                  itemBuilder: (context, index) {
+                    var exercise =
+                        historicRepository.historicExercisesList[index];
+                    return Column(
+                      children: [
+                        Text(
+                          exercise.name,
+                          style: GoogleFonts.plusJakartaSans(
+                            color: Colors.white,
+                            fontSize: 19.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        HistoricChart(chartData: exercise.chartData),
+                      ],
+                    );
+                  },
                 );
               }
             },

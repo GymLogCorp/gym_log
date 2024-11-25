@@ -26,7 +26,8 @@ void main() async {
         ChangeNotifierProvider(create: (context) => WorkoutRepository()),
         ChangeNotifierProvider(create: (context) => ExerciseRepository()),
         ChangeNotifierProvider(create: (context) => SessionRepository()),
-        ChangeNotifierProvider(create: (context) => SessionState())
+        ChangeNotifierProvider(create: (context) => SessionState()),
+        ChangeNotifierProvider(create: (context) => HistoricRepository()),
       ],
       child: const MyApp(),
     ),
