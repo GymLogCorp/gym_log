@@ -124,7 +124,11 @@ class _RegisterState extends State<Register> {
                     color: Colors.white,
                     iconSize: 36,
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Welcome()),
+                      );
                     },
                   ),
                 ],
