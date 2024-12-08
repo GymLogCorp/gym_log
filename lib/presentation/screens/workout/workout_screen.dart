@@ -4,7 +4,6 @@ import 'package:gym_log/data/models/workout.dart';
 import 'package:gym_log/presentation/screens/edit_workout/edit_workout_screen.dart';
 import 'package:gym_log/presentation/screens/workout/widgets/workout_list_card.dart';
 import 'package:gym_log/presentation/screens/workout/widgets/workout_detail_card.dart';
-import 'package:gym_log/data/repositories/workout_repository.dart';
 import 'package:gym_log/core/widgets/button.dart';
 import 'package:gym_log/presentation/screens/add_workout/add_workout_screen.dart';
 import 'package:gym_log/providers/workout_provider.dart';

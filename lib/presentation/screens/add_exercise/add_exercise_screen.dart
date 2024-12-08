@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/data/models/exercise.dart';
-import 'package:gym_log/data/repositories/exercise_repository.dart';
 import 'package:gym_log/core/widgets/button.dart';
 import 'package:gym_log/core/widgets/input.dart';
 import 'package:gym_log/providers/exercise_provider.dart';
