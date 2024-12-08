@@ -53,7 +53,7 @@ class _CardSeriesState extends State<CardSeries> {
                   ),
                   InkWell(
                     onTap: () => {
-                      Provider.of<SessionState>(context, listen: false)
+                      Provider.of<SessionProvider>(context, listen: false)
                           .addSeries(widget.exercise.name)
                     },
                     child: const Icon(
@@ -224,7 +224,7 @@ class _CardSeriesState extends State<CardSeries> {
                   // Checkbox para marcar série como concluída
                   InkWell(
                     onTap: () =>
-                        Provider.of<SessionState>(context, listen: false)
+                        Provider.of<SessionProvider>(context, listen: false)
                             .checkSeries(exerciseName, index),
                     child: Icon(
                       serie.checked
@@ -239,7 +239,7 @@ class _CardSeriesState extends State<CardSeries> {
                   if (index == widget.exercise.series.length - 1 && index != 0)
                     InkWell(
                       onTap: () {
-                        Provider.of<SessionState>(context, listen: false)
+                        Provider.of<SessionProvider>(context, listen: false)
                             .removeSeries(exerciseName, serie.id);
                       },
                       child: const Icon(

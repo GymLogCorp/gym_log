@@ -4,6 +4,7 @@ import 'package:gym_log/data/models/exercise.dart';
 import 'package:gym_log/data/repositories/exercise_repository.dart';
 import 'package:gym_log/core/widgets/button.dart';
 import 'package:gym_log/core/widgets/input.dart';
+import 'package:gym_log/providers/exercise_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -56,16 +57,15 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
     return null;
   }
 
-  late ExerciseRepository exerciseRepository;
+  late ExerciseProvider exerciseProvider;
 
   @override
   void initState() {
     super.initState();
 
-    exerciseRepository =
-        Provider.of<ExerciseRepository>(context, listen: false);
+    exerciseProvider = Provider.of<ExerciseProvider>(context, listen: false);
 
-    exerciseRepository.getExerciseList(muscleSelected);
+    exerciseProvider.getExerciseList(muscleSelected);
 
     _seriesCountController.addListener(() {
       setState(() {
@@ -82,19 +82,18 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
   void addCustomExercise() async {
     var exerciseName = _exerciseNameController.text.trim();
     if (exerciseName.isNotEmpty) {
-      await exerciseRepository.createCustomExercise(
-          exerciseName, muscleSelected);
+      await exerciseProvider.createCustomExercise(exerciseName, muscleSelected);
 
       if (mounted) {
-        await exerciseRepository.getExerciseList(muscleSelected);
+        await exerciseProvider.getExerciseList(muscleSelected);
         _exerciseNameController.clear();
       }
     }
   }
 
   void removeCustomExercise(int id) async {
-    await exerciseRepository.deleteCustomExercise(id.toString());
-    await exerciseRepository.getExerciseList(muscleSelected);
+    await exerciseProvider.deleteCustomExercise(id.toString());
+    await exerciseProvider.getExerciseList(muscleSelected);
     setState(() {
       exerciseSelected = {'name': '', 'value': null};
     });
@@ -207,7 +206,7 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                                 muscleSelected = value!;
                               });
 
-                              await Provider.of<ExerciseRepository>(context,
+                              await Provider.of<ExerciseProvider>(context,
                                       listen: false)
                                   .getExerciseList(muscleSelected);
                             },
@@ -274,10 +273,10 @@ class _AddExerciseModalState extends State<AddExerciseModal> {
                     child: SizedBox(
                       height: 25.0.h,
                       width: 60.0.w,
-                      child: Consumer<ExerciseRepository>(
-                        builder: (context, exerciseRepository, child) {
+                      child: Consumer<ExerciseProvider>(
+                        builder: (context, exerciseProvider, child) {
                           List<ExerciseModel> exercises =
-                              exerciseRepository.exerciseList;
+                              exerciseProvider.exerciseList;
                           exercises = exercises
                               .where(
                                   (item) => item.isCustom == isCustomExercise)

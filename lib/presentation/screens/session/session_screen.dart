@@ -4,7 +4,6 @@ import 'package:gym_log/data/models/session.dart';
 import 'package:gym_log/data/models/workout.dart';
 import 'package:gym_log/presentation/screens/session/widgets/modal_finish.dart';
 import 'package:gym_log/presentation/screens/session/widgets/series_card.dart';
-import 'package:gym_log/data/repositories/session_repository.dart';
 import 'package:gym_log/providers/session_provider.dart';
 import 'package:gym_log/core/widgets/button.dart';
 import 'package:provider/provider.dart';
@@ -25,8 +24,7 @@ class _SessionPageState extends State<SessionPage> {
   List<ExerciseModel> exercisesToFinish = [];
 
   void startSession() async {
-    await Provider.of<SessionRepository>(context, listen: false)
-        .startSession(1);
+    await Provider.of<SessionProvider>(context, listen: false).startSession(1);
   }
 
   @override
@@ -34,14 +32,14 @@ class _SessionPageState extends State<SessionPage> {
     super.initState();
     startSession();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<SessionState>(context, listen: false)
+      Provider.of<SessionProvider>(context, listen: false)
           .setDefaultWorkout(widget.workout);
     });
   }
 
   void _handleFinish() {
     final exerciseWithSeries =
-        Provider.of<SessionState>(context, listen: false).exerciseWithSeries;
+        Provider.of<SessionProvider>(context, listen: false).exerciseWithSeries;
     for (var exerciseSeries in exerciseWithSeries) {
       String exerciseName = exerciseSeries.name;
       var seriesList = exerciseSeries.series;
@@ -126,7 +124,7 @@ class _SessionPageState extends State<SessionPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Consumer<SessionState>(
+                child: Consumer<SessionProvider>(
                   builder: (context, sessionState, child) {
                     return ListView.builder(
                       itemCount: sessionState.exerciseWithSeries.length,

@@ -1,14 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:gym_log/config/db.dart';
 import 'package:gym_log/data/models/exercise.dart';
 import 'package:gym_log/data/models/workout.dart';
 import 'package:sqflite/sqflite.dart';
 
-class WorkoutRepository extends ChangeNotifier {
+class WorkoutRepository {
   late Database db;
-  List<WorkoutModel> workoutList = [];
 
-  Future<void> getWorkoutList(int userId) async {
+  Future<List<WorkoutModel>> getWorkoutList(int userId) async {
     try {
       final db = await DB.instance.database;
       List<Map<String, dynamic>> response = await db.rawQuery(
@@ -72,10 +70,10 @@ class WorkoutRepository extends ChangeNotifier {
               ),
             );
       }
-      workoutList = workoutMap.values.toList();
-      notifyListeners();
+      return workoutMap.values.toList();
     } catch (e) {
       print(e);
+      return [];
     }
   }
 
@@ -99,7 +97,6 @@ class WorkoutRepository extends ChangeNotifier {
           });
         }
       });
-      notifyListeners();
     } catch (e) {
       print(e);
     }
@@ -126,8 +123,6 @@ class WorkoutRepository extends ChangeNotifier {
             where: "id= ?",
             whereArgs: [workout.id],
           );
-
-          //Lógica para remover os atuais exercícios e depois colocar os novos
 
           List<Map<String, dynamic>> currentExercises = await txn.query(
             'workout_exercise',
@@ -165,7 +160,6 @@ class WorkoutRepository extends ChangeNotifier {
           }
         });
       }
-      notifyListeners();
     } catch (e) {
       print(e);
     }
@@ -189,7 +183,6 @@ class WorkoutRepository extends ChangeNotifier {
           await txn.delete('workout', where: "id= ?", whereArgs: [id]);
         });
       }
-      notifyListeners();
     } catch (e) {
       print(e);
     }

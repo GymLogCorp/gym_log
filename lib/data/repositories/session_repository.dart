@@ -1,25 +1,26 @@
-import 'package:flutter/foundation.dart';
 import 'package:gym_log/config/db.dart';
 import 'package:gym_log/data/models/exercise.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SessionRepository extends ChangeNotifier {
+class SessionRepository {
   late Database db;
-  int? currentSessionId;
-  Future<void>? startSession(int userId) async {
+  Future<int?> startSession(int userId) async {
     try {
+      int? currentSessionId;
       db = await DB.instance.database;
       currentSessionId = await db.insert('session', {
         'user_id': userId,
         'start_time': DateTime.now().toString(),
       });
-      notifyListeners();
+      return currentSessionId;
     } catch (e) {
       print(e);
+      return null;
     }
   }
 
-  Future<void>? finishSession(List<ExerciseModel> exerciseList) async {
+  Future<void>? finishSession(
+      List<ExerciseModel> exerciseList, int currentSessionId) async {
     try {
       db = await DB.instance.database;
       await db.transaction((txn) async {
@@ -42,8 +43,6 @@ class SessionRepository extends ChangeNotifier {
           });
         }
       });
-      currentSessionId = null;
-      notifyListeners();
     } catch (e) {
       print(e);
     }

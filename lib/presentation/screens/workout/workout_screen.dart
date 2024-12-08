@@ -7,6 +7,7 @@ import 'package:gym_log/presentation/screens/workout/widgets/workout_detail_card
 import 'package:gym_log/data/repositories/workout_repository.dart';
 import 'package:gym_log/core/widgets/button.dart';
 import 'package:gym_log/presentation/screens/add_workout/add_workout_screen.dart';
+import 'package:gym_log/providers/workout_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -20,19 +21,19 @@ class WorkoutPage extends StatefulWidget {
 class _WorkoutPageState extends State<WorkoutPage> {
   bool editMode =
       false; // Controla se os botões de editar/excluir estão visíveis
-  late WorkoutRepository workoutRepository;
+  late WorkoutProvider workoutProvider;
 
   @override
   void initState() {
     super.initState();
-    workoutRepository = Provider.of<WorkoutRepository>(context, listen: false);
-    workoutRepository.getWorkoutList(1);
+    workoutProvider = Provider.of<WorkoutProvider>(context, listen: false);
+    workoutProvider.getWorkoutList(1);
   }
 
   void handleRemove(int id) async {
     try {
-      await workoutRepository.deleteWorkoutById(id);
-      await workoutRepository.getWorkoutList(1);
+      await workoutProvider.deleteWorkout(id);
+      await workoutProvider.getWorkoutList(1);
     } catch (e) {
       print(e);
     }
@@ -78,7 +79,7 @@ class _WorkoutPageState extends State<WorkoutPage> {
           SizedBox(
             height: 7.0.h,
           ),
-          Expanded(child: Consumer<WorkoutRepository>(
+          Expanded(child: Consumer<WorkoutProvider>(
               builder: (context, workoutRepository, child) {
             List<WorkoutModel> workouts = workoutRepository.workoutList;
             return workouts.isEmpty

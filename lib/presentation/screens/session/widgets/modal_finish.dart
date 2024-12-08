@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/data/models/exercise.dart';
-import 'package:gym_log/data/repositories/session_repository.dart';
 import 'package:gym_log/core/widgets/button.dart';
 import 'package:gym_log/presentation/screens/summary/summary_screen.dart';
+import 'package:gym_log/providers/session_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -19,7 +19,7 @@ class SessionPageModal extends StatefulWidget {
 class _SessionPageModalState extends State<SessionPageModal> {
   /// Submete os dados de `exerciseToFinish` ao banco de dados
   void _handleSubmit() async {
-    await Provider.of<SessionRepository>(context, listen: false)
+    await Provider.of<SessionProvider>(context, listen: false)
         .finishSession(widget.exerciseToFinish);
   }
 

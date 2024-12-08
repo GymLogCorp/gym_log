@@ -1,12 +1,16 @@
 import 'package:flutter/foundation.dart';
+import 'package:gym_log/data/models/exercise.dart';
 import 'package:gym_log/data/models/session.dart';
 
 import 'package:gym_log/data/models/workout.dart';
+import 'package:gym_log/data/repositories/session_repository.dart';
 import 'package:uuid/uuid.dart';
 
-class SessionState extends ChangeNotifier {
+class SessionProvider extends ChangeNotifier {
   late WorkoutModel defaultWorkout;
   List<ExerciseSeries> exerciseWithSeries = [];
+  final SessionRepository sessionRepository = SessionRepository();
+  int? currentSessionId;
   final uuid = const Uuid();
   void setDefaultWorkout(WorkoutModel workout) {
     defaultWorkout = workout;
@@ -81,6 +85,19 @@ class SessionState extends ChangeNotifier {
     if (seriesIndex >= 0 && seriesIndex < exercise.series.length) {
       exercise.series[seriesIndex].checked =
           (!exercise.series[seriesIndex].checked);
+      notifyListeners();
+    }
+  }
+
+  Future<void> startSession(int userId) async {
+    currentSessionId = await sessionRepository.startSession(userId);
+    notifyListeners();
+  }
+
+  Future<void> finishSession(List<ExerciseModel> exerciseList) async {
+    if (currentSessionId != null) {
+      await sessionRepository.finishSession(exerciseList, currentSessionId!);
+      currentSessionId = null;
       notifyListeners();
     }
   }

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/data/models/exercise.dart';
 import 'package:gym_log/data/models/workout.dart';
-import 'package:gym_log/data/repositories/workout_repository.dart';
 import 'package:gym_log/core/widgets/input.dart';
 import 'package:gym_log/presentation/components/muscle_chip_list.dart';
 import 'package:gym_log/presentation/components/exercise_table.dart';
 import 'package:gym_log/presentation/screens/layout/layout_screen.dart';
+import 'package:gym_log/providers/workout_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -23,7 +23,7 @@ class _EditWorkoutState extends State<EditWorkout> {
   final TextEditingController _workoutNameController = TextEditingController();
   List<ExerciseModel> exerciseList = [];
   List<String> muscleGroupList = [];
-  late WorkoutRepository workoutRepository;
+  late WorkoutProvider workoutProvider;
 
   String? _validateWorkoutName(String? value) {
     if (value == null || value.isEmpty) {
@@ -36,7 +36,7 @@ class _EditWorkoutState extends State<EditWorkout> {
   void initState() {
     super.initState();
     formatterMuscleGroup();
-    workoutRepository = Provider.of<WorkoutRepository>(context, listen: false);
+    workoutProvider = Provider.of<WorkoutProvider>(context, listen: false);
     exerciseList = List<ExerciseModel>.from(widget.workout.exercises);
     // Configurar o nome inicial no controller
     _workoutNameController.text = widget.workout.name;
@@ -72,8 +72,8 @@ class _EditWorkoutState extends State<EditWorkout> {
           userId: 1,
           exercises: exerciseList,
         );
-        await workoutRepository.updateWorkout(dto);
-        await workoutRepository.getWorkoutList(1);
+        await workoutProvider.updateWorkout(dto);
+        await workoutProvider.getWorkoutList(1);
         if (mounted) {
           Navigator.pop(context);
         }

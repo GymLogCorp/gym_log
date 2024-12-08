@@ -1,18 +1,16 @@
-import 'package:flutter/foundation.dart';
 import 'package:gym_log/config/db.dart';
 import 'package:gym_log/data/models/exercise.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 
-class HistoricRepository extends ChangeNotifier {
+class HistoricRepository {
   late Database db;
-  List<ExerciseToHistoricModel> historicExercisesList = [];
 
-  Future<void> getHistoricByExercise(
+  Future<List<ExerciseToHistoricModel>> getHistoricByExercise(
       String exerciseId, String exerciseName) async {
     try {
+      List<ExerciseToHistoricModel> data = [];
       db = await DB.instance.database;
-      historicExercisesList.clear();
       var response = await db.query('historic',
           where: 'exercise_id= ?', whereArgs: [exerciseId], limit: 5);
       List<ChartDataModel> tempChartData = [];
@@ -24,21 +22,22 @@ class HistoricRepository extends ChangeNotifier {
         //weight: row['weight'] as String
       }
 
-      historicExercisesList.add(ExerciseToHistoricModel(
+      data.add(ExerciseToHistoricModel(
           name: exerciseName, chartData: tempChartData));
-      notifyListeners();
+      return data;
     } catch (e) {
       print(e);
+      return [];
     }
   }
 
   //receber a lista de exercícios do treino, passar por cada exercício, buscando o histórico e adicionando a lista
 
-  Future<void> getExerciseHistoricListByWorkout(
+  Future<List<ExerciseToHistoricModel>> getExerciseHistoricListByWorkout(
       List<ExerciseModel> exerciseList) async {
     try {
       db = await DB.instance.database;
-      historicExercisesList.clear();
+      List<ExerciseToHistoricModel> data = [];
       await db.transaction((txn) async {
         for (var exercise in exerciseList) {
           var historicExercise = await txn.query('historic',
@@ -55,15 +54,17 @@ class HistoricRepository extends ChangeNotifier {
             tempChartData.add(ChartDataModel(
                 weight: row['weight'] as int, date: formattedDate));
           }
-          historicExercisesList.add(ExerciseToHistoricModel(
+
+          data.add(ExerciseToHistoricModel(
             name: exercise.name,
             chartData: tempChartData,
           ));
         }
       });
-      notifyListeners();
+      return data;
     } catch (e) {
       print(e);
+      return [];
     }
   }
 }

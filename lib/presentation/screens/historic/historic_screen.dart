@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gym_log/data/models/exercise.dart';
 import 'package:gym_log/data/models/workout.dart';
 import 'package:gym_log/presentation/screens/historic/widgets/weight_chart.dart';
-import 'package:gym_log/data/repositories/historic_repository.dart';
-import 'package:gym_log/data/repositories/workout_repository.dart';
+import 'package:gym_log/providers/historic_provider.dart';
+import 'package:gym_log/providers/workout_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -25,7 +25,7 @@ class _HistoricPageState extends State<HistoricPage> {
     super.initState();
 
     var workoutList =
-        Provider.of<WorkoutRepository>(context, listen: false).workoutList;
+        Provider.of<WorkoutProvider>(context, listen: false).workoutList;
     if (workoutList.isNotEmpty) {
       menuOptions = workoutList;
       workoutSelected = menuOptions.first;
@@ -36,7 +36,7 @@ class _HistoricPageState extends State<HistoricPage> {
   }
 
   void getHistoricByWorkout(WorkoutModel workout) async {
-    await Provider.of<HistoricRepository>(context, listen: false)
+    await Provider.of<HistoricProvider>(context, listen: false)
         .getExerciseHistoricListByWorkout(workout.exercises);
   }
 
@@ -88,9 +88,9 @@ class _HistoricPageState extends State<HistoricPage> {
               ),
             ),
           ),
-          Consumer<HistoricRepository>(
-            builder: (context, historicRepository, child) {
-              if (historicRepository.historicExercisesList.isEmpty) {
+          Consumer<HistoricProvider>(
+            builder: (context, historicProvider, child) {
+              if (historicProvider.historicExercisesList.isEmpty) {
                 return const Center(
                   child: Text(
                     'Nenhum dado encontrado.',
@@ -101,7 +101,7 @@ class _HistoricPageState extends State<HistoricPage> {
                   ),
                 );
               } else {
-                List<ChartDataModel> chartData = historicRepository
+                List<ChartDataModel> chartData = historicProvider
                     .historicExercisesList[selectedExerciseIndex].chartData;
 
                 if (chartData.isEmpty || chartData.length == 1) {
@@ -119,10 +119,10 @@ class _HistoricPageState extends State<HistoricPage> {
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: historicRepository.historicExercisesList.length,
+                  itemCount: historicProvider.historicExercisesList.length,
                   itemBuilder: (context, index) {
                     var exercise =
-                        historicRepository.historicExercisesList[index];
+                        historicProvider.historicExercisesList[index];
                     return Column(
                       children: [
                         Text(

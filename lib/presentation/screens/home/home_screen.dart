@@ -4,8 +4,8 @@ import 'package:gym_log/core/widgets/button.dart';
 import 'package:gym_log/presentation/screens/home/widgets/not_workout_card.dart';
 import 'package:gym_log/presentation/screens/home/widgets/carrosel_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:gym_log/providers/workout_provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:gym_log/data/repositories/workout_repository.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,15 +18,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int? _currentWorkoutId;
 
+  late WorkoutProvider workoutProvider;
+
   @override
   void initState() {
     super.initState();
-    final workoutRepository =
-        Provider.of<WorkoutRepository>(context, listen: false);
-    workoutRepository.getWorkoutList(1).then((_) {
-      if (workoutRepository.workoutList.isNotEmpty) {
+    workoutProvider = Provider.of<WorkoutProvider>(context, listen: false);
+    workoutProvider.getWorkoutList(1).then((_) {
+      if (workoutProvider.workoutList.isNotEmpty) {
         setState(() {
-          _currentWorkoutId = workoutRepository.workoutList.first.id;
+          _currentWorkoutId = workoutProvider.workoutList.first.id;
         });
       }
     });
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Consumer<WorkoutRepository>(
+                Consumer<WorkoutProvider>(
                   builder: (context, workoutRepository, child) {
                     final workoutList = workoutRepository.workoutList;
                     return workoutList.isEmpty
@@ -72,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                           );
                   },
                 ),
-                Consumer<WorkoutRepository>(
+                Consumer<WorkoutProvider>(
                   builder: (context, workoutRepository, child) {
                     final workoutList = workoutRepository.workoutList;
 

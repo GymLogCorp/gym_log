@@ -1,13 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:gym_log/config/db.dart';
 import 'package:gym_log/data/models/exercise.dart';
 import 'package:sqflite/sqflite.dart';
 
-class ExerciseRepository extends ChangeNotifier {
+class ExerciseRepository {
   late Database db;
   List<ExerciseModel> exerciseList = [];
 
-  Future<void> getExerciseList(String muscle) async {
+  Future<List<ExerciseModel>> getExerciseList(String muscle) async {
     try {
       db = await DB.instance.database;
       List<Map<String, dynamic>> response = await db
@@ -18,11 +17,11 @@ class ExerciseRepository extends ChangeNotifier {
           ExerciseModel exercise = ExerciseModel.fromMap(item);
           data.add(exercise);
         }
-        exerciseList = data;
       }
-      notifyListeners();
+      return data;
     } catch (e) {
       print(e);
+      return [];
     }
   }
 
@@ -56,7 +55,6 @@ class ExerciseRepository extends ChangeNotifier {
         'muscle_group': muscleGroup,
         'isCustom': 1,
       });
-      notifyListeners();
     } catch (e) {
       print(e);
     }
@@ -70,7 +68,6 @@ class ExerciseRepository extends ChangeNotifier {
         where: "id= ?",
         whereArgs: [id],
       );
-      notifyListeners();
     } catch (e) {
       print(e);
     }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:gym_log/data/repositories/exercise_repository.dart';
-import 'package:gym_log/data/repositories/session_repository.dart';
-import 'package:gym_log/data/repositories/workout_repository.dart';
-import 'package:gym_log/data/repositories/historic_repository.dart';
 import 'package:gym_log/providers/auth_provider.dart';
+import 'package:gym_log/providers/exercise_provider.dart';
+import 'package:gym_log/providers/historic_provider.dart';
 
 import 'package:gym_log/providers/session_provider.dart';
 import 'package:gym_log/presentation/components/auth_check.dart';
+import 'package:gym_log/providers/workout_provider.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
@@ -20,11 +19,10 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
-        ChangeNotifierProvider(create: (context) => WorkoutRepository()),
-        ChangeNotifierProvider(create: (context) => ExerciseRepository()),
-        ChangeNotifierProvider(create: (context) => SessionRepository()),
-        ChangeNotifierProvider(create: (context) => SessionState()),
-        ChangeNotifierProvider(create: (context) => HistoricRepository()),
+        ChangeNotifierProvider(create: (context) => WorkoutProvider()),
+        ChangeNotifierProvider(create: (context) => ExerciseProvider()),
+        ChangeNotifierProvider(create: (context) => SessionProvider()),
+        ChangeNotifierProvider(create: (context) => HistoricProvider()),
       ],
       child: const MainApp(),
     ),
