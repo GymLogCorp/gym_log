@@ -48,12 +48,12 @@ class ExerciseRepository extends ChangeNotifier {
     return [];
   }
 
-  Future<void> createCustomExercise(String name, String muscle_group) async {
+  Future<void> createCustomExercise(String name, String muscleGroup) async {
     try {
       final db = await DB.instance.database;
       await db.insert('exercises', {
         'name': name,
-        'muscle_group': muscle_group,
+        'muscle_group': muscleGroup,
         'isCustom': 1,
       });
       notifyListeners();

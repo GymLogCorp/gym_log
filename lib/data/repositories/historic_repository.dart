@@ -15,7 +15,6 @@ class HistoricRepository extends ChangeNotifier {
       historicExercisesList.clear();
       var response = await db.query('historic',
           where: 'exercise_id= ?', whereArgs: [exerciseId], limit: 5);
-      print(response);
       List<ChartDataModel> tempChartData = [];
       for (var row in response) {
         DateTime createdDate = DateTime.parse(row['created_date'] as String);
@@ -42,7 +41,6 @@ class HistoricRepository extends ChangeNotifier {
       historicExercisesList.clear();
       await db.transaction((txn) async {
         for (var exercise in exerciseList) {
-          print(exercise.id);
           var historicExercise = await txn.query('historic',
               where: "exercise_id= ?",
               whereArgs: [exercise.id],
@@ -57,8 +55,6 @@ class HistoricRepository extends ChangeNotifier {
             tempChartData.add(ChartDataModel(
                 weight: row['weight'] as int, date: formattedDate));
           }
-          print(exercise.id);
-
           historicExercisesList.add(ExerciseToHistoricModel(
             name: exercise.name,
             chartData: tempChartData,

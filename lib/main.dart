@@ -4,20 +4,18 @@ import 'package:gym_log/data/repositories/exercise_repository.dart';
 import 'package:gym_log/data/repositories/session_repository.dart';
 import 'package:gym_log/data/repositories/workout_repository.dart';
 import 'package:gym_log/data/repositories/historic_repository.dart';
-import 'package:gym_log/ui/auth/view_models/auth_viewmodel.dart';
+import 'package:gym_log/providers/auth_provider.dart';
 
-import 'package:gym_log/ui/session/view_models/session_viewmodel.dart';
-import 'package:gym_log/ui/auth/widgets/auth_check.dart';
+import 'package:gym_log/providers/session_provider.dart';
+import 'package:gym_log/presentation/components/auth_check.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'package:device_preview/device_preview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  //isso aqui permite que nós tenhamos um state global na aplicação onde qualquer componente pode escutar.
   runApp(
     MultiProvider(
       providers: [
@@ -28,38 +26,21 @@ void main() async {
         ChangeNotifierProvider(create: (context) => SessionState()),
         ChangeNotifierProvider(create: (context) => HistoricRepository()),
       ],
-      child: const MyApp(),
+      child: const MainApp(),
     ),
   );
-  //Pra rodar com o device preview
-  // runApp(DevicePreview(
-  //   enabled: !kReleaseMode,
-  //   builder: (context) => MultiProvider(
-  //     providers: [
-  //       ChangeNotifierProvider(create: (context) => AuthService()),
-  //       ChangeNotifierProvider(create: (context) => WorkoutRepository()),
-  //       ChangeNotifierProvider(create: (context) => ExerciseRepository()),
-  //       ChangeNotifierProvider(create: (context) => SessionRepository()),
-  //       ChangeNotifierProvider(create: (context) => HistoricRepository()),
-  //       ChangeNotifierProvider(create: (context) => SessionState())
-  //     ],
-  //     child: const MyApp(),
-  //   ),
-  // ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthService>(
       builder: (context, auth, _) {
-        return MaterialApp(
-          locale: DevicePreview.locale(context),
-          builder: DevicePreview.appBuilder,
+        return const MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: const AuthCheck(),
+          home: AuthCheck(),
         );
       },
     );

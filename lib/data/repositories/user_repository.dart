@@ -23,6 +23,23 @@ class UserRepository {
       }
     } catch (e) {
       print(e);
+      return null;
+    }
+  }
+
+  Future<UserModel?> getDefaultUser() async {
+    try {
+      db = await DB.instance.database;
+      List response = await db.query('user', limit: 1);
+      if (response.isNotEmpty) {
+        UserModel user = UserModel.fromMap(response.first);
+        return user;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
     }
   }
 

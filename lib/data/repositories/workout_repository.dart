@@ -89,7 +89,6 @@ class WorkoutRepository extends ChangeNotifier {
           'muscle_group': workout.muscleGroup,
           'user_id': workout.userId
         });
-        print(workoutId);
 
         for (var exercise in workout.exercises) {
           await txn.insert('workout_exercise', {
@@ -109,7 +108,6 @@ class WorkoutRepository extends ChangeNotifier {
   Future<void> updateWorkout(WorkoutModel workout) async {
     try {
       final db = await DB.instance.database;
-      print(workout.id);
       var workoutIsExist = await db.query(
         'workout',
         where: "id= ?",

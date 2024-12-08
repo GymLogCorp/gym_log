@@ -12,8 +12,6 @@ class ChartDataModel {
   final String weight;
   final String date;
 
-  static var name;
-
   ChartDataModel({
     required this.weight,
     required this.date,
