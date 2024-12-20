@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gym_log/data/models/user.dart';
@@ -7,9 +6,10 @@ import 'package:gym_log/presentation/screens/historic/historic_screen.dart';
 import 'package:gym_log/presentation/screens/home/home_screen.dart';
 import 'package:gym_log/presentation/screens/welcome/welcome_screen.dart';
 import 'package:gym_log/presentation/screens/workout/workout_screen.dart';
-import 'package:gym_log/data/repositories/user_repository.dart';
 import 'package:gym_log/providers/auth_provider.dart';
+import 'package:gym_log/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() => runApp(const Layout());
 
@@ -31,8 +31,17 @@ class LayoutAppNav extends StatefulWidget {
 
 class _LayoutAppNavState extends State<LayoutAppNav> {
   int _currentIndex = 1; // Posição inicial no BottomNavigationBar
+  late AuthService authProvider;
+  late User? currentUser;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
-  final wuserRepository = UserRepository();
+    authProvider = Provider.of<AuthService>(context, listen: false);
+    currentUser = authProvider.usuario;
+  }
+
   Future<UserModel?>? user;
 
   navigateToAddWorkout(BuildContext context) {
@@ -91,7 +100,7 @@ class _LayoutAppNavState extends State<LayoutAppNav> {
               child: Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  FirebaseAuth.instance.currentUser?.displayName ?? 'Usuário',
+                  currentUser?.displayName ?? "Usuário",
                   style: GoogleFonts.plusJakartaSans(
                     color: Colors.white,
                     fontSize: 22,

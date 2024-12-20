@@ -6,6 +6,7 @@ import 'package:gym_log/providers/historic_provider.dart';
 
 import 'package:gym_log/providers/session_provider.dart';
 import 'package:gym_log/presentation/components/auth_check.dart';
+import 'package:gym_log/providers/user_provider.dart';
 import 'package:gym_log/providers/workout_provider.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -23,6 +24,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => ExerciseProvider()),
         ChangeNotifierProvider(create: (context) => SessionProvider()),
         ChangeNotifierProvider(create: (context) => HistoricProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider())
       ],
       child: const MainApp(),
     ),
