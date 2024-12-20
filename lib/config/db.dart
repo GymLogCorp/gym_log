@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:gym_log/config/default_exercises.dart';
 import 'package:sqflite/sqflite.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 
 class DB {
@@ -13,8 +12,9 @@ class DB {
   static Database? _database; // Instância do sqlite
 
   Future<Database> get database async {
-    if (_database != null)
+    if (_database != null) {
       return _database!; //caso o database exista ele já retorna, se não inicia outro
+    }
 
     return await _initDatabase();
   }
@@ -32,7 +32,7 @@ class DB {
     await db.execute(_session);
     await db.execute(_workout);
     await db.execute(_exercise);
-    await db.execute(_workout_exercise);
+    await db.execute(_workoutExercise);
     await db.execute(_historic);
     await insertDefaultExercises(db);
   }
@@ -76,7 +76,7 @@ class DB {
   );
   ''';
 
-  String get _workout_exercise => '''
+  String get _workoutExercise => '''
   CREATE TABLE workout_exercise (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     default_series INTEGER NOT NULL,
@@ -107,9 +107,6 @@ class DB {
     for (var muscleGroup in defaultExercises) {
       muscleGroup.forEach((muscle, exercises) async {
         for (var exercise in exercises) {
-          print(
-              '${exercise['name']} adicionado ao grupo ${muscle}'); // Debugging
-
           await db.insert('exercises', {
             'name': exercise['name'],
             'muscle_group': exercise['muscle'],
