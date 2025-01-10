@@ -34,6 +34,7 @@ class DB {
     await db.execute(_exercise);
     await db.execute(_workoutExercise);
     await db.execute(_historic);
+    await db.execute(_series);
     await insertDefaultExercises(db);
   }
 
@@ -79,8 +80,6 @@ class DB {
   String get _workoutExercise => '''
   CREATE TABLE workout_exercise (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    default_series INTEGER NOT NULL,
-    default_repetitions INTEGER NOT NULL,
     workout_id INTEGER NOT NULL,
     exercise_id INTEGER NOT NULL,
     FOREIGN KEY (workout_id) REFERENCES workout(id),
@@ -89,12 +88,23 @@ class DB {
   );
   ''';
 
+  String get _series => '''
+  CREATE TABLE series (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    series_index INTEGER NOT NULL,
+    default_repetitions INTEGER NOT NULL,
+    executed_repetitions INTEGER,
+    last_weight INTEGER NOT NULL,
+    workout_exercise_id INTEGER NOT NULL,
+    FOREIGN KEY (workout_exercise_id) REFERENCES workout_exercise(id)
+  );
+  ''';
+
   String get _historic => '''
   CREATE TABLE historic (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    series INTEGER NOT NULL,
     repetitions INTEGER NOT NULL,
-    weight INTEGER NOT NULL,
+    greater_weight INTEGER NOT NULL,
     created_date TEXT NOT NULL,
     session_id INTEGER NOT NULL,
     exercise_id INTEGER NOT NULL  ,

@@ -33,6 +33,7 @@ class UserRepository {
       List response = await db.query('user', limit: 1);
       if (response.isNotEmpty) {
         UserModel user = UserModel.fromMap(response.first);
+        print("👍");
         return user;
       } else {
         return null;

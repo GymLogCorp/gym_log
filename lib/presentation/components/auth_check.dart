@@ -14,6 +14,7 @@ class AuthCheck extends StatelessWidget {
         if (authService.isLoading) {
           return loading();
         } else if (authService.usuario != null) {
+          print("🤷‍♂️");
           return const Layout();
         } else {
           return const Welcome();

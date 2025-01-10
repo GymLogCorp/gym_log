@@ -47,10 +47,19 @@ class _EditWorkoutState extends State<EditWorkout> {
       exerciseList.add(ExerciseModel(
         id: exerciseData['id'],
         name: exerciseData['name'],
-        countSeries: exerciseData['series'],
-        countRepetition: exerciseData['repetitions'],
+        series: List.generate(
+          exerciseData['series'],
+          (index) => SeriesModel(
+            defaultRepetitions: exerciseData['repetitions'],
+            lastRepetitions: 0,
+            seriesIndex: index + 1,
+            lastWeight: 0,
+            repetitons: 0,
+            weight: 0,
+          ),
+        ),
         muscleGroup: '',
-        isCustom: false,
+        isCustom: exerciseData['isCustom'],
       ));
     });
   }

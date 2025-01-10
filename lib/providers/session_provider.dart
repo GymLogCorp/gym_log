@@ -1,6 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:gym_log/data/models/exercise.dart';
-import 'package:gym_log/data/models/session.dart';
 
 import 'package:gym_log/data/models/workout.dart';
 import 'package:gym_log/data/repositories/session_repository.dart';
@@ -8,35 +9,36 @@ import 'package:uuid/uuid.dart';
 
 class SessionProvider extends ChangeNotifier {
   late WorkoutModel defaultWorkout;
-  List<ExerciseSeries> exerciseWithSeries = [];
+  List<ExerciseModel> exerciseWithSeries = [];
   final SessionRepository sessionRepository = SessionRepository();
   int? currentSessionId;
   final uuid = const Uuid();
   void setDefaultWorkout(WorkoutModel workout) {
     defaultWorkout = workout;
     exerciseWithSeries.clear(); // Clear previous data
+    exerciseWithSeries = workout.exercises;
+    // for (var exercise in workout.exercises) {
+    //   int countSeries = exercise.series!.length ?? 0;
+    //   int countRepetition = exercise.series![0].defaultRepetitions ?? 0;
 
-    for (var exercise in workout.exercises) {
-      int countSeries = exercise.countSeries ?? 0;
-      int countRepetition = exercise.countRepetition ?? 0;
+    //   List<SeriesSessionModel> exerciseSeries =
+    //       List.generate(countSeries, (index) {
+    //     return SeriesSessionModel(
+    //       id: uuid.v4(),
+    //       repetitions: countRepetition,
+    //       weight: 0,
+    //       checked: false,
+    //       lastSession: exercise.lastSession ?? '0x0',
+    //     );
+    //   });
 
-      List<SeriesModel> exerciseSeries = List.generate(countSeries, (index) {
-        return SeriesModel(
-          id: uuid.v4(),
-          repetitions: countRepetition,
-          weight: 0,
-          checked: false,
-          lastSession: exercise.lastSession ?? '0x0',
-        );
-      });
-
-      exerciseWithSeries.add(ExerciseSeries(
-        name: exercise.name,
-        series: exerciseSeries,
-        defaultRepetitions: countRepetition,
-        lastSession: exercise.lastSession ?? '0x0',
-      ));
-    }
+    //   exerciseWithSeries.add(ExerciseSeries(
+    //     name: exercise.name,
+    //     series: exerciseSeries,
+    //     defaultRepetitions: countRepetition,
+    //     lastSession: exercise.lastSession ?? '0x0',
+    //   ));
+    // }
     notifyListeners();
   }
 
@@ -45,16 +47,21 @@ class SessionProvider extends ChangeNotifier {
       (e) => e.name == exerciseName,
     );
 
-    exercise.series.add(SeriesModel(
-        id: uuid.v4(),
-        repetitions: exercise.defaultRepetitions,
-        weight: 0,
-        checked: false,
-        lastSession: exercise.lastSession));
+    var serieExample = exercise.series!.last;
+
+    exercise.series!.add(SeriesModel(
+      id: Random().nextInt(100000),
+      defaultRepetitions: serieExample.defaultRepetitions,
+      lastRepetitions: 0,
+      seriesIndex: exercise.series!.length + 1,
+      lastWeight: serieExample.lastWeight,
+      repetitons: 0,
+      weight: 0,
+    ));
     notifyListeners();
   }
 
-  void removeSeries(String exerciseName, String serieId) {
+  void removeSeries(String exerciseName, int serieId) {
     final exercise = exerciseWithSeries.firstWhere(
       (e) => e.name == exerciseName,
     );
@@ -65,8 +72,8 @@ class SessionProvider extends ChangeNotifier {
     //   print(element.repetitions);
     // }
 
-    if (exercise.series.isNotEmpty) {
-      exercise.series.removeLast();
+    if (exercise.series!.isNotEmpty) {
+      exercise.series!.removeLast();
     }
 
     notifyListeners();
@@ -82,9 +89,9 @@ class SessionProvider extends ChangeNotifier {
       (e) => e.name == exerciseName,
     );
 
-    if (seriesIndex >= 0 && seriesIndex < exercise.series.length) {
-      exercise.series[seriesIndex].checked =
-          (!exercise.series[seriesIndex].checked);
+    if (seriesIndex >= 0 && seriesIndex < exercise.series!.length) {
+      exercise.series![seriesIndex].checked =
+          (!exercise.series![seriesIndex].checked);
       notifyListeners();
     }
   }

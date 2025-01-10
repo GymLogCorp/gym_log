@@ -42,26 +42,16 @@ class _SessionPageState extends State<SessionPage> {
         Provider.of<SessionProvider>(context, listen: false).exerciseWithSeries;
     for (var exerciseSeries in exerciseWithSeries) {
       String exerciseName = exerciseSeries.name;
-      var seriesList = exerciseSeries.series;
 
       var exercise = widget.workout.exercises
           .firstWhere((exercise) => exercise.name == exerciseName);
 
-      // Especifica o tipo de Map para o reduce
-      var maxWeightSeries =
-          seriesList.reduce((SeriesModel curr, SeriesModel next) {
-        return curr.weight > next.weight ? curr : next;
-      });
-
       exercisesToFinish.add(ExerciseModel(
         id: exercise.id,
         name: exerciseName,
-        countSeries: seriesList.length,
-        countRepetition:
-            maxWeightSeries.repetitions, // Rep da série com maior peso
         muscleGroup: exercise.muscleGroup,
-        weight: maxWeightSeries.weight.toInt(), // Maior peso
         isCustom: exercise.isCustom, // Valor de isCustom
+        series: exercise.series,
       ));
     }
   }

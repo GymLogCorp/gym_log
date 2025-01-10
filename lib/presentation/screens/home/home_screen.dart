@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     workoutProvider.getWorkoutList(1).then((_) {
       if (workoutProvider.workoutList.isNotEmpty) {
         setState(() {
+          print("CHEGOU AQUI ------------------");
           _currentWorkoutId = workoutProvider.workoutList.first.id;
         });
       }
@@ -95,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                                   (workout) => workout.id == _currentWorkoutId,
                                 );
 
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>

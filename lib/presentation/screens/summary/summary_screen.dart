@@ -9,6 +9,17 @@ class SummaryPage extends StatelessWidget {
 
   const SummaryPage({super.key, required this.exercises});
 
+  double getMostWeiht(List<SeriesModel>? series) {
+    double mostWeight = 0;
+    if (series == null) return 0;
+    for (var serie in series) {
+      if (serie.weight! > mostWeight) {
+        mostWeight = serie.weight!;
+      }
+    }
+    return mostWeight;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,7 +108,7 @@ class SummaryPage extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            '${exercise.countSeries}x${exercise.countRepetition}',
+                                            '${exercise.series!.length}x${exercise.series![0].defaultRepetitions}',
                                             style: GoogleFonts.plusJakartaSans(
                                               fontSize: 18.0,
                                               fontWeight: FontWeight.w500,
@@ -107,12 +118,12 @@ class SummaryPage extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    if (exercise.weight != null)
+                                    if (exercise.series!.isNotEmpty)
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             left: 6.0, right: 20.0, top: 5.0),
                                         child: Text(
-                                          "Peso Máximo: ${exercise.weight} kg",
+                                          "Peso Máximo: ${getMostWeiht(exercise.series)} kg",
                                           style: GoogleFonts.plusJakartaSans(
                                             fontSize: 14.sp,
                                             color: Colors.white70,

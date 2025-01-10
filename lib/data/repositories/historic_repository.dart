@@ -18,7 +18,7 @@ class HistoricRepository {
         DateTime createdDate = DateTime.parse(row['created_date'] as String);
         String formattedDate = DateFormat('dd/MM').format(createdDate);
         tempChartData.add(ChartDataModel(
-            weight: (row['weight'] as int), date: formattedDate));
+            weight: (row['greater_weight'] as int), date: formattedDate));
         //weight: row['weight'] as String
       }
 
@@ -52,7 +52,7 @@ class HistoricRepository {
                 DateTime.parse(row['created_date'] as String);
             String formattedDate = DateFormat('dd/MM').format(createdDate);
             tempChartData.add(ChartDataModel(
-                weight: row['weight'] as int, date: formattedDate));
+                weight: row['greater_weight'] as int, date: formattedDate));
           }
 
           data.add(ExerciseToHistoricModel(

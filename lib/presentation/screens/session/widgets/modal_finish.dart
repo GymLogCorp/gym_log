@@ -19,6 +19,7 @@ class SessionPageModal extends StatefulWidget {
 class _SessionPageModalState extends State<SessionPageModal> {
   /// Submete os dados de `exerciseToFinish` ao banco de dados
   void _handleSubmit() async {
+    debugPrint("👌${widget.exerciseToFinish}");
     await Provider.of<SessionProvider>(context, listen: false)
         .finishSession(widget.exerciseToFinish);
   }

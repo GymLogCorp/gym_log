@@ -13,4 +13,9 @@ class WorkoutModel {
       required this.muscleGroup,
       required this.userId,
       required this.exercises});
+
+  @override
+  String toString() {
+    return 'WorkoutModel{id: $id, name: $name, muscleGroup: $muscleGroup, userId: $userId, exercises: $exercises}';
+  }
 }

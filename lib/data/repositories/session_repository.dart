@@ -33,14 +33,26 @@ class SessionRepository {
             whereArgs: [currentSessionId]);
 
         for (var exercise in exerciseList) {
+          var bestSerie = exercise.series!.reduce(
+              (curr, next) => curr.lastWeight > next.lastWeight ? curr : next);
           await txn.insert('historic', {
-            'series': exercise.countSeries,
-            'repetitions': exercise.countRepetition,
-            'weight': exercise.weight,
+            'repetitions': bestSerie.lastRepetitions,
+            'greater_weight': bestSerie.lastWeight,
             'exercise_id': exercise.id,
             'session_id': currentSessionId,
             'created_date': DateTime.now().toString(),
           });
+
+          for (var serie in exercise.series!) {
+            await txn.update(
+                "series",
+                {
+                  'executed_repetitions': serie.repetitons,
+                  'last_weight': serie.weight,
+                },
+                where: 'id = ?',
+                whereArgs: [serie.id]);
+          }
         }
       });
     } catch (e) {

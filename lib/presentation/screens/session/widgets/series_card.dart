@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gym_log/data/models/session.dart';
+import 'package:gym_log/data/models/exercise.dart';
 import 'package:gym_log/providers/session_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CardSeries extends StatefulWidget {
-  final ExerciseSeries exercise;
+  final ExerciseModel exercise;
 
   const CardSeries({
     super.key,
@@ -111,8 +111,8 @@ class _CardSeriesState extends State<CardSeries> {
         // Lista de séries do exercício
         // Lista de séries do exercício
         Column(
-          children: List.generate(widget.exercise.series.length, (index) {
-            final serie = widget.exercise.series[index];
+          children: List.generate(widget.exercise.series!.length, (index) {
+            final serie = widget.exercise.series![index];
             return SizedBox(
               width: 100.0.w,
               height: 5.0.h,
@@ -139,7 +139,7 @@ class _CardSeriesState extends State<CardSeries> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${index + 1}', // Índice da série
+                              serie.seriesIndex.toString(), // Índice da série
                               style: GoogleFonts.plusJakartaSans(
                                 fontWeight: FontWeight.bold,
                                 color: Color(serie.checked
@@ -150,7 +150,7 @@ class _CardSeriesState extends State<CardSeries> {
                             ),
                             SizedBox(width: 1.sp),
                             Text(
-                              serie.lastSession,
+                              "${serie.lastWeight}x${serie.lastRepetitions}",
                               style: GoogleFonts.plusJakartaSans(
                                 fontWeight: FontWeight.bold,
                                 color: Color(serie.checked
@@ -195,7 +195,7 @@ class _CardSeriesState extends State<CardSeries> {
                                 maxLength: 3,
                                 decoration: InputDecoration(
                                   counterText: '',
-                                  hintText: serie.repetitions.toString(),
+                                  hintText: serie.defaultRepetitions.toString(),
                                 ),
                                 enabled: !serie.checked,
                                 keyboardType: TextInputType.number,
@@ -208,8 +208,7 @@ class _CardSeriesState extends State<CardSeries> {
                                 ),
                                 onChanged: (value) {
                                   setState(() {
-                                    serie.repetitions =
-                                        int.tryParse(value) ?? 0;
+                                    serie.repetitons = int.tryParse(value) ?? 0;
                                   });
                                 },
                               ),
@@ -236,11 +235,11 @@ class _CardSeriesState extends State<CardSeries> {
                   ),
                   SizedBox(width: 2.0.w),
                   // Ícone de remoção de série
-                  if (index == widget.exercise.series.length - 1 && index != 0)
+                  if (index == widget.exercise.series!.length - 1 && index != 0)
                     InkWell(
                       onTap: () {
                         Provider.of<SessionProvider>(context, listen: false)
-                            .removeSeries(exerciseName, serie.id);
+                            .removeSeries(exerciseName, serie.id!);
                       },
                       child: const Icon(
                         Icons.delete_forever_rounded,

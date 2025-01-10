@@ -79,7 +79,7 @@ class WorkoutDetailComponent extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                '${exercise.countSeries}x${exercise.countRepetition}',
+                                '${exercise.series!.length}x${exercise.series![0].defaultRepetitions}',
                                 style: GoogleFonts.plusJakartaSans(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w500,

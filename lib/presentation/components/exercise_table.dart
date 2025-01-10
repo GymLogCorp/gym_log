@@ -149,7 +149,7 @@ class _ExerciseTableWidgetState extends State<ExerciseTableWidget> {
                             child: Center(
                               heightFactor: 2.5,
                               child: Text(
-                                exercise.countSeries.toString(),
+                                exercise.series!.length.toString(),
                                 style: GoogleFonts.plusJakartaSans(
                                   color: Colors.white,
                                   fontSize: 18.0,
@@ -161,7 +161,8 @@ class _ExerciseTableWidgetState extends State<ExerciseTableWidget> {
                           TableCell(
                             child: Center(
                               child: Text(
-                                exercise.countRepetition.toString(),
+                                exercise.series![0].defaultRepetitions
+                                    .toString(),
                                 style: GoogleFonts.plusJakartaSans(
                                   color: Colors.white,
                                   fontSize: 18.0,

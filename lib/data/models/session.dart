@@ -14,14 +14,14 @@ class SessionModel {
   });
 }
 
-class SeriesModel {
+class SeriesSessionModel {
   int repetitions;
   double weight;
   bool checked;
   String lastSession;
   String id;
 
-  SeriesModel({
+  SeriesSessionModel({
     required this.id,
     required this.repetitions,
     required this.weight,
@@ -34,7 +34,7 @@ class ExerciseSeries {
   String name;
   int defaultRepetitions;
   String lastSession;
-  List<SeriesModel> series;
+  List<SeriesSessionModel> series;
 
   ExerciseSeries({
     required this.name,
