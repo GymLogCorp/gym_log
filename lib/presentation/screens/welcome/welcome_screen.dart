@@ -10,14 +10,51 @@ class Welcome extends StatelessWidget {
   void navigateToLogin(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const Login()),
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => const Login(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(1.0, 0.0); // direita para a esquerda
+          const end = Offset.zero; // centro (posição normal)
+          const curve = Curves.easeInOut; // curva de animação
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          return FadeTransition(
+            // position: offsetAnimation,
+            // child: child,
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
     );
   }
 
   void navigateToRegister(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const Register()),
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const Register(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(1.0, 0.0); // direita para a esquerda
+          const end = Offset.zero; // centro (posição normal)
+          const curve = Curves.easeInOut; // curva de animação
+
+          var tween =
+              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          var offsetAnimation = animation.drive(tween);
+
+          return FadeTransition(
+            // position: offsetAnimation,
+            // child: child,
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
     );
   }
 
