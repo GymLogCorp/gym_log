@@ -33,11 +33,11 @@ class SessionRepository {
             whereArgs: [currentSessionId]);
 
         for (var exercise in exerciseList) {
-          var bestSerie = exercise.series!.reduce(
-              (curr, next) => curr.lastWeight > next.lastWeight ? curr : next);
+          var bestSerie = exercise.series!
+              .reduce((curr, next) => curr.weight > next.weight ? curr : next);
           await txn.insert('historic', {
             'repetitions': bestSerie.lastRepetitions,
-            'greater_weight': bestSerie.lastWeight,
+            'greater_weight': bestSerie.weight,
             'exercise_id': exercise.id,
             'session_id': currentSessionId,
             'created_date': DateTime.now().toString(),
